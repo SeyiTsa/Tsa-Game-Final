@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 InteractionManager="*res://scripts/autoloads/interaction_manager.gd"
+OrderManager="*res://scripts/autoloads/order_manager.gd"
 
 [global_group]
 

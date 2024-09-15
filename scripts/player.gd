@@ -3,7 +3,10 @@ extends CharacterBody2D
 var direction : Vector2
 var speed : int = 200
 var sprint_speed : int = 300
+var input_vector : Vector2
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 func _process(delta: float) -> void:
 	
@@ -14,36 +17,16 @@ func _process(delta: float) -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, delta * get_acceleration())
 	move_and_slide()
-	var input_vector : Vector2
+	
 	input_vector.x = Input.get_action_strength("right") - Input.get_action_strength("left")
 	input_vector.y = Input.get_action_strength("down") - Input.get_action_strength("up")
-	match input_vector:
-		Vector2(1, 0):
-			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play("Walk Side")
-		Vector2(-1, 0):
-			animated_sprite_2d.flip_h = true
-			animated_sprite_2d.play("Walk Side")
-		Vector2(0, 1):
-			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play("Walk Front")
-		Vector2(0, -1):
-			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play("Walk Back")
-		Vector2(1, -1):
-			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play("Walk Side")
-		Vector2(-1, -1):
-			animated_sprite_2d.flip_h = true
-			animated_sprite_2d.play("Walk Side")
-		Vector2(1, 1):
-			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play("Walk Side")
-		Vector2(-1, 1):
-			animated_sprite_2d.flip_h = true
-			animated_sprite_2d.play("Walk Side")
-		Vector2(0, 0):
-			animated_sprite_2d.stop()
+	
+	if velocity.x < 0:
+		animated_sprite_2d.flip_h = true
+	elif velocity.x > 0:
+		animated_sprite_2d.flip_h = false
+		
+	update_animation_parameters()
 func get_speed() -> int:
 	if Input.is_action_pressed("sprint"):
 		return sprint_speed
@@ -51,3 +34,13 @@ func get_speed() -> int:
 	
 func get_acceleration() -> int:
 	return 3200
+	
+func update_animation_parameters():
+	
+	var direction = round(input_vector)
+	
+	animation_tree.set("parameters/conditions/idle", velocity == Vector2.ZERO)
+	animation_tree.set("parameters/conditions/is_moving", velocity != Vector2.ZERO)
+	if input_vector:
+		animation_tree["parameters/Idle/blend_position"] = direction
+		animation_tree["parameters/Walk/blend_position"] = direction

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://by2w026v1l3q"]
+[gd_scene load_steps=12 format=3 uid="uid://by2w026v1l3q"]
 
 [ext_resource type="Script" path="res://scripts/notepad.gd" id="3_xj0ly"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="4_1r07b"]
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://art/notepad_ui.png" id="4_msgmk"]
 [ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/customer.tscn" id="4_sjedv"]
+[ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="5_w6ube"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_3spg2"]
 vertices = PackedVector2Array(616.961, 345.531, -2.90625, 347.961, -0.0703125, -0.382813, 654.883, -26.0469)
@@ -96,9 +97,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_q065k")
 script = ExtResource("3_xj0ly")
 
 [node name="Order 1" type="Node2D" parent="CanvasLayer/Control/Notepad"]
-position = Vector2(89, 80)
+position = Vector2(87, 77)
 rotation = 0.0261799
-scale = Vector2(0.8, 0.8)
 skew = 0.200713
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 1"]
@@ -106,13 +106,12 @@ texture_filter = 1
 offset_right = 300.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "this is a quick test
+text = "
 "
 
 [node name="Order 2" type="Node2D" parent="CanvasLayer/Control/Notepad"]
-position = Vector2(86.0001, 115)
+position = Vector2(79.0001, 113)
 rotation = 0.0261799
-scale = Vector2(0.8, 0.8)
 skew = 0.200713
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 2"]
@@ -120,13 +119,10 @@ texture_filter = 1
 offset_right = 300.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "this is a quick test
-"
 
 [node name="Order 3" type="Node2D" parent="CanvasLayer/Control/Notepad"]
-position = Vector2(76, 165)
+position = Vector2(71, 158)
 rotation = 0.0261799
-scale = Vector2(0.8, 0.8)
 skew = 0.200713
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 3"]
@@ -134,13 +130,10 @@ texture_filter = 1
 offset_right = 300.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "this is a quick test
-"
 
 [node name="Order 4" type="Node2D" parent="CanvasLayer/Control/Notepad"]
-position = Vector2(70, 211)
+position = Vector2(65, 208)
 rotation = 0.0261799
-scale = Vector2(0.8, 0.8)
 skew = 0.200713
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 4"]
@@ -148,19 +141,55 @@ texture_filter = 1
 offset_right = 300.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "this is a quick test
-"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/Notepad"]
 libraries = {
 "": SubResource("AnimationLibrary_yfagk")
 }
 
+[node name="Timer" type="Timer" parent="CanvasLayer/Control/Notepad"]
+wait_time = 2.0
+one_shot = true
+
 [node name="Player" parent="." instance=ExtResource("4_1r07b")]
 position = Vector2(148, 142)
 
 [node name="Customer" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(345, 185)
+position = Vector2(239, 136)
+
+[node name="Customer2" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(294, 234)
+
+[node name="Customer3" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(86, 297)
+
+[node name="Customer4" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(506, 172)
+
+[node name="Table" parent="." instance=ExtResource("5_w6ube")]
+position = Vector2(318, 166)
+
+[node name="Table2" parent="." instance=ExtResource("5_w6ube")]
+position = Vector2(182, 230)
+
+[node name="Table3" parent="." instance=ExtResource("5_w6ube")]
+position = Vector2(376, 249)
+
+[node name="Table4" parent="." instance=ExtResource("5_w6ube")]
+position = Vector2(440.5, 182)
+
+[node name="Customer5" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(395.5, 99.5)
+
+[node name="Customer8" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(491.5, 122)
+
+[node name="Customer6" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(491.5, 239.5)
+
+[node name="Customer7" parent="." instance=ExtResource("4_sjedv")]
+position = Vector2(286, 296)
 
 [connection signal="mouse_entered" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_exited"]
+[connection signal="timeout" from="CanvasLayer/Control/Notepad/Timer" to="CanvasLayer/Control/Notepad" method="_on_timer_timeout"]
