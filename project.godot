@@ -24,6 +24,10 @@ config/icon="res://icon.svg"
 InteractionManager="*res://scripts/autoloads/interaction_manager.gd"
 OrderManager="*res://scripts/autoloads/order_manager.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [global_group]
 
 "interact Area"=""
