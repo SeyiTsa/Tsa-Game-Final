@@ -33,8 +33,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	navigate()
 	var dir = to_local(nav.get_next_path_position()).normalized() 
-	if should_navigate:
+	if should_navigate or is_player_in_area():
 		previous_dir = dir
+
 	$Label.text = str(is_selected())
 	if ordering or is_talking or is_sitting or has_order_ready:
 		update_animation_parameters(Vector2.ZERO)
@@ -67,8 +68,15 @@ func _physics_process(delta: float) -> void:
 				elif velocity.x > 0:
 					sprite_2d.flip_h = false
 				nav.target_position = seat.customer_marker.global_position
-	
-	
+	if (is_player_in_area() and can_be_selected):
+		$Highlight.play("selected")
+		
+	else:
+		$Highlight.play("RESET")
+	if InteractionManager.current_customer == self:
+		$indicator.show()
+	else:
+		$indicator.hide()
 	if is_selected() and Input.is_action_just_pressed("ui_accept"):
 		match current_interaction:
 			"Follow":

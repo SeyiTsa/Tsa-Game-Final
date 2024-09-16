@@ -1,10 +1,23 @@
-[gd_scene load_steps=105 format=3 uid="uid://iww63bcg0wbq"]
+[gd_scene load_steps=114 format=3 uid="uid://iww63bcg0wbq"]
 
 [ext_resource type="Script" path="res://scripts/customer.gd" id="1_ybiuq"]
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://art/Player_test.png" id="2_lgtwg"]
+[ext_resource type="Shader" path="res://scripts/highlight.gdshader" id="2_ufk65"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://scenes/interact_area.tscn" id="3_rr5km"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="4_ny43p"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://art/done_ordering_marker.png" id="5_ilbuo"]
+[ext_resource type="Texture2D" uid="uid://dfdo0hgfhgfss" path="res://art/current_indicator.png" id="7_qg0a7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fknu0"]
+resource_local_to_scene = true
+shader = ExtResource("2_ufk65")
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/color_b = Color(1, 1, 1, 1)
+shader_parameter/colors_affect_alpha = true
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_speed = 1.0
+shader_parameter/transparency = 1.0
+shader_parameter/intensity = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ddlvo"]
 atlas = ExtResource("2_lgtwg")
@@ -971,6 +984,67 @@ graph_offset = Vector2(-103.572, -128.006)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xocqr"]
 size = Vector2(10, 4)
 
+[sub_resource type="Animation" id="Animation_2d7c4"]
+resource_name = "selected"
+length = 0.8
+loop_mode = 2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_hccfv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvtx2"]
+_data = {
+"RESET": SubResource("Animation_hccfv"),
+"selected": SubResource("Animation_2d7c4")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifss0"]
+atlas = ExtResource("7_qg0a7")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1uf5m"]
+atlas = ExtResource("7_qg0a7")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_akg4f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifss0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1uf5m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Customer" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 4
@@ -978,6 +1052,7 @@ script = ExtResource("1_ybiuq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_fknu0")
 sprite_frames = SubResource("SpriteFrames_r5b84")
 animation = &"Walk Front"
 offset = Vector2(0, -18)
@@ -1015,14 +1090,8 @@ parameters/Walk/blend_position = Vector2(0, 0)
 position = Vector2(0, -18)
 shape = SubResource("RectangleShape2D_xocqr")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.443137)
-z_index = -1
-texture_filter = 1
-position = Vector2(0, -17)
-texture = ExtResource("4_ny43p")
-
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -81.0
 offset_top = -68.0
 offset_right = 81.0
@@ -1043,6 +1112,27 @@ texture = ExtResource("5_ilbuo")
 [node name="Talk Timer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.443137)
+z_index = -1
+texture_filter = 1
+position = Vector2(0, -17)
+texture = ExtResource("4_ny43p")
+
+[node name="Highlight" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mvtx2")
+}
+
+[node name="indicator" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(0, -46)
+sprite_frames = SubResource("SpriteFrames_akg4f")
+autoplay = "default"
+frame = 1
+frame_progress = 0.224916
 
 [connection signal="timeout" from="Order Timer" to="." method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Talk Timer" to="." method="_on_talk_timer_timeout"]
