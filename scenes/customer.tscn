@@ -1110,7 +1110,6 @@ position = Vector2(0, -46)
 texture = ExtResource("5_ilbuo")
 
 [node name="Talk Timer" type="Timer" parent="."]
-wait_time = 2.0
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
