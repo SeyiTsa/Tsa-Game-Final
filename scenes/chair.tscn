@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://1731x5423axy"]
 
 [ext_resource type="Script" path="res://scripts/chair.gd" id="1_ssqv1"]
-[ext_resource type="Shader" path="res://scripts/highlight.gdshader" id="2_mxcq6"]
+[ext_resource type="Shader" path="res://scripts/shaders/highlight.gdshader" id="2_mxcq6"]
 [ext_resource type="Texture2D" uid="uid://bn2m61e0aacrh" path="res://art/wooden_chair.png" id="2_tch5m"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://scenes/interact_area.tscn" id="3_gxhlh"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="4_8grtj"]
@@ -23,6 +23,21 @@ size = Vector2(25, 33)
 [sub_resource type="CircleShape2D" id="CircleShape2D_8ho5p"]
 radius = 19.4165
 
+[sub_resource type="Animation" id="Animation_ducmk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_ya1kk"]
 resource_name = "selected"
 loop_mode = 2
@@ -37,21 +52,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 1.0, 0.0]
-}
-
-[sub_resource type="Animation" id="Animation_ducmk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x3k47"]
@@ -80,7 +80,7 @@ shape = SubResource("RectangleShape2D_jrp3u")
 [node name="Interact Area" parent="." instance=ExtResource("3_gxhlh")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area"]
-position = Vector2(0, -10)
+position = Vector2(0, -16)
 shape = SubResource("CircleShape2D_8ho5p")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]

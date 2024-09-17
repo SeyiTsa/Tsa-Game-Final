@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	if should_navigate or is_player_in_area():
 		previous_dir = dir
 
-	$Label.text = str(is_selected())
+	
 	if ordering or is_talking or is_sitting or has_order_ready:
 		update_animation_parameters(Vector2.ZERO)
 		

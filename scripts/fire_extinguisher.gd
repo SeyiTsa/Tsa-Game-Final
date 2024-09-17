@@ -1,6 +1,7 @@
 extends Grabbable
 class_name Fire_Extinguisher
 
+var cant_be_dropped : bool
 @onready var interact_area: Area2D = $"Interact Area"
 @export var fire_extinguisher_interaction_array : Array[String] = ["Pick Up", "Put Down"]
 func _ready() -> void:
@@ -12,10 +13,11 @@ func _physics_process(delta: float) -> void:
 	if is_selected() and Input.is_action_just_pressed("ui_accept") and on_ground:
 		can_be_selected = false
 		on_ground = false
+		cant_be_dropped = true
 		pick_up()
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
-	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0:
+	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and !cant_be_dropped:
 		can_be_selected = true
 		on_ground = true
 		put_down()
@@ -30,3 +32,6 @@ func _physics_process(delta: float) -> void:
 		$Highlight.play("selected")
 	else:
 		$Highlight.play("RESET")
+	if cant_be_dropped:
+		await get_tree().process_frame
+		cant_be_dropped = false

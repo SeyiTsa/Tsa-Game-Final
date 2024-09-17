@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/customer.gd" id="1_ybiuq"]
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://art/Player_test.png" id="2_lgtwg"]
-[ext_resource type="Shader" path="res://scripts/highlight.gdshader" id="2_ufk65"]
+[ext_resource type="Shader" path="res://scripts/shaders/highlight.gdshader" id="2_ufk65"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://scenes/interact_area.tscn" id="3_rr5km"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="4_ny43p"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://art/done_ordering_marker.png" id="5_ilbuo"]
@@ -984,6 +984,21 @@ graph_offset = Vector2(-103.572, -128.006)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xocqr"]
 size = Vector2(10, 4)
 
+[sub_resource type="Animation" id="Animation_hccfv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_2d7c4"]
 resource_name = "selected"
 length = 0.8
@@ -1000,21 +1015,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 1.0, 0.0]
-}
-
-[sub_resource type="Animation" id="Animation_hccfv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mvtx2"]
@@ -1065,7 +1065,7 @@ libraries = {
 [node name="Interact Area" parent="." instance=ExtResource("3_rr5km")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area"]
-position = Vector2(0, -12)
+position = Vector2(0, -18)
 shape = SubResource("CircleShape2D_liq6w")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -1089,15 +1089,6 @@ parameters/Walk/blend_position = Vector2(0, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("RectangleShape2D_xocqr")
-
-[node name="Label" type="Label" parent="."]
-visible = false
-offset_left = -81.0
-offset_top = -68.0
-offset_right = 81.0
-offset_bottom = -45.0
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Order Timer" type="Timer" parent="."]
 wait_time = 20.0

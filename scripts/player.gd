@@ -50,10 +50,31 @@ func _process(delta: float) -> void:
 				$Front/Area2D/CollisionShape2D.disabled = true
 				$Back/Area2D/CollisionShape2D.disabled = true
 				$Left/Area2D/CollisionShape2D.disabled = true
+				using_fire_extinguisher = false
 		else:
+			$Right.emitting = false
+			$Left.emitting = false
+			$Front.emitting = false
+			$Back.emitting = false
+			$Right/Area2D/CollisionShape2D.disabled = true
+			$Front/Area2D/CollisionShape2D.disabled = true
+			$Back/Area2D/CollisionShape2D.disabled = true
+			$Left/Area2D/CollisionShape2D.disabled = true
+			using_fire_extinguisher = false
 			holding_extinguisher = false
 	else:
+		$Right.emitting = false
+		$Left.emitting = false
+		$Front.emitting = false
+		$Back.emitting = false
+		$Right/Area2D/CollisionShape2D.disabled = true
+		$Front/Area2D/CollisionShape2D.disabled = true
+		$Back/Area2D/CollisionShape2D.disabled = true
+		$Left/Area2D/CollisionShape2D.disabled = true
+		using_fire_extinguisher = false
 		holding_extinguisher = false
+	
+
 	update_animation_parameters()
 	
 	if item_direction.x == 1:
