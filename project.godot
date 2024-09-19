@@ -27,6 +27,7 @@ OrderManager="*res://scripts/autoloads/order_manager.gd"
 [display]
 
 window/stretch/mode="canvas_items"
+window/check_invalid_track_paths=false
 
 [global_group]
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=138 format=3 uid="uid://cd8vbm5in07ms"]
+[gd_scene load_steps=139 format=3 uid="uid://cd8vbm5in07ms"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_l262s"]
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://art/Player_test.png" id="2_47h8e"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="3_3qsd0"]
 [ext_resource type="Texture2D" uid="uid://3lu45tpx5np8" path="res://art/dust.png" id="4_1f5kb"]
+[ext_resource type="Texture2D" uid="uid://dyrin3naspfac" path="res://art/circle_light.png" id="5_v2men"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fg8j0"]
 radius = 19.0
@@ -1277,7 +1278,7 @@ parameters/conditions/is_moving = false
 parameters/conditions/is_moving_ex = false
 parameters/Idle/blend_position = Vector2(0, 0)
 "parameters/Idle Ex/blend_position" = Vector2(0, 0)
-parameters/Walk/blend_position = Vector2(0, 0)
+parameters/Walk/blend_position = Vector2(0.799539, 0.494675)
 "parameters/Walk Ex/blend_position" = Vector2(-0.00230414, 0.978261)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -1367,8 +1368,8 @@ position = Vector2(23.5, -7)
 shape = SubResource("RectangleShape2D_380o7")
 disabled = true
 
-[node name="Label" type="Label" parent="."]
-offset_left = -68.0
-offset_top = -65.0
-offset_right = 68.0
-offset_bottom = -42.0
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, -9)
+energy = 0.1
+texture = ExtResource("5_v2men")
+texture_scale = 2.0

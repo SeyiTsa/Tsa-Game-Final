@@ -128,4 +128,3 @@ func get_direction() -> GPUParticles2D:
 	else:
 		return $Back
 			
-	return 

@@ -37,5 +37,6 @@ func _physics_process(delta: float) -> void:
 					InteractionManager.current_customer.seat = self
 					InteractionManager.current_customer.nav.target_desired_distance = 52
 					InteractionManager.current_customer.should_navigate = true
+					InteractionManager.current_customer.patience += 20
 					InteractionManager.current_customer = null
 					can_be_selected = false

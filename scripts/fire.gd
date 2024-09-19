@@ -14,6 +14,7 @@ func _physics_process(delta: float) -> void:
 		if health < 100:
 			health += 0.2
 	$AnimatedSprite2D.self_modulate = Color(1, 1, 1, health/100)
+	$PointLight2D.color = Color(1, 0.5, 0, health/100)
 	$ProgressBar.self_modulate = Color(1, 1, 1, health/50)
 	if health >= 100:
 		$ProgressBar.hide()

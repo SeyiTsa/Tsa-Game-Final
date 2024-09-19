@@ -13,12 +13,15 @@ var should_navigate : bool = false
 var seat : Chair
 var customer : Customer
 var ordering : bool
-
+var patience_multiplier : float = 0.1
 var is_sitting : bool
 var has_order_ready : bool = false
 var previous_dir : Vector2
 var is_talking : bool
-
+var patience : float = 100:
+	set(value):
+		patience = clamp(value, 0, 100)
+		
 var food_options : Array[String] = ["Burger", "Pizza", "Milk Shake", "Taco"]
 func _ready() -> void:
 	update_animation_parameters(Vector2.ZERO)
@@ -28,20 +31,26 @@ func _ready() -> void:
 	interaction_array.append_array(customer_interactions)
 	current_interaction = interaction_array[0]
 	nav.target_desired_distance = 60
-
-
+	$ProgressBar.max_value = patience
+	
 func _physics_process(delta: float) -> void:
+	$ProgressBar.tint_progress = Color.RED.lerp(Color.YELLOW, $ProgressBar.value / $ProgressBar.max_value)
+ 
 	navigate()
 	var dir = to_local(nav.get_next_path_position()).normalized() 
 	if should_navigate or is_player_in_area():
 		previous_dir = dir
-
+		
 	
 	if ordering or is_talking or is_sitting or has_order_ready:
 		update_animation_parameters(Vector2.ZERO)
-		
+	
+	$ProgressBar.value = patience
+	
 	match current_interaction:
 		"Follow":
+			if not InteractionManager.current_customer == self:
+				patience -= 0.1 * patience_multiplier
 			if velocity.x < 0:
 				sprite_2d.flip_h = true
 			elif velocity.x > 0:
@@ -62,12 +71,17 @@ func _physics_process(delta: float) -> void:
 			if player:
 				nav.target_position = player.global_position
 		"Seat":
+			if not InteractionManager.current_customer == self:
+				patience -= 0.1 * patience_multiplier
 			if seat:
 				if velocity.x < 0:
 					sprite_2d.flip_h = true
 				elif velocity.x > 0:
 					sprite_2d.flip_h = false
 				nav.target_position = seat.customer_marker.global_position
+		"Take Order":
+			if not InteractionManager.current_customer == self:
+				patience -= 0.1 * patience_multiplier
 	if (is_player_in_area() and can_be_selected):
 		$Highlight.play("selected")
 		
@@ -99,6 +113,7 @@ func _physics_process(delta: float) -> void:
 								InteractionManager.current_customer = self
 			"Take Order":
 				if OrderManager.order_list.size() != 4:
+					patience += 20
 					var food_option = food_options[randi_range(0, food_options.size() - 1)]
 					OrderManager.add_order(food_option)
 					has_order_ready = false
@@ -115,6 +130,7 @@ func _physics_process(delta: float) -> void:
 					InteractionManager.current_customer = null
 					should_navigate = false
 					InteractionManager.customer_currently_following = false
+	$Label.text = str(patience)
 func navigate():
 	if should_navigate:
 		var dir = to_local(nav.get_next_path_position()).normalized()

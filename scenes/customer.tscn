@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://iww63bcg0wbq"]
+[gd_scene load_steps=116 format=3 uid="uid://iww63bcg0wbq"]
 
 [ext_resource type="Script" path="res://scripts/customer.gd" id="1_ybiuq"]
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://art/Player_test.png" id="2_lgtwg"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="4_ny43p"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://art/done_ordering_marker.png" id="5_ilbuo"]
 [ext_resource type="Texture2D" uid="uid://dfdo0hgfhgfss" path="res://art/current_indicator.png" id="7_qg0a7"]
+[ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://art/health.png" id="8_rt2jd"]
+[ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://art/health_out.png" id="9_qchs3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fknu0"]
 resource_local_to_scene = true
@@ -1085,6 +1087,7 @@ parameters/Talk/blend_position = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(0, 0)
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 0.01
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
@@ -1123,6 +1126,27 @@ sprite_frames = SubResource("SpriteFrames_akg4f")
 autoplay = "default"
 frame = 1
 frame_progress = 0.224916
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -20.0
+offset_top = -68.0
+offset_right = 20.0
+offset_bottom = -45.0
+
+[node name="ProgressBar" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = 7.0
+offset_top = -22.0
+offset_right = 26.0
+offset_bottom = -6.0
+rotation = -1.5708
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("8_rt2jd")
+texture_over = ExtResource("9_qchs3")
+texture_progress = ExtResource("8_rt2jd")
+tint_progress = Color(1, 1, 0, 1)
 
 [connection signal="timeout" from="Order Timer" to="." method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Talk Timer" to="." method="_on_talk_timer_timeout"]

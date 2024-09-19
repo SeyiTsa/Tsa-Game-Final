@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://by2w026v1l3q"]
+[gd_scene load_steps=18 format=4 uid="uid://by2w026v1l3q"]
 
 [ext_resource type="Script" path="res://scripts/notepad.gd" id="3_xj0ly"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="4_1r07b"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="5_w6ube"]
 [ext_resource type="PackedScene" uid="uid://h3d6xe6de10o" path="res://scenes/fire_extinguisher.tscn" id="6_sp336"]
 [ext_resource type="PackedScene" uid="uid://b7kkslyq85aaa" path="res://scenes/fire.tscn" id="7_oeso0"]
+[ext_resource type="Texture2D" uid="uid://qou5u14rdm55" path="res://art/tilemap.png" id="8_d20en"]
+[ext_resource type="Texture2D" uid="uid://cyh0spxmuvhty" path="res://art/downcast_light.png" id="9_dagfr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_3spg2"]
 vertices = PackedVector2Array(616.961, 345.531, -2.90625, 347.961, -0.0703125, -0.382813, 654.883, -26.0469)
@@ -71,6 +73,44 @@ _data = {
 "down": SubResource("Animation_pjkop"),
 "pop up": SubResource("Animation_c1abs")
 }
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_poxdk"]
+texture = ExtResource("8_d20en")
+texture_region_size = Vector2i(32, 32)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, -16, 16, -16, 16, 16, 2, 16)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+1:0/0/y_sort_origin = 35
+3:0/0 = 0
+3:0/0/y_sort_origin = 35
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+4:1/0 = 0
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+5:1/0 = 0
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -2, -16, -2, 16, -16, 16)
+0:2/0 = 0
+0:2/0/y_sort_origin = 35
+0:3/0 = 0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:3/0 = 0
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:2/0 = 0
+1:2/0/y_sort_origin = 35
+2:2/0 = 0
+2:2/0/y_sort_origin = 35
+2:3/0 = 0
+2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[sub_resource type="TileSet" id="TileSet_ktun4"]
+tile_size = Vector2i(32, 32)
+occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_poxdk")
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -154,7 +194,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Player" parent="." instance=ExtResource("4_1r07b")]
-position = Vector2(148, 142)
+position = Vector2(49.5, 103)
 
 [node name="Customer" parent="." instance=ExtResource("4_sjedv")]
 position = Vector2(239, 136)
@@ -196,10 +236,44 @@ position = Vector2(286, 296)
 position = Vector2(77.5, 184.5)
 
 [node name="Fire" parent="." instance=ExtResource("7_oeso0")]
-position = Vector2(276, 95)
+position = Vector2(540.5, 129)
 
 [node name="Fire2" parent="." instance=ExtResource("7_oeso0")]
-position = Vector2(237.5, 178)
+position = Vector2(237.5, 178.5)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAFAAIAAAAAAAEAAAAHAAIAAAABAAEAAAAIAAIAAAAEAAEAAAAJAAIAAAAEAAEAAAAKAAIAAAAEAAEAAAALAAIAAAAEAAEAAAAMAAIAAAADAAEAAAAOAAIAAAABAAMAAAAHAAEAAAABAAAAAAAMAAEAAAADAAAAAAAGAAIAAAACAAEAAAANAAIAAAABAAEAAAANAAEAAAAAAAIAAAAOAAEAAAABAAIAAAAPAAEAAAABAAIAAAAQAAEAAAACAAIAAAAQAAIAAAACAAMAAAAPAAIAAAABAAMAAAA=")
+tile_set = SubResource("TileSet_ktun4")
+metadata/_edit_lock_ = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.592203, 0.720257, 0.878053, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(304.5, 40)
+scale = Vector2(1, 2.40625)
+shadow_enabled = true
+texture = ExtResource("9_dagfr")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(272.5, 40)
+scale = Vector2(1, 2.40625)
+shadow_enabled = true
+texture = ExtResource("9_dagfr")
+
+[node name="PointLight2D3" type="PointLight2D" parent="."]
+position = Vector2(336, 40)
+scale = Vector2(1, 2.40625)
+shadow_enabled = true
+texture = ExtResource("9_dagfr")
+
+[node name="PointLight2D4" type="PointLight2D" parent="."]
+position = Vector2(366.5, 40)
+scale = Vector2(1, 2.40625)
+shadow_enabled = true
+texture = ExtResource("9_dagfr")
 
 [connection signal="mouse_entered" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_exited"]
