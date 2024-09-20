@@ -82,7 +82,7 @@ func _physics_process(delta: float) -> void:
 		"Take Order":
 			if not InteractionManager.current_customer == self:
 				patience -= 0.1 * patience_multiplier
-	if (is_player_in_area() and can_be_selected):
+	if (is_player_in_area() and can_be_selected and is_selected()):
 		$Highlight.play("selected")
 		
 	else:

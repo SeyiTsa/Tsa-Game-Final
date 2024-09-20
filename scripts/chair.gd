@@ -24,7 +24,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if !occupied:
 			can_be_selected = true
-	if (is_player_in_area() and can_be_selected):
+	if (is_player_in_area() and can_be_selected and is_selected()):
 		$Highlight.play("selected")
 	else:
 		$Highlight.play("RESET")

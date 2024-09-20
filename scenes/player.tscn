@@ -1369,7 +1369,7 @@ shape = SubResource("RectangleShape2D_380o7")
 disabled = true
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(0, -9)
+position = Vector2(0, -15)
 energy = 0.1
 texture = ExtResource("5_v2men")
 texture_scale = 2.0
