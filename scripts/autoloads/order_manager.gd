@@ -6,8 +6,15 @@ var current_batches_in_wait : Array[Array]
 var current_batches_being_made : Array[Array]
 var wait_timer_started : bool
 var cook_timer_started : bool
+const meal = preload("res://scenes/meal.tscn")
+var food_data_options : Array[FoodData] = [preload("res://scripts/resources/food data/burger.tres"), preload("res://scripts/resources/food data/taco.tres"),
+preload("res://scripts/resources/food data/pizza.tres"), preload("res://scripts/resources/food data/milkshake.tres")]
+var food_options : Array[String] = []
 
 func _ready() -> void:
+	
+	for i in food_data_options:
+		food_options.append(i.name)
 	notepad = get_tree().root.get_node("Main").get_node("CanvasLayer").get_node("Control").get_node("Notepad")
 	order_area = get_tree().root.get_node("Main").get_node("Order Area")
 func add_order(order):
@@ -30,6 +37,8 @@ func _physics_process(delta: float) -> void:
 	if !cook_timer_started and current_batches_being_made.size() > 0:
 		cook_timer_started = true
 		get_tree().create_timer(randf_range(5, 8)).timeout.connect(make_food)
+		
+		
 func queue_food():
 	wait_timer_started = false
 	for sprite in order_area.sprites:
@@ -43,8 +52,17 @@ func queue_food():
 			continue
 func make_food():
 	var current_meal_set = current_batches_being_made[0]
-	for meals in current_meal_set:
-		print(meals)
+	for single_meal in current_meal_set:
+		if food_options.has(single_meal):
+			await get_tree().process_frame
+			var index = food_options.find(single_meal)
+			var meal_ins = meal.instantiate()
+			meal_ins.position = order_area.position
+			meal_ins.data = food_data_options[index]
+			get_tree().root.get_node("Main").counter.available_spots[0].add_child(meal_ins)
+			
+
+			
 	current_batches_being_made.remove_at(0)
 	cook_timer_started = false
 	

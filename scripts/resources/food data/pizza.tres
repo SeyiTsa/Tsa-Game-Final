@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="FoodData" load_steps=6 format=3 uid="uid://tw78h8a55503"]
+
+[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://art/food_liquid_atlas.png" id="1_10add"]
+[ext_resource type="Script" path="res://scripts/resources/food_data.gd" id="1_aqogr"]
+[ext_resource type="Texture2D" uid="uid://m43l87hkoi25" path="res://art/plate_glass_atlas.png" id="2_30f0p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yo2o"]
+atlas = ExtResource("1_10add")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_67vn2"]
+atlas = ExtResource("2_30f0p")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_aqogr")
+plate_glass = SubResource("AtlasTexture_67vn2")
+food_liquid = SubResource("AtlasTexture_3yo2o")
+name = "Pizza"

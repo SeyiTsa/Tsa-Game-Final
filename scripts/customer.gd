@@ -6,14 +6,15 @@ class_name Customer
 @onready var sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var order_timer: Timer = $"Order Timer"
-
-var customer_interactions : Array = ["Follow", "Seat", "Ordering", "Take Order", "Serve"]
+@export var data : CustomerData
+var customer_interactions : Array = ["Follow", "Seat", "Ordering", "Take Order", "Serve", "Eat", "Favor", "Leave"]
 var SPEED : int = 150
 var should_navigate : bool = false
 var seat : Chair
+var table
 var customer : Customer
 var ordering : bool
-var patience_multiplier : float = 0.1
+var patience_multiplier : float
 var is_sitting : bool
 var has_order_ready : bool = false
 var previous_dir : Vector2
@@ -22,8 +23,9 @@ var patience : float = 100:
 	set(value):
 		patience = clamp(value, 0, 100)
 		
-var food_options : Array[String] = ["Burger", "Pizza", "Milk Shake", "Taco"]
+var food_options : Array[String] = ["Burger", "Pizza", "Milk shake", "Taco"]
 func _ready() -> void:
+	patience_multiplier = data.patience_multplier
 	update_animation_parameters(Vector2.ZERO)
 	customer = self
 	interact_area.area_entered.connect(on_area_entered)
@@ -82,6 +84,17 @@ func _physics_process(delta: float) -> void:
 		"Take Order":
 			if not InteractionManager.current_customer == self:
 				patience -= 0.1 * patience_multiplier
+		"Serve":
+			patience -= 0.1 * patience_multiplier
+			if player.holding_meal:
+				can_be_selected = true
+			else:
+				can_be_selected = false
+		"Leave":
+			if velocity.x < 0:
+				sprite_2d.flip_h = true
+			elif velocity.x > 0:
+				sprite_2d.flip_h = false
 	if (is_player_in_area() and can_be_selected and is_selected()):
 		$Highlight.play("selected")
 		
@@ -116,11 +129,24 @@ func _physics_process(delta: float) -> void:
 					patience += 20
 					var food_option = food_options[randi_range(0, food_options.size() - 1)]
 					OrderManager.add_order(food_option)
+					var index = OrderManager.food_options.find(food_option)
+					$"Ordered Food".texture = OrderManager.food_data_options[index].food_liquid
 					has_order_ready = false
 					$"Order Marker".hide()
 					can_be_selected = false
 					is_talking = true
 					$"Talk Timer".start()
+			"Serve":
+				if player.holding_meal and InteractionManager.currently_holding_item:
+					patience += 20
+					can_be_selected = false
+					player.marker_2d.get_child(0).reparent(seat.marker_2d)
+					seat.marker_2d.get_child(0).can_be_selected = false
+					current_interaction = interaction_array[5]
+					InteractionManager.currently_holding_item = false
+					$"Ordered Food".hide()
+					get_tree().create_timer(randf_range(20, 25)).timeout.connect(finished_eating)
+
 				
 	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and InteractionManager.current_customer == self and !is_player_in_area():
 		if InteractionManager.interaction_list.size() == 0:
@@ -130,7 +156,7 @@ func _physics_process(delta: float) -> void:
 					InteractionManager.current_customer = null
 					should_navigate = false
 					InteractionManager.customer_currently_following = false
-	$Label.text = str(patience)
+	$Label.text = str(current_interaction)
 func navigate():
 	if should_navigate:
 		var dir = to_local(nav.get_next_path_position()).normalized()
@@ -154,7 +180,6 @@ func navigate():
 					current_interaction = interaction_array[2]
 					order_timer.start(order_timer.wait_time + randf_range(-3 , 3))
 
-
 	else:
 		velocity = Vector2.ZERO
 		if is_player_in_area():
@@ -167,6 +192,10 @@ func navigate():
 func update_animation_parameters(anim_dir : Vector2):
 	var direction = round(anim_dir)
 	if !is_sitting and !has_order_ready and !ordering and !is_talking:
+		animation_tree.set("parameters/conditions/is_sitting", false)
+		animation_tree.set("parameters/conditions/ordering", false)
+		animation_tree.set("parameters/conditions/has_order_ready", false)
+		animation_tree.set("parameters/conditions/is_talking", false)
 		animation_tree.set("parameters/conditions/idle", velocity == Vector2.ZERO)
 	else:
 		if !has_order_ready and !is_sitting and !is_talking and ordering:
@@ -189,6 +218,7 @@ func update_animation_parameters(anim_dir : Vector2):
 			animation_tree.set("parameters/conditions/ordering", false)
 			animation_tree.set("parameters/conditions/has_order_ready", false)
 			animation_tree.set("parameters/conditions/is_talking", is_talking)
+
 		
 		animation_tree.set("parameters/conditions/idle", false)
 	animation_tree.set("parameters/conditions/is_moving", velocity != Vector2.ZERO)
@@ -211,7 +241,31 @@ func _on_order_timer_timeout() -> void:
 
 
 func _on_talk_timer_timeout() -> void:
+
 	is_talking = false
 	is_sitting = true
-
+	current_interaction = interaction_array[4]
 	
+func finished_eating():
+	seat.marker_2d.get_child(0).queue_free()
+	if patience > 0:
+		var money = preload("res://scenes/money.tscn")
+		var money_ins = money.instantiate()
+		seat.marker_2d.add_child(money_ins)
+		money_ins.global_position = seat.marker_2d.global_position
+		money_ins.get_final_amount(patience)
+	current_interaction = customer_interactions[7]
+	seat = null
+	is_sitting = false
+	is_talking = false
+	has_order_ready = false
+	ordering = false
+	reparent(get_tree().root.get_node("Main"))
+	position.y += 10
+	
+	nav.target_position = get_tree().root.get_node("Main").leave_point.global_position
+	should_navigate = true
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	queue_free()

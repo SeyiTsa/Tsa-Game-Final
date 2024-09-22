@@ -7,6 +7,7 @@ var input_vector : Vector2
 var holding_extinguisher : bool = false
 var using_fire_extinguisher : bool = false
 var item_direction : Vector2
+var holding_meal : bool
 
 const FIRE = preload("res://scenes/fire.tscn")
 @onready var marker_2d: Marker2D = $Marker2D
@@ -15,7 +16,7 @@ const FIRE = preload("res://scenes/fire.tscn")
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 func _process(delta: float) -> void:
-	
+	$Label.text = str(Global.money)
 	direction = Input.get_vector("left","right","up","down").normalized()
 	
 	if direction and !using_fire_extinguisher:
@@ -52,6 +53,10 @@ func _process(delta: float) -> void:
 				$Left/Area2D/CollisionShape2D.disabled = true
 				using_fire_extinguisher = false
 		else:
+			if marker_2d.get_child(0) is Meal:
+				holding_meal = true
+			else:
+				holding_meal = false
 			$Right.emitting = false
 			$Left.emitting = false
 			$Front.emitting = false
@@ -77,10 +82,16 @@ func _process(delta: float) -> void:
 
 	update_animation_parameters()
 	
-	if item_direction.x == 1:
-		$Marker2D.position.x = 12
-	elif item_direction.x == -1:
-		$Marker2D.position.x = -12
+	if item_direction == Vector2(1, 0) or item_direction == Vector2(1, -1) or item_direction == Vector2(1, 1):
+		$Marker2D.position = Vector2(12, -7)
+	elif item_direction == Vector2(-1, 0) or item_direction == Vector2(-1, -1) or item_direction == Vector2(-1, 1):
+		$Marker2D.position = Vector2(-12, -7)
+	elif item_direction == Vector2(0, -1):
+		$Marker2D.position = Vector2(0, -12)
+	elif item_direction == Vector2(0, 1):
+		$Marker2D.position = Vector2(0, 0)
+		
+		
 	if Input.is_action_just_pressed("debug"):
 		var fire_ins = FIRE.instantiate()
 		get_tree().root.get_node("Main").add_child(fire_ins)

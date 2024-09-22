@@ -1,45 +1,49 @@
 extends Grabbable
-class_name Fire_Extinguisher
+class_name Meal
 
-var cant_be_dropped : bool
 @onready var interact_area: Area2D = $"Interact Area"
-@export var fire_extinguisher_interaction_array : Array[String] = ["Pick Up", "Put Down"]
+@export var data : FoodData
+var on_counter = true
 func _ready() -> void:
+	$"Plate Glass".texture = data.plate_glass
+	$"Food Liquid".texture = data.food_liquid
 	interact_area.area_entered.connect(on_area_entered)
 	interact_area.area_exited.connect(on_area_exited)
-	interaction_array.append_array(fire_extinguisher_interaction_array)
-	current_interaction = interaction_array[0]
+	
 func _physics_process(delta: float) -> void:
+	if !on_ground:
+		$Sprite2D.hide()
+	else:
+		$Sprite2D.show()
+	if (is_player_in_area() and can_be_selected and is_selected()):
+		$Highlight.play("selected")
+	else:
+		$Highlight.play("RESET")
+		
 	if is_selected() and Input.is_action_just_pressed("ui_accept") and on_ground and !InteractionManager.currently_holding_item:
+		if on_counter:
+			reparent(get_tree().root.get_node("Main"))
+
+			on_counter = false
 		InteractionManager.currently_holding_item = true
 		can_be_selected = false
 		on_ground = false
-		cant_be_dropped = true
 		pick_up()
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
-	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and !cant_be_dropped:
+	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and get_parent().name == "Marker2D":
 		InteractionManager.currently_holding_item = false
-		
 		can_be_selected = true
 		on_ground = true
 		put_down()
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
-		
-	if !on_ground:
-		$Sprite2D2.hide()
-	else:
-		$Sprite2D2.show()
-	if (is_player_in_area() and can_be_selected and is_selected()):
-		$Highlight.play("selected")
-	else:
-		$Highlight.play("RESET")
-	if cant_be_dropped:
-		await get_tree().process_frame
-		cant_be_dropped = false
+			
 	if InteractionManager.currently_holding_item:
 		can_be_selected = false
 	else:
 		if on_ground:
 			can_be_selected = true
+	if get_parent() is Marker2D:
+		global_position = get_parent().global_position
+	$Label.text = str(z_index)

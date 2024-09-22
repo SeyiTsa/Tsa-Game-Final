@@ -5,11 +5,7 @@ class_name OrderArea
 @onready var interact_area: Area2D = $"Interact Area"
 var current_orders : Array[Array]
 var num_of_orders : int
-@onready var _1: Sprite2D = $"1"
-@onready var _2: Sprite2D = $"2"
-@onready var _3: Sprite2D = $"3"
-@onready var _4: Sprite2D = $"4"
-@onready var _5: Sprite2D = $"5"
+
 var sprites : Array[Sprite2D]
 var visible_sprites : Array[bool]
 signal order_queued(sprite : Sprite2D)

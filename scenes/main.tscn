@@ -1,25 +1,28 @@
-[gd_scene load_steps=29 format=4 uid="uid://by2w026v1l3q"]
+[gd_scene load_steps=32 format=4 uid="uid://by2w026v1l3q"]
 
+[ext_resource type="Script" path="res://scripts/level_references.gd" id="1_lev5o"]
 [ext_resource type="Script" path="res://scripts/notepad.gd" id="3_xj0ly"]
-[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="4_1r07b"]
+[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/entities/player.tscn" id="4_1r07b"]
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://art/notepad_ui.png" id="4_msgmk"]
-[ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/customer.tscn" id="4_sjedv"]
+[ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/entities/customer.tscn" id="4_sjedv"]
 [ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="5_w6ube"]
 [ext_resource type="PackedScene" uid="uid://h3d6xe6de10o" path="res://scenes/fire_extinguisher.tscn" id="6_sp336"]
-[ext_resource type="PackedScene" uid="uid://b7kkslyq85aaa" path="res://scenes/fire.tscn" id="7_oeso0"]
 [ext_resource type="Texture2D" uid="uid://qou5u14rdm55" path="res://art/tilemap.png" id="8_d20en"]
-[ext_resource type="Texture2D" uid="uid://cyh0spxmuvhty" path="res://art/downcast_light.png" id="9_dagfr"]
 [ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://art/string.png" id="10_uw6ms"]
 [ext_resource type="Script" path="res://scripts/order_area.gd" id="10_wawwa"]
 [ext_resource type="Shader" path="res://scripts/shaders/highlight.gdshader" id="11_xv75k"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://scenes/interact_area.tscn" id="12_1tjhg"]
 [ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://art/order_note.png" id="14_v3d5j"]
 [ext_resource type="Script" path="res://scripts/order_note.gd" id="15_3t1oy"]
+[ext_resource type="Script" path="res://scripts/counter.gd" id="16_8aeb1"]
+[ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="16_8kfu3"]
+[ext_resource type="PackedScene" uid="uid://0x63fjbxuua6" path="res://scenes/counter_spot.tscn" id="16_nccxk"]
+[ext_resource type="PackedScene" uid="uid://dk6c6v85f1pgk" path="res://scenes/money.tscn" id="18_1yeid"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_3spg2"]
-vertices = PackedVector2Array(616.961, 345.531, -2.90625, 347.961, -0.0703125, -0.382813, 654.883, -26.0469)
+vertices = PackedVector2Array(616.977, 345.344, -230.672, 331.18, -188.156, -3.22656, 654.891, -26.1875)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(666, -36.5, -10, -10, -13, 358, 626, 355.5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(666, -36.5, -197, -13, -242, 341, 626, 355.5)])
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q065k"]
 texture = ExtResource("4_msgmk")
@@ -84,20 +87,26 @@ _data = {
 texture = ExtResource("8_d20en")
 texture_region_size = Vector2i(32, 32)
 0:1/0 = 0
+0:1/0/y_sort_origin = 15
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, -16, 16, -16, 16, 16, 2, 16)
 1:1/0 = 0
+1:1/0/y_sort_origin = 15
 1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 2:1/0 = 0
+2:1/0/y_sort_origin = 15
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0 = 0
 1:0/0/y_sort_origin = 35
 3:0/0 = 0
 3:0/0/y_sort_origin = 35
 3:1/0 = 0
+3:1/0/y_sort_origin = 15
 3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 4:1/0 = 0
+4:1/0/y_sort_origin = 15
 4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 5:1/0 = 0
+5:1/0/y_sort_origin = 15
 5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -2, -16, -2, 16, -16, 16)
 
 [sub_resource type="TileSet" id="TileSet_ktun4"]
@@ -117,6 +126,21 @@ shader_parameter/flash_speed = 1.0
 shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
 
+[sub_resource type="Animation" id="Animation_20c6q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_cb6sd"]
 resource_name = "selected"
 length = 0.8
@@ -134,21 +158,6 @@ tracks/0/keys = {
 "values": [0.0, 1.0, 0.0]
 }
 
-[sub_resource type="Animation" id="Animation_20c6q"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hkxo1"]
 _data = {
 "RESET": SubResource("Animation_20c6q"),
@@ -158,9 +167,12 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vkt5s"]
 size = Vector2(70, 45.5)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("counter", "leave_point")]
 y_sort_enabled = true
 scale = Vector2(2, 2)
+script = ExtResource("1_lev5o")
+counter = NodePath("Counter")
+leave_point = NodePath("Leave Point")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_3spg2")
@@ -243,18 +255,6 @@ one_shot = true
 [node name="Player" parent="." instance=ExtResource("4_1r07b")]
 position = Vector2(49.5, 103)
 
-[node name="Customer" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(239, 136)
-
-[node name="Customer2" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(294, 234)
-
-[node name="Customer3" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(86, 297)
-
-[node name="Customer4" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(506, 172)
-
 [node name="Table" parent="." instance=ExtResource("5_w6ube")]
 position = Vector2(318, 166)
 
@@ -264,41 +264,8 @@ position = Vector2(182, 230)
 [node name="Table3" parent="." instance=ExtResource("5_w6ube")]
 position = Vector2(376, 249)
 
-[node name="Table4" parent="." instance=ExtResource("5_w6ube")]
-position = Vector2(440.5, 182)
-
-[node name="Customer5" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(395.5, 99.5)
-
-[node name="Customer8" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(491.5, 122)
-
-[node name="Customer6" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(491.5, 239.5)
-
-[node name="Customer7" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(286, 296)
-
-[node name="Customer9" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(382.5, 291.5)
-
-[node name="Customer10" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(153.5, 291.5)
-
-[node name="Customer11" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(213, 297)
-
-[node name="Customer12" parent="." instance=ExtResource("4_sjedv")]
-position = Vector2(213, 297)
-
 [node name="Fire Extinguisher" parent="." instance=ExtResource("6_sp336")]
 position = Vector2(77.5, 184.5)
-
-[node name="Fire" parent="." instance=ExtResource("7_oeso0")]
-position = Vector2(540.5, 129)
-
-[node name="Fire2" parent="." instance=ExtResource("7_oeso0")]
-position = Vector2(237.5, 178.5)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true
@@ -309,30 +276,6 @@ metadata/_edit_lock_ = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.592203, 0.720257, 0.878053, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(304.5, 40)
-scale = Vector2(1, 2.40625)
-shadow_enabled = true
-texture = ExtResource("9_dagfr")
-
-[node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(272.5, 40)
-scale = Vector2(1, 2.40625)
-shadow_enabled = true
-texture = ExtResource("9_dagfr")
-
-[node name="PointLight2D3" type="PointLight2D" parent="."]
-position = Vector2(336, 40)
-scale = Vector2(1, 2.40625)
-shadow_enabled = true
-texture = ExtResource("9_dagfr")
-
-[node name="PointLight2D4" type="PointLight2D" parent="."]
-position = Vector2(366.5, 40)
-scale = Vector2(1, 2.40625)
-shadow_enabled = true
-texture = ExtResource("9_dagfr")
 
 [node name="Order Area" type="CharacterBody2D" parent="."]
 script = ExtResource("10_wawwa")
@@ -398,6 +341,54 @@ position = Vector2(488, 57.3)
 scale = Vector2(1.1, 1.1)
 texture = ExtResource("14_v3d5j")
 script = ExtResource("15_3t1oy")
+
+[node name="Meal" parent="." instance=ExtResource("16_8kfu3")]
+position = Vector2(165.5, 147.5)
+
+[node name="Counter" type="CharacterBody2D" parent="."]
+script = ExtResource("16_8aeb1")
+
+[node name="Counter Spot" parent="Counter" instance=ExtResource("16_nccxk")]
+position = Vector2(272.25, 75)
+
+[node name="Counter Spot2" parent="Counter" instance=ExtResource("16_nccxk")]
+position = Vector2(304, 75)
+
+[node name="Counter Spot3" parent="Counter" instance=ExtResource("16_nccxk")]
+position = Vector2(336, 75)
+
+[node name="Counter Spot4" parent="Counter" instance=ExtResource("16_nccxk")]
+position = Vector2(368, 75)
+
+[node name="Node2D" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Customer" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(240.5, 297)
+
+[node name="Customer2" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(17, 240.5)
+
+[node name="Customer3" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(128.5, 283)
+
+[node name="Customer4" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(131.5, 148.5)
+
+[node name="Customer5" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(349.5, 301)
+
+[node name="Customer6" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(440, 178)
+
+[node name="Customer7" parent="Node2D" instance=ExtResource("4_sjedv")]
+position = Vector2(495, 257)
+
+[node name="Leave Point" type="Marker2D" parent="."]
+position = Vector2(-83, 169.5)
+
+[node name="Money" parent="." instance=ExtResource("18_1yeid")]
+position = Vector2(261, 184)
 
 [connection signal="mouse_entered" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_exited"]

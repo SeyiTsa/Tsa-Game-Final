@@ -1,6 +1,7 @@
 extends Interactable
 class_name Chair
 
+@onready var marker_2d: Marker2D = $Marker2D_
 
 @onready var interact_area: Area2D = $"Interact Area"
 @onready var customer_marker: Marker2D = $"Customer Marker"
@@ -35,8 +36,12 @@ func _physics_process(delta: float) -> void:
 					occupied = true
 					InteractionManager.current_customer.current_interaction = InteractionManager.current_customer.interaction_array[1]
 					InteractionManager.current_customer.seat = self
+					InteractionManager.current_customer.table = get_parent()
 					InteractionManager.current_customer.nav.target_desired_distance = 52
 					InteractionManager.current_customer.should_navigate = true
 					InteractionManager.current_customer.patience += 20
 					InteractionManager.current_customer = null
 					can_be_selected = false
+	
+	if $"Interact Area".get_overlapping_areas() != []:
+		on_area_entered($"Interact Area".get_overlapping_areas()[0])

@@ -23,6 +23,8 @@ config/icon="res://icon.svg"
 
 InteractionManager="*res://scripts/autoloads/interaction_manager.gd"
 OrderManager="*res://scripts/autoloads/order_manager.gd"
+LevelManager="*res://scripts/autoloads/level_manager.gd"
+Global="*res://scripts/autoloads/global.gd"
 
 [display]
 

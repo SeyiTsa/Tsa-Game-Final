@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FoodData" load_steps=5 format=3 uid="uid://ck20xxmql0rp3"]
+
+[ext_resource type="Script" path="res://scripts/resources/food_data.gd" id="1_ai27y"]
+[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://art/food_liquid_atlas.png" id="1_ebh4j"]
+[ext_resource type="Texture2D" uid="uid://cjkj1lp31qoe2" path="res://art/texture atlas/plate_textures.tres" id="2_sfg4b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oq3sp"]
+atlas = ExtResource("1_ebh4j")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_ai27y")
+plate_glass = ExtResource("2_sfg4b")
+food_liquid = SubResource("AtlasTexture_oq3sp")
+name = "Burger"
