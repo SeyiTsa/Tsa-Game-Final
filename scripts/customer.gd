@@ -19,6 +19,9 @@ var is_sitting : bool
 var has_order_ready : bool = false
 var previous_dir : Vector2
 var is_talking : bool
+var is_selected : bool
+var current_choice : bool
+
 var patience : float = 100:
 	set(value):
 		patience = clamp(value, 0, 100)
@@ -37,7 +40,7 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	$ProgressBar.tint_progress = Color.RED.lerp(Color.YELLOW, $ProgressBar.value / $ProgressBar.max_value)
- 
+ 	
 	navigate()
 	var dir = to_local(nav.get_next_path_position()).normalized() 
 	if should_navigate or is_player_in_area():
@@ -48,7 +51,13 @@ func _physics_process(delta: float) -> void:
 		update_animation_parameters(Vector2.ZERO)
 	
 	$ProgressBar.value = patience
-	
+	if InteractionManager.interaction_list.size() > 0:
+		if InteractionManager.interaction_list[0] == self:
+			current_choice = true
+		else:
+			current_choice = false
+	else:
+		current_choice = false
 	match current_interaction:
 		"Follow":
 			if not InteractionManager.current_customer == self:
@@ -95,7 +104,7 @@ func _physics_process(delta: float) -> void:
 				sprite_2d.flip_h = true
 			elif velocity.x > 0:
 				sprite_2d.flip_h = false
-	if (is_player_in_area() and can_be_selected and is_selected()):
+	if (is_player_in_area() and can_be_selected and current_choice):
 		$Highlight.play("selected")
 		
 	else:
@@ -104,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		$indicator.show()
 	else:
 		$indicator.hide()
-	if is_selected() and Input.is_action_just_pressed("ui_accept"):
+	if current_choice and Input.is_action_just_pressed("ui_accept"):
 		match current_interaction:
 			"Follow":
 					match InteractionManager.current_customer:
@@ -148,7 +157,7 @@ func _physics_process(delta: float) -> void:
 					get_tree().create_timer(randf_range(20, 25)).timeout.connect(finished_eating)
 
 				
-	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and InteractionManager.current_customer == self and !is_player_in_area():
+	elif !current_choice and Input.is_action_just_pressed("ui_accept") and InteractionManager.current_customer == self and !is_player_in_area():
 		if InteractionManager.interaction_list.size() == 0:
 			match current_interaction:
 				"Follow":
@@ -157,6 +166,24 @@ func _physics_process(delta: float) -> void:
 					should_navigate = false
 					InteractionManager.customer_currently_following = false
 	$Label.text = str(current_interaction)
+	
+	if $"Interact Area".get_overlapping_areas():
+		var area = $"Interact Area".get_overlapping_areas()[0]
+		if can_be_selected:
+			if area.is_in_group("player interact"):
+				is_selected = true
+				player_in_area = true
+				if !InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.append(self)
+					player = area.get_parent()
+		else:
+			if area.is_in_group("player interact"):
+				player_in_area = true
+				is_selected = false
+				if InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.erase(self)
+	else:
+		is_selected = false
 func navigate():
 	if should_navigate:
 		var dir = to_local(nav.get_next_path_position()).normalized()
@@ -255,6 +282,7 @@ func finished_eating():
 		money_ins.global_position = seat.marker_2d.global_position
 		money_ins.get_final_amount(patience)
 	current_interaction = customer_interactions[7]
+	seat.occupied = false
 	seat = null
 	is_sitting = false
 	is_talking = false

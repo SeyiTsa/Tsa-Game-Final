@@ -4,6 +4,8 @@ class_name Meal
 @onready var interact_area: Area2D = $"Interact Area"
 @export var data : FoodData
 var on_counter = true
+var is_selected : bool
+var current_choice : bool
 func _ready() -> void:
 	$"Plate Glass".texture = data.plate_glass
 	$"Food Liquid".texture = data.food_liquid
@@ -15,12 +17,12 @@ func _physics_process(delta: float) -> void:
 		$Sprite2D.hide()
 	else:
 		$Sprite2D.show()
-	if (is_player_in_area() and can_be_selected and is_selected()):
+	if (is_player_in_area() and can_be_selected and is_selected):
 		$Highlight.play("selected")
 	else:
 		$Highlight.play("RESET")
 		
-	if is_selected() and Input.is_action_just_pressed("ui_accept") and on_ground and !InteractionManager.currently_holding_item:
+	if is_selected and Input.is_action_just_pressed("ui_accept") and on_ground and !InteractionManager.currently_holding_item:
 		if on_counter:
 			reparent(get_tree().root.get_node("Main"))
 
@@ -31,7 +33,7 @@ func _physics_process(delta: float) -> void:
 		pick_up()
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
-	elif !is_selected() and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and get_parent().name == "Marker2D":
+	elif !is_selected and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and get_parent().name == "Marker2D":
 		InteractionManager.currently_holding_item = false
 		can_be_selected = true
 		on_ground = true
@@ -47,3 +49,28 @@ func _physics_process(delta: float) -> void:
 	if get_parent() is Marker2D:
 		global_position = get_parent().global_position
 	$Label.text = str(z_index)
+	
+	if $"Interact Area".get_overlapping_areas():
+		var area = $"Interact Area".get_overlapping_areas()[0]
+		if can_be_selected:
+			if area.is_in_group("player interact"):
+				is_selected = true
+				player_in_area = true
+				if !InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.append(self)
+					player = area.get_parent()
+		else:
+			if area.is_in_group("player interact"):
+				player_in_area = true
+				is_selected = false
+				if InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.erase(self)
+	else:
+		is_selected = false
+	if InteractionManager.interaction_list.size() > 0:
+		if InteractionManager.interaction_list[0] == self:
+			current_choice = true
+		else:
+			current_choice = false
+	else:
+		current_choice = false

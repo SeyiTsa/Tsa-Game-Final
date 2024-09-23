@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cm34nodey2fao"]
+[gd_scene load_steps=5 format=3 uid="uid://cm34nodey2fao"]
 
 [ext_resource type="Texture2D" uid="uid://knlnr34kjnko" path="res://art/wooden_table.png" id="1_su0sv"]
 [ext_resource type="PackedScene" uid="uid://1731x5423axy" path="res://scenes/chair.tscn" id="2_q56ts"]
-[ext_resource type="PackedScene" uid="uid://dk6c6v85f1pgk" path="res://scenes/money.tscn" id="3_0vkbm"]
-[ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="3_2mgyc"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="3_dl43g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l4s12"]
@@ -35,13 +33,8 @@ scale = Vector2(-1, 1)
 [node name="Marker2D_" type="Marker2D" parent="Chair2"]
 position = Vector2(26, -17)
 
-[node name="Meal" parent="Chair2/Marker2D_" instance=ExtResource("3_2mgyc")]
-position = Vector2(0, 0)
-
 [node name="Chair" parent="." instance=ExtResource("2_q56ts")]
 position = Vector2(-34, -2)
 
 [node name="Marker2D_" type="Marker2D" parent="Chair"]
 position = Vector2(26, -17)
-
-[node name="Money" parent="Chair/Marker2D_" instance=ExtResource("3_0vkbm")]

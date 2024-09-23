@@ -1,12 +1,17 @@
-[gd_scene load_steps=32 format=4 uid="uid://by2w026v1l3q"]
+[gd_scene load_steps=36 format=4 uid="uid://by2w026v1l3q"]
 
 [ext_resource type="Script" path="res://scripts/level_references.gd" id="1_lev5o"]
 [ext_resource type="Script" path="res://scripts/notepad.gd" id="3_xj0ly"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/entities/player.tscn" id="4_1r07b"]
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="4_2gycb"]
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://art/notepad_ui.png" id="4_msgmk"]
 [ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/entities/customer.tscn" id="4_sjedv"]
 [ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="5_w6ube"]
+[ext_resource type="Texture2D" uid="uid://b7eienk4wel4x" path="res://art/progressbartextures/staminaunder.png" id="5_yqkf0"]
 [ext_resource type="PackedScene" uid="uid://h3d6xe6de10o" path="res://scenes/fire_extinguisher.tscn" id="6_sp336"]
+[ext_resource type="Texture2D" uid="uid://kjq8r34kyfrh" path="res://art/progressbartextures/staminaover.png" id="6_x14gm"]
+[ext_resource type="Texture2D" uid="uid://b0goggxyleg22" path="res://art/progressbartextures/staminaprogress.png" id="7_4fspg"]
+[ext_resource type="Script" path="res://scripts/stamina_bar.gd" id="8_4hfwr"]
 [ext_resource type="Texture2D" uid="uid://qou5u14rdm55" path="res://art/tilemap.png" id="8_d20en"]
 [ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://art/string.png" id="10_uw6ms"]
 [ext_resource type="Script" path="res://scripts/order_area.gd" id="10_wawwa"]
@@ -15,14 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://art/order_note.png" id="14_v3d5j"]
 [ext_resource type="Script" path="res://scripts/order_note.gd" id="15_3t1oy"]
 [ext_resource type="Script" path="res://scripts/counter.gd" id="16_8aeb1"]
-[ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="16_8kfu3"]
 [ext_resource type="PackedScene" uid="uid://0x63fjbxuua6" path="res://scenes/counter_spot.tscn" id="16_nccxk"]
-[ext_resource type="PackedScene" uid="uid://dk6c6v85f1pgk" path="res://scenes/money.tscn" id="18_1yeid"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_3spg2"]
-vertices = PackedVector2Array(616.977, 345.344, -230.672, 331.18, -188.156, -3.22656, 654.891, -26.1875)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(666, -36.5, -197, -13, -242, 341, 626, 355.5)])
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q065k"]
 texture = ExtResource("4_msgmk")
@@ -83,6 +81,15 @@ _data = {
 "pop up": SubResource("Animation_c1abs")
 }
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_mwu70"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_uxb81"]
+polygon = PackedVector2Array(-11, -8, -10, -8, -10, -9, -9, -9, -9, -10, -8, -10, -8, -11, -7, -11, -7, -12, -6, -12, -6, -13, -4, -13, -4, -14, 4, -14, 4, -13, 6, -13, 6, -12, 7, -12, 7, -11, 8, -11, 8, -10, 9, -10, 9, -9, 10, -9, 10, -8, 11, -8, 11, -7, 12, -7, 12, -6, 13, -6, 13, -5, 14, -5, 14, -3, 13, -3, 13, -2, 12, -2, 12, -1, 10, -1, 10, 0, -10, 0, -10, -1, -12, -1, -12, -2, -13, -2, -13, -3, -14, -3, -14, -5, -13, -5, -13, -6, -12, -6, -12, -7, -11, -7)
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_poxdk"]
 texture = ExtResource("8_d20en")
 texture_region_size = Vector2i(32, 32)
@@ -108,11 +115,32 @@ texture_region_size = Vector2i(32, 32)
 5:1/0 = 0
 5:1/0/y_sort_origin = 15
 5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -2, -16, -2, 16, -16, 16)
+0:2/0 = 0
+0:2/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_mwu70")
+1:2/size_in_atlas = Vector2i(1, 2)
+1:2/0 = 0
+1:2/0/y_sort_origin = -16
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 32, -16, 32)
+4:0/0 = 0
+4:0/0/y_sort_origin = 35
+4:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_uxb81")
+5:0/0 = 0
+5:0/0/y_sort_origin = 35
+2:2/size_in_atlas = Vector2i(1, 2)
+2:2/0 = 0
+2:2/0/y_sort_origin = 32
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 32, -16, 32)
+0:0/0 = 0
+0:0/0/y_sort_origin = 16
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -11, 10, -11, 10, 16, -10, 16)
+1:4/0 = 0
+0:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_ktun4"]
 tile_size = Vector2i(32, 32)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_poxdk")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jvm8r"]
@@ -174,18 +202,15 @@ script = ExtResource("1_lev5o")
 counter = NodePath("Counter")
 leave_point = NodePath("Leave Point")
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_3spg2")
-metadata/_edit_lock_ = true
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Notepad" type="PanelContainer" parent="CanvasLayer/Control"]
 texture_filter = 1
@@ -252,11 +277,110 @@ libraries = {
 wait_time = 2.0
 one_shot = true
 
+[node name="Pause Menu" type="Control" parent="CanvasLayer/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_2gycb")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/Pause Menu"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.0
+offset_top = -85.0
+offset_right = 155.0
+offset_bottom = 86.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Pause Menu/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Paused
+"
+horizontal_alignment = 1
+
+[node name="Unpause" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Unpause
+"
+
+[node name="RestartLevel" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Restart Level"
+
+[node name="ExitMenu" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit to Main Menu"
+
+[node name="ExitDesktop" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit To Desktop
+"
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control/Pause Menu"]
+modulate = Color(1, 1, 1, 0.278431)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Pause" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 17.0
+offset_right = -25.0
+offset_bottom = 48.0
+grow_horizontal = 0
+text = "Pause
+"
+
+[node name="StaminaBar" type="TextureProgressBar" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 987.0
+offset_top = 403.0
+offset_right = 1112.0
+offset_bottom = 467.0
+scale = Vector2(4, 4)
+value = 50.0
+fill_mode = 3
+texture_under = ExtResource("5_yqkf0")
+texture_over = ExtResource("6_x14gm")
+texture_progress = ExtResource("7_4fspg")
+texture_progress_offset = Vector2(29, 9)
+script = ExtResource("8_4hfwr")
+
 [node name="Player" parent="." instance=ExtResource("4_1r07b")]
-position = Vector2(49.5, 103)
+position = Vector2(87.5, 109.5)
 
 [node name="Table" parent="." instance=ExtResource("5_w6ube")]
-position = Vector2(318, 166)
+position = Vector2(318, 192.5)
 
 [node name="Table2" parent="." instance=ExtResource("5_w6ube")]
 position = Vector2(182, 230)
@@ -267,10 +391,38 @@ position = Vector2(376, 249)
 [node name="Fire Extinguisher" parent="." instance=ExtResource("6_sp336")]
 position = Vector2(77.5, 184.5)
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="Counters" type="TileMapLayer" parent="."]
 y_sort_enabled = true
 texture_filter = 1
-tile_map_data = PackedByteArray("AAAFAAIAAAAAAAEAAAAHAAIAAAABAAEAAAAIAAIAAAAEAAEAAAAJAAIAAAAEAAEAAAAKAAIAAAAEAAEAAAALAAIAAAAEAAEAAAAMAAIAAAADAAEAAAAHAAEAAAABAAAAAAAMAAEAAAADAAAAAAAGAAIAAAACAAEAAAANAAIAAAABAAEAAAANAAEAAAABAAAAAAAQAAEAAAADAAAAAAAQAAIAAAADAAEAAAAPAAIAAAACAAEAAAAOAAIAAAACAAEAAAA=")
+tile_map_data = PackedByteArray("AAAHAAIAAAABAAAAAAAMAAIAAAADAAAAAAANAAIAAAABAAAAAAAQAAIAAAADAAAAAAAFAAMAAAAAAAEAAAAGAAMAAAACAAEAAAAHAAMAAAABAAEAAAAIAAMAAAAEAAEAAAAJAAMAAAAEAAEAAAAKAAMAAAAEAAEAAAALAAMAAAAEAAEAAAAMAAMAAAADAAEAAAANAAMAAAABAAEAAAAOAAMAAAACAAEAAAAPAAMAAAACAAEAAAAQAAMAAAADAAEAAAA=")
+tile_set = SubResource("TileSet_ktun4")
+metadata/_edit_lock_ = true
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -1
+texture_filter = 1
+tile_map_data = PackedByteArray("AAABAAMAAAAAAAIAAAABAAQAAAAAAAIAAAABAAUAAAAAAAIAAAABAAYAAAAAAAIAAAABAAcAAAAAAAIAAAABAAgAAAAAAAIAAAACAAMAAAAAAAIAAAACAAQAAAAAAAIAAAACAAUAAAAAAAIAAAACAAYAAAAAAAIAAAACAAcAAAAAAAIAAAACAAgAAAAAAAIAAAADAAMAAAAAAAIAABADAAQAAAAAAAIAAAADAAUAAAAAAAIAAAADAAYAAAAAAAIAAAADAAcAAAAAAAIAAAADAAgAAAAAAAIAAAAEAAMAAAAAAAIAAAAEAAQAAAAAAAIAAAAEAAUAAAAAAAIAAAAEAAYAAAAAAAIAAAAEAAcAAAAAAAIAAAAEAAgAAAAAAAIAAAAFAAMAAAAAAAIAACAFAAQAAAAAAAIAAAAFAAUAAAAAAAIAAAAFAAYAAAAAAAIAAAAFAAcAAAAAAAIAAAAFAAgAAAAAAAIAAAAGAAMAAAAAAAIAAAAGAAQAAAAAAAIAAAAGAAUAAAAAAAIAAAAGAAYAAAAAAAIAAAAGAAcAAAAAAAIAAAAGAAgAAAAAAAIAAAAHAAMAAAAAAAIAAAAHAAQAAAAAAAIAAAAHAAUAAAAAAAIAAAAHAAYAAAAAAAIAAAAHAAcAAAAAAAIAAAAHAAgAAAAAAAIAAAAIAAMAAAAAAAIAAAAIAAQAAAAAAAIAAAAIAAUAAAAAAAIAAAAIAAYAAAAAAAIAAAAIAAcAAAAAAAIAAAAIAAgAAAAAAAIAAAAJAAMAAAAAAAIAAAAJAAQAAAAAAAIAAAAJAAUAAAAAAAIAAAAJAAYAAAAAAAIAAAAJAAcAAAAAAAIAAAAJAAgAAAAAAAIAAAAKAAMAAAAAAAIAAAAKAAQAAAAAAAIAAAAKAAUAAAAAAAIAAAAKAAYAAAAAAAIAAAAKAAcAAAAAAAIAAAAKAAgAAAAAAAIAAAALAAMAAAAAAAIAAAALAAQAAAAAAAIAAAALAAUAAAAAAAIAAAALAAYAAAAAAAIAAAALAAcAAAAAAAIAAAALAAgAAAAAAAIAAAAMAAMAAAAAAAIAAAAMAAQAAAAAAAIAAAAMAAUAAAAAAAIAAAAMAAYAAAAAAAIAAAAMAAcAAAAAAAIAAAAMAAgAAAAAAAIAAAANAAMAAAAAAAIAAAANAAQAAAAAAAIAAAANAAUAAAAAAAIAAAANAAYAAAAAAAIAACANAAcAAAAAAAIAAAANAAgAAAAAAAIAAAAOAAMAAAAAAAIAAAAOAAQAAAAAAAIAAAAOAAUAAAAAAAIAAAAOAAYAAAAAAAIAAAAOAAcAAAAAAAIAACAOAAgAAAAAAAIAAAAPAAMAAAAAAAIAAAAPAAQAAAAAAAIAAAAPAAUAAAAAAAIAACAPAAYAAAAAAAIAAAAPAAcAAAAAAAIAAAAPAAgAAAAAAAIAAAAQAAMAAAAAAAIAAAAQAAQAAAAAAAIAAAAQAAUAAAAAAAIAAAAQAAYAAAAAAAIAAAAQAAcAAAAAAAIAAAAQAAgAAAAAAAIAAAAAAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAA=")
+tile_set = SubResource("TileSet_ktun4")
+metadata/_edit_lock_ = true
+
+[node name="Walls" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+texture_filter = 1
+tile_map_data = PackedByteArray("AAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAABAAIAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAOAAEAAAABAAIAAAAPAAEAAAABAAIAAAAQAAEAAAABAAIAAAAAAAMAAAACAAIAAAABAAIAAAAAAAMAAAACAAIAAAAAAAMAAAADAAIAAAAAAAMAAAAFAAIAAAAAAAMAAAAGAAIAAAAAAAMAAAAHAAIAAAAAAAMAAAAIAAIAAAAAAAMAAAAJAAIAAAAAAAMAAAAKAAIAAAAAAAMAAAALAAIAAAAAAAMAAAALAAMAAAAAAAMAAAAMAAMAAAAAAAMAAAAQAAIAAAAAAAMAAAAPAAIAAAAAAAMAAAAOAAIAAAAAAAMAAAANAAIAAAAAAAMAAAAMAAIAAAAAAAMAAAAEAAIAAAAAAAMAAAAAAAQAAAAAAAMAAAA=")
+tile_set = SubResource("TileSet_ktun4")
+metadata/_edit_lock_ = true
+
+[node name="Lights" type="TileMapLayer" parent="."]
+z_index = 1
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAIAAEAAAAFAAAAAAAJAAEAAAAFAAAAAAAKAAEAAAAFAAAAAAALAAEAAAAFAAAAAAAIAAIAAAAEAAAAAAAJAAIAAAAEAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAEAAAAAAAIAAAAAAAFAAAAAAAJAAAAAAAFAAAAAAAKAAAAAAAFAAAAAAALAAAAAAAFAAAAAAA=")
+tile_set = SubResource("TileSet_ktun4")
+metadata/_edit_lock_ = true
+
+[node name="Props" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAIAAEAAAAFAAAAAAAJAAEAAAAFAAAAAAAKAAEAAAAFAAAAAAALAAEAAAAFAAAAAAAIAAIAAAAEAAAAAAAJAAIAAAAEAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAEAAAAAAAIAAAAAAAFAAAAAAAJAAAAAAAFAAAAAAAKAAAAAAAFAAAAAAALAAAAAAAFAAAAAAABAAcAAAAAAAAAAAAEAAMAAAAAAAAAAAABAAIAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_ktun4")
 metadata/_edit_lock_ = true
 
@@ -278,6 +430,7 @@ metadata/_edit_lock_ = true
 color = Color(0.592203, 0.720257, 0.878053, 1)
 
 [node name="Order Area" type="CharacterBody2D" parent="."]
+position = Vector2(0, 31)
 script = ExtResource("10_wawwa")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Order Area"]
@@ -342,10 +495,8 @@ scale = Vector2(1.1, 1.1)
 texture = ExtResource("14_v3d5j")
 script = ExtResource("15_3t1oy")
 
-[node name="Meal" parent="." instance=ExtResource("16_8kfu3")]
-position = Vector2(165.5, 147.5)
-
 [node name="Counter" type="CharacterBody2D" parent="."]
+position = Vector2(0, 31.5)
 script = ExtResource("16_8aeb1")
 
 [node name="Counter Spot" parent="Counter" instance=ExtResource("16_nccxk")]
@@ -360,37 +511,51 @@ position = Vector2(336, 75)
 [node name="Counter Spot4" parent="Counter" instance=ExtResource("16_nccxk")]
 position = Vector2(368, 75)
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Customers" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Customer" parent="Node2D" instance=ExtResource("4_sjedv")]
-position = Vector2(240.5, 297)
+[node name="Customer" parent="Customers" instance=ExtResource("4_sjedv")]
+position = Vector2(242, 242)
 
-[node name="Customer2" parent="Node2D" instance=ExtResource("4_sjedv")]
-position = Vector2(17, 240.5)
+[node name="Customer2" parent="Customers" instance=ExtResource("4_sjedv")]
+position = Vector2(106.5, 219)
 
-[node name="Customer3" parent="Node2D" instance=ExtResource("4_sjedv")]
-position = Vector2(128.5, 283)
+[node name="Customer3" parent="Customers" instance=ExtResource("4_sjedv")]
+position = Vector2(129.5, 265.5)
 
-[node name="Customer4" parent="Node2D" instance=ExtResource("4_sjedv")]
+[node name="Customer4" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(131.5, 148.5)
 
-[node name="Customer5" parent="Node2D" instance=ExtResource("4_sjedv")]
-position = Vector2(349.5, 301)
+[node name="Customer5" parent="Customers" instance=ExtResource("4_sjedv")]
+position = Vector2(306.5, 270)
 
-[node name="Customer6" parent="Node2D" instance=ExtResource("4_sjedv")]
+[node name="Customer6" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(440, 178)
 
-[node name="Customer7" parent="Node2D" instance=ExtResource("4_sjedv")]
+[node name="Customer7" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(495, 257)
 
 [node name="Leave Point" type="Marker2D" parent="."]
 position = Vector2(-83, 169.5)
 
-[node name="Money" parent="." instance=ExtResource("18_1yeid")]
-position = Vector2(261, 184)
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -3
+offset_right = 590.0
+offset_bottom = 373.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(32, 60, 544.5, 60, 544, 272.5, 32, 272.5, 32, 224, -111.5, 227.5, -78.5, 96.5, 32, 96)
 
 [connection signal="mouse_entered" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_exited"]
 [connection signal="timeout" from="CanvasLayer/Control/Notepad/Timer" to="CanvasLayer/Control/Notepad" method="_on_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/Unpause" to="CanvasLayer/Control/Pause Menu" method="_on_unpause_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/ExitMenu" to="CanvasLayer/Control/Pause Menu" method="_on_exit_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/ExitDesktop" to="CanvasLayer/Control/Pause Menu" method="_on_exit_desktop_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause" to="CanvasLayer/Control/Pause Menu" method="_on_pause_pressed"]
 [connection signal="order_queued" from="Order Area" to="Order Area" method="_on_order_queued"]

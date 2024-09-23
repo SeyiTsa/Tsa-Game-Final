@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://bi4ygi05cfg3s" path="res://art/fire.png" id="1_5j4uf"]
 [ext_resource type="Script" path="res://scripts/fire.gd" id="1_c5ar8"]
-[ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://art/health.png" id="3_j4wug"]
-[ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://art/health_out.png" id="4_dv8ls"]
+[ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://art/progressbartextures/health.png" id="3_j4wug"]
+[ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://art/progressbartextures/health_out.png" id="4_dv8ls"]
 [ext_resource type="Texture2D" uid="uid://dyrin3naspfac" path="res://art/circle_light.png" id="5_fr6d3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_02ylq"]

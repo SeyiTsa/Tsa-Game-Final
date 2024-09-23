@@ -27,15 +27,6 @@ func on_area_exited(area):
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
 	
-func is_selected() -> bool:
-	if !InteractionManager.interaction_list.has(self):
-		selected = false
-	else:
-		var index = InteractionManager.interaction_list.find(self)
-		if index == 0 and can_be_selected:
-			selected = true
-		else:
-			selected = false
-	return selected
+
 func is_player_in_area() -> bool:
 	return player_in_area

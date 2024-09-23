@@ -21,7 +21,7 @@ shader_parameter/intensity = 0.0
 size = Vector2(25, 33)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8ho5p"]
-radius = 6.08276
+radius = 16.2788
 
 [sub_resource type="Animation" id="Animation_ducmk"]
 length = 0.001

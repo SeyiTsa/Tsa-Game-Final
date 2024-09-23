@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3be6t4i2837u"
-path="res://.godot/imported/health_out.png-d76587389290cfcb9332443047b5ae21.ctex"
+uid="uid://kjq8r34kyfrh"
+path="res://.godot/imported/staminaover.png-1d36f43871cd45e746baa0633b3de78c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/health_out.png"
-dest_files=["res://.godot/imported/health_out.png-d76587389290cfcb9332443047b5ae21.ctex"]
+source_file="res://art/progressbartextures/staminaover.png"
+dest_files=["res://.godot/imported/staminaover.png-1d36f43871cd45e746baa0633b3de78c.ctex"]
 
 [params]
 

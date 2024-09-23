@@ -1375,6 +1375,7 @@ texture = ExtResource("5_v2men")
 texture_scale = 2.0
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -20.0
 offset_top = -66.0
 offset_right = 20.0

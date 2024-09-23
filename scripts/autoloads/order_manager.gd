@@ -12,11 +12,17 @@ preload("res://scripts/resources/food data/pizza.tres"), preload("res://scripts/
 var food_options : Array[String] = []
 
 func _ready() -> void:
-	
+	process_mode = PROCESS_MODE_ALWAYS
 	for i in food_data_options:
 		food_options.append(i.name)
+
+
+
+func get_references():
+	await get_tree().process_frame
 	notepad = get_tree().root.get_node("Main").get_node("CanvasLayer").get_node("Control").get_node("Notepad")
 	order_area = get_tree().root.get_node("Main").get_node("Order Area")
+
 func add_order(order):
 	notepad.order_list.append(order)
 	order_list.append(order)
@@ -32,38 +38,46 @@ func new_batch(batch):
 func _physics_process(delta: float) -> void:
 	if !wait_timer_started and current_batches_in_wait.size() > 0:
 		wait_timer_started = true
-		get_tree().create_timer(randf_range(5, 8)).timeout.connect(queue_food)
-		
+		get_tree().create_timer(randf_range(5, 8), false).timeout.connect(queue_food)
+
 	if !cook_timer_started and current_batches_being_made.size() > 0:
 		cook_timer_started = true
-		get_tree().create_timer(randf_range(5, 8)).timeout.connect(make_food)
+		get_tree().create_timer(randf_range(5, 8), false).timeout.connect(make_food)
 		
 		
 func queue_food():
-	wait_timer_started = false
-	for sprite in order_area.sprites:
-		await get_tree().process_frame
-		if current_batches_in_wait.has(sprite.data) and sprite.visible:
-			current_batches_being_made.append(sprite.data)
-			current_batches_in_wait.erase(sprite.data)
-			order_area.order_queued.emit(sprite)
-			break
-		elif !sprite.visible:
-			continue
-func make_food():
-	var current_meal_set = current_batches_being_made[0]
-	for single_meal in current_meal_set:
-		if food_options.has(single_meal):
+	if order_area and get_tree().paused == false:
+		wait_timer_started = false
+		for sprite in order_area.sprites:
 			await get_tree().process_frame
-			var index = food_options.find(single_meal)
-			var meal_ins = meal.instantiate()
-			meal_ins.position = order_area.position
-			meal_ins.data = food_data_options[index]
-			get_tree().root.get_node("Main").counter.available_spots[0].add_child(meal_ins)
-			
+			if current_batches_in_wait.has(sprite.data) and sprite.visible:
+				current_batches_being_made.append(sprite.data)
+				current_batches_in_wait.erase(sprite.data)
+				order_area.order_queued.emit(sprite)
+				break
+			elif !sprite.visible:
+				continue
+	else:
+		wait_timer_started = false
+func make_food():
+	if get_tree().paused == false:
+		var current_meal_set = current_batches_being_made[0]
+		for single_meal in current_meal_set:
+			if food_options.has(single_meal):
+				await get_tree().process_frame
+				var index = food_options.find(single_meal)
+				var meal_ins = meal.instantiate()
+				meal_ins.global_position = get_tree().root.get_node("Main").counter.available_spots[0].global_position
+				meal_ins.data = food_data_options[index]
+				get_tree().root.get_node("Main").counter.available_spots[0].add_child(meal_ins)
+				
+				current_batches_being_made.remove_at(0)
+				cook_timer_started = false
+	else:
+		print("e")
+		cook_timer_started = false
 
-			
-	current_batches_being_made.remove_at(0)
-	cook_timer_started = false
+				
+
 	
 	

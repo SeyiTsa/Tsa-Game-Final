@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://art/done_ordering_marker.png" id="6_eyyx4"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://art/shadow.png" id="7_vrj4d"]
 [ext_resource type="Texture2D" uid="uid://dfdo0hgfhgfss" path="res://art/current_indicator.png" id="8_t820p"]
-[ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://art/health.png" id="9_2uwyd"]
-[ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://art/health_out.png" id="10_krmgk"]
+[ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://art/progressbartextures/health.png" id="9_2uwyd"]
+[ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://art/progressbartextures/health_out.png" id="10_krmgk"]
 
 [sub_resource type="Resource" id="Resource_pwjl8"]
 script = ExtResource("2_pj0p4")

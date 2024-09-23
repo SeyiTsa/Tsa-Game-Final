@@ -8,6 +8,8 @@ var num_of_orders : int
 
 var sprites : Array[Sprite2D]
 var visible_sprites : Array[bool]
+var is_selected : bool
+var current_choice : bool
 signal order_queued(sprite : Sprite2D)
 func _ready() -> void:
 	interact_area.area_entered.connect(on_area_entered)
@@ -20,7 +22,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	
 
-	if (is_player_in_area() and can_be_selected and is_selected()):
+	if (is_player_in_area() and can_be_selected and current_choice):
 		$Highlight.play("selected")
 		
 	else:
@@ -30,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		can_be_selected = false
 		
-	if Input.is_action_just_pressed("ui_accept") and is_selected():
+	if Input.is_action_just_pressed("ui_accept") and current_choice:
 		current_orders.append(OrderManager.order_list)
 		show_random_sprite()
 		
@@ -39,6 +41,31 @@ func _physics_process(delta: float) -> void:
 		OrderManager.new_batch(OrderManager.order_list.duplicate())
 	
 	num_of_orders = visible_sprites.count(true)
+	
+	if $"Interact Area".get_overlapping_areas():
+		var area = $"Interact Area".get_overlapping_areas()[0]
+		if can_be_selected:
+			if area.is_in_group("player interact"):
+				is_selected = true
+				player_in_area = true
+				if !InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.append(self)
+					player = area.get_parent()
+		else:
+			if area.is_in_group("player interact"):
+				player_in_area = true
+				is_selected = false
+				if InteractionManager.interaction_list.has(self):
+					InteractionManager.interaction_list.erase(self)
+	else:
+		is_selected = false
+	if InteractionManager.interaction_list.size() > 0:
+		if InteractionManager.interaction_list[0] == self:
+			current_choice = true
+		else:
+			current_choice = false
+	else:
+		current_choice = false
 func show_random_sprite():
 	var random_sprite = sprites[randi_range(0, sprites.size() - 1)]
 	if !random_sprite.visible:

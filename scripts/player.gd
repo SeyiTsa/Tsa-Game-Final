@@ -8,7 +8,9 @@ var holding_extinguisher : bool = false
 var using_fire_extinguisher : bool = false
 var item_direction : Vector2
 var holding_meal : bool
-
+var stamina : float = 100:
+	set(value):
+		stamina = clamp(value, 0, 100)
 const FIRE = preload("res://scenes/fire.tscn")
 @onready var marker_2d: Marker2D = $Marker2D
 
@@ -16,7 +18,11 @@ const FIRE = preload("res://scenes/fire.tscn")
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 func _process(delta: float) -> void:
-	$Label.text = str(Global.money)
+	if Input.is_action_pressed("sprint") and velocity != Vector2(0,0):
+		stamina -= 0.2
+	else:
+		stamina += 0.2
+	$Label.text = str(stamina)
 	direction = Input.get_vector("left","right","up","down").normalized()
 	
 	if direction and !using_fire_extinguisher:
@@ -97,8 +103,10 @@ func _process(delta: float) -> void:
 		get_tree().root.get_node("Main").add_child(fire_ins)
 		fire_ins.global_position = global_position
 func get_speed() -> int:
-	if Input.is_action_pressed("sprint"):
+	if Input.is_action_pressed("sprint") and stamina != 0:
+
 		return sprint_speed
+
 	return speed
 	
 func get_acceleration() -> int:

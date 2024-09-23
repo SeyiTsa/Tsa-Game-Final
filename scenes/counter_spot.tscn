@@ -6,8 +6,8 @@
 z_index = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(0, -28.5)
-scale = Vector2(1, 2.40625)
+position = Vector2(0, -13.5)
+scale = Vector2(1, 1.46875)
 energy = 0.5
 shadow_enabled = true
 texture = ExtResource("1_el46n")
