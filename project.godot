@@ -15,16 +15,20 @@ warnings/check_invalid_track_paths=false
 [application]
 
 config/name="TSA Restaurant Game"
-run/main_scene="res://scenes/main_menu.tscn"
+run/main_scene="res://scenes/level_1.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://legacy/icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://legacy/default_bus_layout.tres"
 
 [autoload]
 
-InteractionManager="*res://scripts/autoloads/interaction_manager.gd"
-OrderManager="*res://scripts/autoloads/order_manager.gd"
-LevelManager="*res://scripts/autoloads/level_manager.gd"
-Global="*res://scripts/autoloads/global.gd"
+InteractionManager="*res://legacy/scripts/autoloads/interaction_manager.gd"
+OrderManager="*res://legacy/scripts/autoloads/order_manager.gd"
+LevelManager="res://legacy/scripts/autoloads/level_manager.gd"
+Global="*res://legacy/scripts/autoloads/global.gd"
 
 [display]
 
@@ -34,6 +38,7 @@ window/check_invalid_track_paths=false
 [global_group]
 
 "interact Area"=""
+"pixel perfect"=""
 
 [input]
 

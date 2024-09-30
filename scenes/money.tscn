@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://dk6c6v85f1pgk"]
 
-[ext_resource type="Script" path="res://scripts/money.gd" id="1_wbt4c"]
-[ext_resource type="Shader" path="res://scripts/shaders/highlight.gdshader" id="2_bxdms"]
-[ext_resource type="Texture2D" uid="uid://dgpyoybu6nsbu" path="res://art/money.png" id="2_kqjo3"]
-[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://scenes/interact_area.tscn" id="4_gffsu"]
+[ext_resource type="Script" path="res://legacy/scripts/money.gd" id="1_wbt4c"]
+[ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="2_bxdms"]
+[ext_resource type="Texture2D" uid="uid://dgpyoybu6nsbu" path="res://legacy/art/money.png" id="2_kqjo3"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="4_gffsu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m63i6"]
 resource_local_to_scene = true

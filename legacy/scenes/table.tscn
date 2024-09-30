@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm34nodey2fao"]
+
+[ext_resource type="Texture2D" uid="uid://knlnr34kjnko" path="res://legacy/art/wooden_table.png" id="1_su0sv"]
+[ext_resource type="PackedScene" uid="uid://1731x5423axy" path="res://legacy/scenes/chair.tscn" id="2_q56ts"]
+[ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="3_dl43g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l4s12"]
+size = Vector2(38, 29)
+
+[node name="Table" type="CharacterBody2D"]
+collision_layer = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_su0sv")
+offset = Vector2(0, -18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -16.5)
+shape = SubResource("RectangleShape2D_l4s12")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.443137)
+z_index = -1
+texture_filter = 1
+position = Vector2(0, -19)
+texture = ExtResource("3_dl43g")
+
+[node name="Chair2" parent="." instance=ExtResource("2_q56ts")]
+position = Vector2(34, -2)
+scale = Vector2(-1, 1)
+
+[node name="Marker2D_" type="Marker2D" parent="Chair2"]
+position = Vector2(26, -17)
+
+[node name="Chair" parent="." instance=ExtResource("2_q56ts")]
+position = Vector2(-34, -2)
+
+[node name="Marker2D_" type="Marker2D" parent="Chair"]
+position = Vector2(26, -17)

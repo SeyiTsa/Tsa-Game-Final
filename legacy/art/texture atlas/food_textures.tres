@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://3gvg8eirhrwy"]
+
+[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://legacy/art/food_liquid_atlas.png" id="1_tf8mp"]
+
+[resource]
+atlas = ExtResource("1_tf8mp")
+region = Rect2(96, 0, 32, 32)

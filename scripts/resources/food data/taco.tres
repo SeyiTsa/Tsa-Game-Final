@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="FoodData" load_steps=6 format=3 uid="uid://7vn86p0i6h57"]
 
-[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://art/food_liquid_atlas.png" id="1_cc2rr"]
+[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://legacy/art/food_liquid_atlas.png" id="1_cc2rr"]
 [ext_resource type="Script" path="res://scripts/resources/food_data.gd" id="1_gw7o7"]
-[ext_resource type="Texture2D" uid="uid://m43l87hkoi25" path="res://art/plate_glass_atlas.png" id="2_1dshi"]
+[ext_resource type="Texture2D" uid="uid://m43l87hkoi25" path="res://legacy/art/plate_glass_atlas.png" id="2_1dshi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wf4f2"]
 atlas = ExtResource("1_cc2rr")

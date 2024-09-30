@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2fq35gvrs0rh"]
+
+[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://legacy/scenes/entities/player.tscn" id="1_ewrfb"]
+[ext_resource type="PackedScene" uid="uid://bju6gna3pmrf2" path="res://scenes/test_platform.tscn" id="2_eqvj5"]
+
+[node name="Level1" type="Node2D"]
+scale = Vector2(2, 2)
+
+[node name="Player" parent="." instance=ExtResource("1_ewrfb")]
+position = Vector2(47.5, 50.5)
+floor_max_angle = 1.48353
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Test Platform" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(284.5, 292)
+
+[node name="CollisionShape2D" parent="Test Platform" index="0"]
+scale = Vector2(2096.72, 26.9688)
+
+[node name="Test Platform2" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(365, 264)
+
+[node name="CollisionShape2D" parent="Test Platform2" index="0"]
+position = Vector2(61.2, -30.45)
+scale = Vector2(79.875, 31.5938)
+polygon = PackedVector2Array(0.999061, 0.0617213, -0.0400629, 0.64728, -1.51737, 1.01128, 0.999061, 1.01128)
+
+[node name="Test Platform3" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(1075.5, 264)
+scale = Vector2(-1, 1)
+
+[node name="CollisionShape2D" parent="Test Platform3" index="0"]
+position = Vector2(61.2, -30.45)
+scale = Vector2(79.875, 31.5938)
+polygon = PackedVector2Array(0.999061, 0.0617213, -0.0400629, 0.64728, -1.51737, 1.01128, 0.999061, 1.01128)
+
+[node name="Test Platform4" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(11.5, 264.5)
+
+[node name="CollisionShape2D" parent="Test Platform4" index="0"]
+polygon = PackedVector2Array(55, 1, 21, -7.5, -3, -15, -25.5, -33, -40, -55, -42, -55, -42, 1)
+
+[node name="Test Platform5" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(-72.5, 264.5)
+scale = Vector2(-1, 1)
+
+[node name="CollisionShape2D" parent="Test Platform5" index="0"]
+polygon = PackedVector2Array(55, 1, 21, -7.5, -3, -15, -25.5, -33, -40, -55, -42, -55, -42, 1)
+
+[node name="Test Platform6" parent="." instance=ExtResource("2_eqvj5")]
+position = Vector2(201.5, 264)
+
+[node name="CollisionShape2D" parent="Test Platform6" index="0"]
+position = Vector2(-37.75, -11)
+scale = Vector2(21.0937, 12.1875)
+
+[editable path="Test Platform"]
+[editable path="Test Platform2"]
+[editable path="Test Platform3"]
+[editable path="Test Platform4"]
+[editable path="Test Platform5"]
+[editable path="Test Platform6"]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/resources/level_data.gd" id="1_rynr0"]
 [ext_resource type="Script" path="res://scripts/resources/customer_data.gd" id="1_u31ud"]
-[ext_resource type="PackedScene" uid="uid://by2w026v1l3q" path="res://scenes/main.tscn" id="2_jqxfc"]
+[ext_resource type="PackedScene" uid="uid://by2w026v1l3q" path="res://legacy/scenes/main.tscn" id="2_jqxfc"]
 
 [sub_resource type="Resource" id="Resource_ndxon"]
 script = ExtResource("1_u31ud")
