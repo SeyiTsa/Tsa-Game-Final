@@ -15,13 +15,13 @@ func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 	for i in food_data_options:
 		food_options.append(i.name)
-
+	get_references()
 
 
 func get_references():
 	await get_tree().process_frame
-	notepad = get_tree().root.get_node("Main").get_node("CanvasLayer").get_node("Control").get_node("Notepad")
-	order_area = get_tree().root.get_node("Main").get_node("Order Area")
+	notepad = get_tree().root.get_node("Level1").get_node("CanvasLayer").get_node("Control").get_node("Notepad")
+	order_area = get_tree().root.get_node("Level1").get_node("Order Area")
 
 func add_order(order):
 	notepad.order_list.append(order)
@@ -69,9 +69,9 @@ func make_food():
 				await get_tree().process_frame
 				var index = food_options.find(single_meal)
 				var meal_ins = meal.instantiate()
-				meal_ins.global_position = get_tree().root.get_node("Main").counter.available_spots[0].global_position
+				meal_ins.global_position = get_tree().root.get_node("Level1").counter.available_spots[0].global_position
 				meal_ins.data = food_data_options[index]
-				get_tree().root.get_node("Main").counter.available_spots[0].add_child(meal_ins)
+				get_tree().root.get_node("Level1").counter.available_spots[0].add_child(meal_ins)
 				if current_batches_being_made.size() > 0:
 					current_batches_being_made.remove_at(0)
 				cook_timer_started = false

@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scenes/test_platform.gd" id="1_t5dpw"]
 
 [node name="Test Platform" type="StaticBody2D"]
+collision_layer = 13
+collision_mask = 13
 script = ExtResource("1_t5dpw")
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]

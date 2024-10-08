@@ -8,7 +8,7 @@ class_name Customer
 @onready var order_timer: Timer = $"Order Timer"
 @export var data : CustomerData
 var customer_interactions : Array = ["Follow", "Seat", "Ordering", "Take Order", "Serve", "Eat", "Favor", "Leave"]
-var SPEED : int = 150
+var SPEED : int = 50
 var should_navigate : bool = false
 var seat : Chair
 var table
@@ -39,9 +39,11 @@ func _ready() -> void:
 	$ProgressBar.max_value = patience
 	
 func _physics_process(delta: float) -> void:
+	
+	
+
 	$ProgressBar.tint_progress = Color.RED.lerp(Color.YELLOW, $ProgressBar.value / $ProgressBar.max_value)
- 	
-	navigate()
+	navigate(delta)
 	var dir = to_local(nav.get_next_path_position()).normalized() 
 	if should_navigate or is_player_in_area():
 		previous_dir = dir
@@ -184,12 +186,16 @@ func _physics_process(delta: float) -> void:
 					InteractionManager.interaction_list.erase(self)
 	else:
 		is_selected = false
-func navigate():
+func navigate(delta):
+	if seat == null:
+		velocity.y += delta * 32000
+		move_and_slide()
+		
 	if should_navigate:
 		var dir = to_local(nav.get_next_path_position()).normalized()
 		update_animation_parameters(dir)
 		if !nav.is_navigation_finished():
-			velocity = dir * SPEED
+			velocity.x = dir.x * SPEED
 			move_and_slide()
 		else:
 			velocity = Vector2.ZERO
@@ -209,6 +215,7 @@ func navigate():
 
 	else:
 		velocity = Vector2.ZERO
+		
 		if is_player_in_area():
 			var dir = to_local(nav.get_next_path_position()).normalized()
 			update_animation_parameters(dir)
@@ -288,12 +295,8 @@ func finished_eating():
 	is_talking = false
 	has_order_ready = false
 	ordering = false
-	reparent(get_tree().root.get_node("Main"))
+	reparent(get_tree().root.get_node("Level1"))
 	position.y += 10
 	
-	nav.target_position = get_tree().root.get_node("Main").leave_point.global_position
+	nav.target_position = get_tree().root.get_node("Level1").leave_point.global_position
 	should_navigate = true
-
-
-func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	queue_free()

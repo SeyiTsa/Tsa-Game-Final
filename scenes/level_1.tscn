@@ -1,63 +1,518 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2fq35gvrs0rh"]
+[gd_scene load_steps=30 format=3 uid="uid://c2fq35gvrs0rh"]
 
-[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://legacy/scenes/entities/player.tscn" id="1_ewrfb"]
+[ext_resource type="Script" path="res://legacy/scripts/level_references.gd" id="1_2m6e1"]
+[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="1_ewrfb"]
 [ext_resource type="PackedScene" uid="uid://bju6gna3pmrf2" path="res://scenes/test_platform.tscn" id="2_eqvj5"]
+[ext_resource type="PackedScene" uid="uid://ckd5yy218xy66" path="res://scenes/rail.tscn" id="3_5r3mt"]
+[ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="3_a3cbi"]
+[ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/customer.tscn" id="4_k3f0f"]
+[ext_resource type="Script" path="res://legacy/scripts/counter.gd" id="6_8lidj"]
+[ext_resource type="PackedScene" uid="uid://0x63fjbxuua6" path="res://legacy/scenes/counter_spot.tscn" id="7_441gc"]
+[ext_resource type="Script" path="res://legacy/scripts/order_area.gd" id="8_1bsfp"]
+[ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="9_tn4ig"]
+[ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://legacy/art/string.png" id="10_565b1"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="11_phqxf"]
+[ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://legacy/art/order_note.png" id="12_3mrwi"]
+[ext_resource type="Script" path="res://legacy/scripts/order_note.gd" id="13_wfuar"]
+[ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://legacy/art/notepad_ui.png" id="14_n4irw"]
+[ext_resource type="Script" path="res://legacy/scripts/notepad.gd" id="15_sraf0"]
+[ext_resource type="Script" path="res://legacy/scripts/pause_menu.gd" id="16_7t4vj"]
+[ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="18_w2fbv"]
 
-[node name="Level1" type="Node2D"]
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_8viis"]
+vertices = PackedVector2Array(2904.23, 575.578, -2519.34, 607.43, -2444.59, -583.211, 2486.81, -700.32)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2454, -593, -2530, 617.5, 2918, 585.5, 2494, -710.5)])
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nbe"]
+resource_local_to_scene = true
+shader = ExtResource("9_tn4ig")
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/color_b = Color(1, 1, 1, 1)
+shader_parameter/colors_affect_alpha = false
+shader_parameter/flash_amount = 1.0
+shader_parameter/flash_speed = 1.0
+shader_parameter/transparency = 1.0
+shader_parameter/intensity = 0.0
+
+[sub_resource type="Animation" id="Animation_20c6q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_cb6sd"]
+resource_name = "selected"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hkxo1"]
+_data = {
+"RESET": SubResource("Animation_20c6q"),
+"selected": SubResource("Animation_cb6sd")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fpy0"]
+size = Vector2(70, 45.5)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gi3pc"]
+texture = ExtResource("14_n4irw")
+
+[sub_resource type="Animation" id="Animation_y7psn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(826, 525)]
+}
+
+[sub_resource type="Animation" id="Animation_pjkop"]
+resource_name = "down"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1.56),
+"update": 0,
+"values": [Vector2(826, 398), Vector2(826, 525)]
+}
+
+[sub_resource type="Animation" id="Animation_c1abs"]
+resource_name = "pop up"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1.56, -1.56),
+"update": 0,
+"values": [Vector2(826, 525), Vector2(826, 398)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yfagk"]
+_data = {
+"RESET": SubResource("Animation_y7psn"),
+"down": SubResource("Animation_pjkop"),
+"pop up": SubResource("Animation_c1abs")
+}
+
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("counter", "leave_point")]
 scale = Vector2(2, 2)
+script = ExtResource("1_2m6e1")
+counter = NodePath("Counter")
+leave_point = NodePath("Marker2D")
 
-[node name="Player" parent="." instance=ExtResource("1_ewrfb")]
-position = Vector2(47.5, 50.5)
-floor_max_angle = 1.48353
+[node name="Plaforms" type="Node2D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="Test Platform" parent="." instance=ExtResource("2_eqvj5")]
+[node name="Test Platform" parent="Plaforms" instance=ExtResource("2_eqvj5")]
 position = Vector2(284.5, 292)
 
-[node name="CollisionShape2D" parent="Test Platform" index="0"]
-scale = Vector2(2096.72, 26.9688)
+[node name="CollisionShape2D" parent="Plaforms/Test Platform" index="0"]
+position = Vector2(0, 192.425)
+scale = Vector2(15532.8, 219.422)
+polygon = PackedVector2Array(1, -1.308, 0.16977, -1.01141, 0.146303, -1.30764, 0.132977, -1.30764, 0.108416, -1.00229, -1, -1, -1, 1, 1, 1)
 
-[node name="Test Platform2" parent="." instance=ExtResource("2_eqvj5")]
-position = Vector2(365, 264)
-
-[node name="CollisionShape2D" parent="Test Platform2" index="0"]
-position = Vector2(61.2, -30.45)
-scale = Vector2(79.875, 31.5938)
-polygon = PackedVector2Array(0.999061, 0.0617213, -0.0400629, 0.64728, -1.51737, 1.01128, 0.999061, 1.01128)
-
-[node name="Test Platform3" parent="." instance=ExtResource("2_eqvj5")]
+[node name="Test Platform3" parent="Plaforms" instance=ExtResource("2_eqvj5")]
 position = Vector2(1075.5, 264)
-scale = Vector2(-1, 1)
+rotation = 3.14159
+scale = Vector2(1, -1)
+collision_layer = 1
 
-[node name="CollisionShape2D" parent="Test Platform3" index="0"]
+[node name="CollisionShape2D" parent="Plaforms/Test Platform3" index="0"]
 position = Vector2(61.2, -30.45)
 scale = Vector2(79.875, 31.5938)
-polygon = PackedVector2Array(0.999061, 0.0617213, -0.0400629, 0.64728, -1.51737, 1.01128, 0.999061, 1.01128)
+polygon = PackedVector2Array(1.00532, 0.378227, 0.416901, 0.678924, -0.0150232, 0.837184, -0.497026, 0.995447, 1.00532, 0.995438)
 
-[node name="Test Platform4" parent="." instance=ExtResource("2_eqvj5")]
-position = Vector2(11.5, 264.5)
+[node name="Test Platform4" parent="Plaforms" instance=ExtResource("2_eqvj5")]
+position = Vector2(611.5, 264)
+rotation = 3.14159
+scale = Vector2(-1, -1)
+collision_layer = 1
 
-[node name="CollisionShape2D" parent="Test Platform4" index="0"]
-polygon = PackedVector2Array(55, 1, 21, -7.5, -3, -15, -25.5, -33, -40, -55, -42, -55, -42, 1)
+[node name="CollisionShape2D" parent="Plaforms/Test Platform4" index="0"]
+position = Vector2(61.2, -30.45)
+scale = Vector2(79.875, 31.5938)
+polygon = PackedVector2Array(1.00532, 0.378227, 0.416901, 0.678924, -0.0150232, 0.837184, -0.497026, 0.995447, 1.00532, 0.995438)
 
-[node name="Test Platform5" parent="." instance=ExtResource("2_eqvj5")]
-position = Vector2(-72.5, 264.5)
-scale = Vector2(-1, 1)
+[node name="Test Platform6" parent="Plaforms" instance=ExtResource("2_eqvj5")]
+position = Vector2(318.5, 264)
 
-[node name="CollisionShape2D" parent="Test Platform5" index="0"]
-polygon = PackedVector2Array(55, 1, 21, -7.5, -3, -15, -25.5, -33, -40, -55, -42, -55, -42, 1)
-
-[node name="Test Platform6" parent="." instance=ExtResource("2_eqvj5")]
-position = Vector2(201.5, 264)
-
-[node name="CollisionShape2D" parent="Test Platform6" index="0"]
+[node name="CollisionShape2D" parent="Plaforms/Test Platform6" index="0"]
 position = Vector2(-37.75, -11)
 scale = Vector2(21.0937, 12.1875)
 
-[editable path="Test Platform"]
-[editable path="Test Platform2"]
-[editable path="Test Platform3"]
-[editable path="Test Platform4"]
-[editable path="Test Platform5"]
-[editable path="Test Platform6"]
+[node name="Rail" parent="Plaforms" instance=ExtResource("3_5r3mt")]
+position = Vector2(1250, 253)
+
+[node name="CollisionShape2D" parent="Plaforms/Rail" index="1"]
+position = Vector2(0, 2.5)
+scale = Vector2(139.063, 18.4375)
+polygon = PackedVector2Array(-0.5, -0.5, -0.000660419, -0.5, 2, -0.5, 2, 0.5, -0.5, 0.5)
+
+[node name="Rail2" parent="Plaforms" instance=ExtResource("3_5r3mt")]
+position = Vector2(2073.5, 223.5)
+rotation = -0.174533
+
+[node name="CollisionShape2D" parent="Plaforms/Rail2" index="1"]
+position = Vector2(0, 2.5)
+scale = Vector2(139.063, 18.4375)
+polygon = PackedVector2Array(-0.5, -0.5, -0.000660419, -0.5, 2, -0.5, 1.97536, 0.481285, -0.48195, 0.490154)
+
+[node name="Rail3" parent="Plaforms" instance=ExtResource("3_5r3mt")]
+position = Vector2(2347, 196)
+rotation = 0.174533
+scale = Vector2(-1, 1)
+
+[node name="CollisionShape2D" parent="Plaforms/Rail3" index="1"]
+position = Vector2(-488.275, -55.5314)
+scale = Vector2(139.063, 18.4375)
+polygon = PackedVector2Array(-0.5, -0.5, -0.000660419, -0.5, 2, -0.5, 1.97536, 0.481285, -0.48195, 0.490154)
+
+[node name="Player" parent="." instance=ExtResource("1_ewrfb")]
+position = Vector2(47.5, 50.5)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Table" parent="." instance=ExtResource("3_a3cbi")]
+position = Vector2(157, 264.5)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_8viis")
+metadata/_edit_lock_ = true
+
+[node name="Counter" type="CharacterBody2D" parent="."]
+position = Vector2(1490.5, 190)
+script = ExtResource("6_8lidj")
+
+[node name="Counter Spot" parent="Counter" instance=ExtResource("7_441gc")]
+position = Vector2(272.25, 75)
+
+[node name="Counter Spot2" parent="Counter" instance=ExtResource("7_441gc")]
+position = Vector2(304, 75)
+
+[node name="Counter Spot3" parent="Counter" instance=ExtResource("7_441gc")]
+position = Vector2(336, 75)
+
+[node name="Counter Spot4" parent="Counter" instance=ExtResource("7_441gc")]
+position = Vector2(368, 75)
+
+[node name="Order Area" type="CharacterBody2D" parent="."]
+position = Vector2(1219, 165.5)
+script = ExtResource("8_1bsfp")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Order Area"]
+z_index = 1
+texture_filter = 1
+material = SubResource("ShaderMaterial_d8nbe")
+offset_left = 445.0
+offset_top = 41.5
+offset_right = 515.0
+offset_bottom = 61.5
+texture = ExtResource("10_565b1")
+patch_margin_left = 3
+patch_margin_right = 3
+axis_stretch_vertical = 1
+
+[node name="Highlight" type="AnimationPlayer" parent="Order Area"]
+libraries = {
+"": SubResource("AnimationLibrary_hkxo1")
+}
+
+[node name="Interact Area" parent="Order Area" instance=ExtResource("11_phqxf")]
+position = Vector2(445, 35.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Order Area/Interact Area"]
+position = Vector2(35, 41.75)
+shape = SubResource("RectangleShape2D_6fpy0")
+
+[node name="1" type="Sprite2D" parent="Order Area"]
+visible = false
+z_index = 1
+position = Vector2(457, 57)
+texture = ExtResource("12_3mrwi")
+script = ExtResource("13_wfuar")
+
+[node name="2" type="Sprite2D" parent="Order Area"]
+visible = false
+z_index = 1
+position = Vector2(467, 57)
+texture = ExtResource("12_3mrwi")
+script = ExtResource("13_wfuar")
+
+[node name="3" type="Sprite2D" parent="Order Area"]
+visible = false
+z_index = 1
+position = Vector2(497.5, 57)
+texture = ExtResource("12_3mrwi")
+script = ExtResource("13_wfuar")
+
+[node name="4" type="Sprite2D" parent="Order Area"]
+visible = false
+z_index = 1
+position = Vector2(476.75, 57.3)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("12_3mrwi")
+script = ExtResource("13_wfuar")
+
+[node name="5" type="Sprite2D" parent="Order Area"]
+visible = false
+z_index = 1
+position = Vector2(488, 57.3)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("12_3mrwi")
+script = ExtResource("13_wfuar")
+
+[node name="Polygon2D" type="Polygon2D" parent="Order Area"]
+z_index = -1
+color = Color(0.764706, 0.298039, 0, 1)
+polygon = PackedVector2Array(445, 99, 445, 50, 440.5, 50, 440.5, 99)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Order Area"]
+position = Vector2(74.5, 0)
+color = Color(0.764706, 0.298039, 0, 1)
+polygon = PackedVector2Array(445, 99, 445, 50, 440.5, 50, 440.5, 99)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Notepad" type="PanelContainer" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 826.0
+offset_top = 525.0
+offset_right = 1076.0
+offset_bottom = 775.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_gi3pc")
+script = ExtResource("15_sraf0")
+
+[node name="Order 1" type="Node2D" parent="CanvasLayer/Control/Notepad"]
+position = Vector2(87, 77)
+rotation = 0.0261799
+skew = 0.200713
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 1"]
+texture_filter = 1
+offset_right = 300.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "
+"
+
+[node name="Order 2" type="Node2D" parent="CanvasLayer/Control/Notepad"]
+position = Vector2(79.0001, 113)
+rotation = 0.0261799
+skew = 0.200713
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 2"]
+texture_filter = 1
+offset_right = 300.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Order 3" type="Node2D" parent="CanvasLayer/Control/Notepad"]
+position = Vector2(71, 158)
+rotation = 0.0261799
+skew = 0.200713
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 3"]
+texture_filter = 1
+offset_right = 300.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Order 4" type="Node2D" parent="CanvasLayer/Control/Notepad"]
+position = Vector2(65, 208)
+rotation = 0.0261799
+skew = 0.200713
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Notepad/Order 4"]
+texture_filter = 1
+offset_right = 300.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/Notepad"]
+libraries = {
+"": SubResource("AnimationLibrary_yfagk")
+}
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Control/Notepad"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Pause Menu" type="Control" parent="CanvasLayer/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("16_7t4vj")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/Pause Menu"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.0
+offset_top = -85.0
+offset_right = 155.0
+offset_bottom = 86.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Pause Menu/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Paused
+"
+horizontal_alignment = 1
+
+[node name="Unpause" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Unpause
+"
+
+[node name="RestartLevel" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Restart Level"
+
+[node name="ExitMenu" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit to Main Menu"
+
+[node name="ExitDesktop" type="Button" parent="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit To Desktop
+"
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control/Pause Menu"]
+modulate = Color(1, 1, 1, 0.278431)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Pause" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 15.0
+offset_right = -17.0
+offset_bottom = 46.0
+grow_horizontal = 0
+text = "Pause
+"
+
+[node name="Table2" parent="." instance=ExtResource("3_a3cbi")]
+position = Vector2(379, 264.5)
+
+[node name="Table3" parent="." instance=ExtResource("3_a3cbi")]
+position = Vector2(829.5, 264.5)
+
+[node name="Customers" type="Node2D" parent="."]
+
+[node name="Customer" parent="Customers" instance=ExtResource("4_k3f0f")]
+position = Vector2(97, 245.5)
+
+[node name="Customer2" parent="Customers" instance=ExtResource("4_k3f0f")]
+position = Vector2(283, 186)
+
+[node name="Customer3" parent="Customers" instance=ExtResource("4_k3f0f")]
+position = Vector2(551.5, 164.5)
+
+[node name="Customer4" parent="Customers" instance=ExtResource("4_k3f0f")]
+position = Vector2(451.5, 216)
+
+[node name="Customer5" parent="Customers" instance=ExtResource("4_k3f0f")]
+position = Vector2(736, 147.5)
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(-2402.5, 245.5)
+
+[node name="Meal" parent="." instance=ExtResource("18_w2fbv")]
+position = Vector2(192.5, 160.5)
+
+[connection signal="order_queued" from="Order Area" to="Order Area" method="_on_order_queued"]
+[connection signal="mouse_entered" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Control/Notepad" to="CanvasLayer/Control/Notepad" method="_on_mouse_exited"]
+[connection signal="timeout" from="CanvasLayer/Control/Notepad/Timer" to="CanvasLayer/Control/Notepad" method="_on_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/Unpause" to="CanvasLayer/Control/Pause Menu" method="_on_unpause_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/ExitMenu" to="CanvasLayer/Control/Pause Menu" method="_on_exit_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause Menu/PanelContainer/MarginContainer/VBoxContainer/ExitDesktop" to="CanvasLayer/Control/Pause Menu" method="_on_exit_desktop_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Pause" to="CanvasLayer/Control/Pause Menu" method="_on_pause_pressed"]
+
+[editable path="Plaforms/Test Platform"]
+[editable path="Plaforms/Test Platform3"]
+[editable path="Plaforms/Test Platform4"]
+[editable path="Plaforms/Test Platform6"]
+[editable path="Plaforms/Rail"]
+[editable path="Plaforms/Rail2"]
+[editable path="Plaforms/Rail3"]

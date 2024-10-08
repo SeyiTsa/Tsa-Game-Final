@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://legacy/scripts/level_references.gd" id="1_lev5o"]
 [ext_resource type="Script" path="res://legacy/scripts/notepad.gd" id="3_xj0ly"]
-[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://legacy/scenes/entities/player.tscn" id="4_1r07b"]
+[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="4_1r07b"]
 [ext_resource type="Script" path="res://legacy/scripts/pause_menu.gd" id="4_2gycb"]
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://legacy/art/notepad_ui.png" id="4_msgmk"]
-[ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://legacy/scenes/entities/customer.tscn" id="4_sjedv"]
-[ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://legacy/scenes/table.tscn" id="5_w6ube"]
+[ext_resource type="PackedScene" uid="uid://iww63bcg0wbq" path="res://scenes/customer.tscn" id="4_sjedv"]
+[ext_resource type="PackedScene" uid="uid://cm34nodey2fao" path="res://scenes/table.tscn" id="5_w6ube"]
 [ext_resource type="Texture2D" uid="uid://b7eienk4wel4x" path="res://legacy/art/progressbartextures/staminaunder.png" id="5_yqkf0"]
 [ext_resource type="PackedScene" uid="uid://h3d6xe6de10o" path="res://legacy/scenes/fire_extinguisher.tscn" id="6_sp336"]
 [ext_resource type="Texture2D" uid="uid://kjq8r34kyfrh" path="res://legacy/art/progressbartextures/staminaover.png" id="6_x14gm"]
@@ -517,31 +517,24 @@ y_sort_enabled = true
 
 [node name="Customer" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(242, 242)
-interaction_array = null
 
 [node name="Customer2" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(106.5, 219)
-interaction_array = null
 
 [node name="Customer3" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(129.5, 265.5)
-interaction_array = null
 
 [node name="Customer4" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(131.5, 148.5)
-interaction_array = null
 
 [node name="Customer5" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(306.5, 270)
-interaction_array = null
 
 [node name="Customer6" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(440, 178)
-interaction_array = null
 
 [node name="Customer7" parent="Customers" instance=ExtResource("4_sjedv")]
 position = Vector2(495, 257)
-interaction_array = null
 
 [node name="Leave Point" type="Marker2D" parent="."]
 position = Vector2(-83, 169.5)

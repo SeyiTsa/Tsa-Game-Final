@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/resources/level_data.gd" id="1_rynr0"]
 [ext_resource type="Script" path="res://scripts/resources/customer_data.gd" id="1_u31ud"]
-[ext_resource type="PackedScene" uid="uid://by2w026v1l3q" path="res://legacy/scenes/main.tscn" id="2_jqxfc"]
+[ext_resource type="PackedScene" uid="uid://c2fq35gvrs0rh" path="res://scenes/level_1.tscn" id="2_n3a42"]
 
 [sub_resource type="Resource" id="Resource_ndxon"]
 script = ExtResource("1_u31ud")
@@ -11,4 +11,4 @@ patience_multplier = 0.0
 [resource]
 script = ExtResource("1_rynr0")
 customers = Array[ExtResource("1_u31ud")]([SubResource("Resource_ndxon")])
-level_scene = ExtResource("2_jqxfc")
+level_scene = ExtResource("2_n3a42")

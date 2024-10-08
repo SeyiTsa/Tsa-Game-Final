@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://qgmia0iip2e7"]
 
-[ext_resource type="Script" path="res://legacy/scripts/main_menu.gd" id="1_tgpte"]
-[ext_resource type="Script" path="res://legacy/scripts/input.gd" id="2_fu88y"]
-[ext_resource type="PackedScene" uid="uid://bxxolwdugtt70" path="res://scenes/input_button.tscn" id="2_g4h1j"]
+[ext_resource type="Script" path="res://legacy/scripts/main_menu.gd" id="1_uarjc"]
+[ext_resource type="Script" path="res://legacy/scripts/input.gd" id="2_7eore"]
+[ext_resource type="PackedScene" uid="uid://bxxolwdugtt70" path="res://scenes/input_button.tscn" id="3_ohycq"]
 
 [node name="Main Menu" type="Control"]
 process_mode = 3
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_tgpte")
+script = ExtResource("1_uarjc")
 
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -234,7 +234,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_fu88y")
+script = ExtResource("2_7eore")
 
 [node name="PanelContainer" type="PanelContainer" parent="Input"]
 layout_mode = 1
@@ -268,19 +268,19 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InputButton" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_g4h1j")]
+[node name="InputButton" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("3_ohycq")]
 layout_mode = 2
 
-[node name="InputButton2" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_g4h1j")]
+[node name="InputButton2" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("3_ohycq")]
 layout_mode = 2
 
-[node name="InputButton3" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_g4h1j")]
+[node name="InputButton3" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("3_ohycq")]
 layout_mode = 2
 
-[node name="InputButton4" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_g4h1j")]
+[node name="InputButton4" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("3_ohycq")]
 layout_mode = 2
 
-[node name="InputButton5" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_g4h1j")]
+[node name="InputButton5" parent="Input/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("3_ohycq")]
 layout_mode = 2
 
 [node name="ResetButton" type="Button" parent="Input/PanelContainer/MarginContainer/VBoxContainer"]

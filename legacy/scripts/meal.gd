@@ -1,22 +1,24 @@
 extends Grabbable
 class_name Meal
 
-@onready var interact_area: Area2D = $"Interact Area"
+@onready var interact_area: Area2D = $"RigidBody2D/Interact Area"
 @export var data : FoodData
 var on_counter = true
 var is_selected : bool
 var current_choice : bool
 func _ready() -> void:
-	$"Plate Glass".texture = data.plate_glass
-	$"Food Liquid".texture = data.food_liquid
+	$"RigidBody2D/Plate Glass".texture = data.plate_glass
+	$"RigidBody2D/Food Liquid".texture = data.food_liquid
 	interact_area.area_entered.connect(on_area_entered)
 	interact_area.area_exited.connect(on_area_exited)
 	
 func _physics_process(delta: float) -> void:
+
+
 	if !on_ground:
-		$Sprite2D.hide()
+		$RigidBody2D/Sprite2D.hide()
 	else:
-		$Sprite2D.show()
+		$RigidBody2D/Sprite2D.show()
 	if (is_player_in_area() and can_be_selected and is_selected):
 		$Highlight.play("selected")
 	else:
@@ -24,7 +26,7 @@ func _physics_process(delta: float) -> void:
 		
 	if is_selected and Input.is_action_just_pressed("ui_accept") and on_ground and !InteractionManager.currently_holding_item:
 		if on_counter:
-			reparent(get_tree().root.get_node("Main"))
+			reparent(get_tree().root.get_node("Level1"))
 
 			on_counter = false
 		InteractionManager.currently_holding_item = true
@@ -47,11 +49,15 @@ func _physics_process(delta: float) -> void:
 		if on_ground:
 			can_be_selected = true
 	if get_parent() is Marker2D:
-		global_position = get_parent().global_position
-	$Label.text = str(z_index)
-	
-	if $"Interact Area".get_overlapping_areas():
-		var area = $"Interact Area".get_overlapping_areas()[0]
+		$RigidBody2D.global_position = get_parent().global_position
+	else:
+		rotation_degrees = 0
+		$RigidBody2D.rotation_degrees = 0
+
+	if get_parent() is Marker2D:
+		$RigidBody2D.linear_velocity = Vector2(0, 0)
+	if interact_area.get_overlapping_areas():
+		var area = interact_area.get_overlapping_areas()[0]
 		if can_be_selected:
 			if area.is_in_group("player interact"):
 				is_selected = true
@@ -74,3 +80,5 @@ func _physics_process(delta: float) -> void:
 			current_choice = false
 	else:
 		current_choice = false
+	if $RayCast2D.is_colliding():
+		$RigidBody2D.linear_velocity.y = 0

@@ -7,7 +7,7 @@ extends Control
 var is_remapping : bool = false
 var action_to_remap = null
 var remapping_button = null
-var input_actions : Dictionary = {"right" : "Right", "left" : "Left", "up" : "Up","down" : "Down", "sprint" :"Sprint", "use item" : "Use Item"}
+var input_actions : Dictionary = {"right" : "Right", "left" : "Left", "up" : "Up","grind" : "Grind", "push_off" :"Push Off", "use item" : "Use Item"}
 func _ready() -> void:
 	create_action_list()
 	

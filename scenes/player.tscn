@@ -1,7 +1,8 @@
-[gd_scene load_steps=95 format=3 uid="uid://cd8vbm5in07ms"]
+[gd_scene load_steps=102 format=3 uid="uid://cd8vbm5in07ms"]
 
 [ext_resource type="Script" path="res://legacy/scripts/player.gd" id="1_l262s"]
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://legacy/art/Player_test.png" id="2_47h8e"]
+[ext_resource type="Texture2D" uid="uid://mb2jxl47qfiw" path="res://art/test.png" id="4_kraqx"]
 [ext_resource type="Texture2D" uid="uid://dyrin3naspfac" path="res://legacy/art/circle_light.png" id="5_v2men"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fg8j0"]
@@ -1024,9 +1025,92 @@ _data = {
 "Walk Side Ex": SubResource("Animation_x0fas")
 }
 
+[sub_resource type="Curve" id="Curve_o3nam"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.840909, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5rn1i"]
+curve = SubResource("Curve_o3nam")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nydtp"]
+particle_flag_disable_z = true
+spread = 39.545
+initial_velocity_min = 64.75
+initial_velocity_max = 64.75
+gravity = Vector3(0, -10, 0)
+scale_min = 3.0
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_5rn1i")
+color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_giw4s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D3:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Polygon2D2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ivlxs"]
+resource_name = "grind_flash"
+length = 0.2
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D3:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Polygon2D2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lp3yw"]
+_data = {
+"RESET": SubResource("Animation_giw4s"),
+"grind_flash": SubResource("Animation_ivlxs")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["pixel perfect"]]
 y_sort_enabled = true
+disable_mode = 2
 floor_stop_on_slope = false
+floor_max_angle = 1.309
 script = ExtResource("1_l262s")
 
 [node name="Interaction" type="Area2D" parent="." groups=["player interact"]]
@@ -1063,13 +1147,14 @@ metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="."]
 offset_left = -20.0
-offset_top = -54.0
+offset_top = -67.0
 offset_right = 20.0
-offset_bottom = -31.0
+offset_bottom = -44.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
 scale = Vector2(1, 0.8125)
 color = Color(0, 0.509804, 1, 1)
 polygon = PackedVector2Array(-7, 0, -7, -32, 7, -32, 7, 0)
@@ -1078,7 +1163,38 @@ polygon = PackedVector2Array(-7, 0, -7, -32, 7, -32, 7, 0)
 one_shot = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(-6, 0)
-target_position = Vector2(14, 6)
+target_position = Vector2(0, 15)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_nydtp")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
+scale = Vector2(-1, 1)
+process_material = SubResource("ParticleProcessMaterial_nydtp")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, -31)
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+visible = false
+color = Color(1, 1, 0, 1)
+polygon = PackedVector2Array(-7, -4, -16, -9, -13, -2, -18, 0, -13, 0, -13, 5, -10, 2, -8, 7)
+
+[node name="Polygon2D3" type="Polygon2D" parent="."]
+visible = false
+scale = Vector2(-1, 1)
+color = Color(1, 1, 0, 1)
+polygon = PackedVector2Array(-7, -4, -16, -9, -13, -2, -18, 0, -13, 0, -13, 5, -10, 2, -8, 7)
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lp3yw")
+}
+autoplay = "grind_flash"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("4_kraqx")
 
 [connection signal="timeout" from="Coyote" to="." method="on_coyote_timeout"]

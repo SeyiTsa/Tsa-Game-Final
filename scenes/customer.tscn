@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://iww63bcg0wbq"]
+[gd_scene load_steps=117 format=3 uid="uid://iww63bcg0wbq"]
 
 [ext_resource type="Script" path="res://legacy/scripts/customer.gd" id="1_pv177"]
 [ext_resource type="Script" path="res://scripts/resources/customer_data.gd" id="2_pj0p4"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://g8ssa8sv7s6o" path="res://legacy/art/Player_test.png" id="4_nqwx8"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="5_8ottb"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://legacy/art/done_ordering_marker.png" id="6_eyyx4"]
-[ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="7_vrj4d"]
 [ext_resource type="Texture2D" uid="uid://dfdo0hgfhgfss" path="res://legacy/art/current_indicator.png" id="8_t820p"]
 [ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://legacy/art/progressbartextures/health.png" id="9_2uwyd"]
 [ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://legacy/art/progressbartextures/health_out.png" id="10_krmgk"]
@@ -409,18 +408,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [0, 1, 2]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_nqlq0"]
 resource_name = "Idle Back"
@@ -541,18 +528,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_gefor"]
 length = 0.001
@@ -579,18 +554,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_iavnu"]
@@ -622,18 +585,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_thdwy"]
 resource_name = "Talk"
@@ -663,18 +614,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [0, 1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_46l4o"]
@@ -783,7 +722,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_liq6w"]
-radius = 15.0333
+radius = 39.2046
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8dytj"]
 animation = &"Arm Wave"
@@ -989,7 +928,7 @@ transitions = ["Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_
 graph_offset = Vector2(-103.572, -128.006)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xocqr"]
-size = Vector2(10, 4)
+size = Vector2(16, 24)
 
 [sub_resource type="Animation" id="Animation_hccfv"]
 length = 0.001
@@ -1053,12 +992,13 @@ animations = [{
 }]
 
 [node name="Customer" type="CharacterBody2D"]
-collision_layer = 4
+collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_pv177")
 data = SubResource("Resource_pwjl8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 texture_filter = 1
 material = SubResource("ShaderMaterial_fknu0")
 sprite_frames = SubResource("SpriteFrames_r5b84")
@@ -1073,7 +1013,7 @@ libraries = {
 [node name="Interact Area" parent="." instance=ExtResource("5_8ottb")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area"]
-position = Vector2(0, -18)
+position = Vector2(0, -12)
 shape = SubResource("CircleShape2D_liq6w")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -1096,7 +1036,7 @@ parameters/Walk/blend_position = Vector2(0, 0)
 radius = 0.01
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -18)
+position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_xocqr")
 
 [node name="Order Timer" type="Timer" parent="."]
@@ -1112,26 +1052,17 @@ texture = ExtResource("6_eyyx4")
 [node name="Talk Timer" type="Timer" parent="."]
 one_shot = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.443137)
-z_index = -1
-texture_filter = 1
-position = Vector2(0, -17)
-texture = ExtResource("7_vrj4d")
-
 [node name="Highlight" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_mvtx2")
 }
 
 [node name="indicator" type="AnimatedSprite2D" parent="."]
-visible = false
 texture_filter = 1
-position = Vector2(0, -46)
+position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_akg4f")
 autoplay = "default"
-frame = 1
-frame_progress = 0.224916
+frame_progress = 0.791279
 
 [node name="Label" type="Label" parent="."]
 visible = false
@@ -1142,10 +1073,10 @@ offset_bottom = -45.0
 
 [node name="ProgressBar" type="TextureProgressBar" parent="."]
 texture_filter = 1
-offset_left = 7.0
-offset_top = -22.0
-offset_right = 26.0
-offset_bottom = -6.0
+offset_left = 9.0
+offset_top = -19.0
+offset_right = 20.0
+offset_bottom = -11.0
 rotation = -1.5708
 value = 50.0
 nine_patch_stretch = true
@@ -1155,11 +1086,17 @@ texture_progress = ExtResource("9_2uwyd")
 tint_progress = Color(1, 1, 0, 1)
 
 [node name="Ordered Food" type="Sprite2D" parent="."]
-position = Vector2(0, -47)
+position = Vector2(0, -34)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(1.78814e-07, -17)
+position = Vector2(0, -17)
 scale = Vector2(0.5, 0.9)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(0.533334, 0)
+scale = Vector2(1.06667, 1.08333)
+color = Color(1, 1, 0, 1)
+polygon = PackedVector2Array(-8, -24, 7, -24, 7, 0, -8, 0)
 
 [connection signal="timeout" from="Order Timer" to="." method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Talk Timer" to="." method="_on_talk_timer_timeout"]

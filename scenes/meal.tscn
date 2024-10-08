@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://da11l3el5crsv"]
+[gd_scene load_steps=14 format=3 uid="uid://da11l3el5crsv"]
 
 [ext_resource type="Script" path="res://legacy/scripts/meal.gd" id="1_k6154"]
 [ext_resource type="Resource" uid="uid://d1hoedjk50ga6" path="res://scripts/resources/food data/milkshake.tres" id="2_52yke"]
@@ -6,8 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="4_08l3p"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="4_cshtj"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_81ssm"]
-radius = 15.1327
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w8y6s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nnemf"]
+radius = 8.01561
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wy3bc"]
 resource_local_to_scene = true
@@ -31,12 +33,15 @@ shader_parameter/flash_speed = 1.0
 shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_81ssm"]
+radius = 30.0666
+
 [sub_resource type="Animation" id="Animation_13fxc"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Food Liquid:material:shader_parameter/intensity")
+tracks/0/path = NodePath("RigidBody2D/Food Liquid:material:shader_parameter/intensity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -48,7 +53,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Plate Glass:material:shader_parameter/intensity")
+tracks/1/path = NodePath("RigidBody2D/Plate Glass:material:shader_parameter/intensity")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -65,7 +70,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Food Liquid:material:shader_parameter/intensity")
+tracks/0/path = NodePath("RigidBody2D/Food Liquid:material:shader_parameter/intensity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -77,7 +82,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Plate Glass:material:shader_parameter/intensity")
+tracks/1/path = NodePath("RigidBody2D/Plate Glass:material:shader_parameter/intensity")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -98,23 +103,37 @@ position = Vector2(0, -1)
 script = ExtResource("1_k6154")
 data = ExtResource("2_52yke")
 
-[node name="Interact Area" parent="." instance=ExtResource("2_hbwfx")]
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+mass = 1e+12
+physics_material_override = SubResource("PhysicsMaterial_w8y6s")
+gravity_scale = 1.5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area"]
-position = Vector2(0, -4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(0, -7.5)
+shape = SubResource("CircleShape2D_nnemf")
+
+[node name="Plate Glass" type="Sprite2D" parent="RigidBody2D"]
+material = SubResource("ShaderMaterial_wy3bc")
+scale = Vector2(2, 2)
+offset = Vector2(0, -8)
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Food Liquid" type="Sprite2D" parent="RigidBody2D"]
+material = SubResource("ShaderMaterial_x0syr")
+scale = Vector2(2, 2)
+offset = Vector2(0, -8)
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Interact Area" parent="RigidBody2D" instance=ExtResource("2_hbwfx")]
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/Interact Area"]
+position = Vector2(0, -12)
 shape = SubResource("CircleShape2D_81ssm")
 
-[node name="Plate Glass" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_wy3bc")
-offset = Vector2(0, -8)
-region_rect = Rect2(0, 0, 32, 32)
-
-[node name="Food Liquid" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_x0syr")
-offset = Vector2(0, -8)
-region_rect = Rect2(0, 0, 32, 32)
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
 modulate = Color(1, 1, 1, 0.443137)
 z_index = -1
 texture_filter = 1
@@ -128,8 +147,10 @@ libraries = {
 }
 
 [node name="Label" type="Label" parent="."]
-visible = false
 offset_left = -23.0
 offset_top = -52.0
 offset_right = 17.0
 offset_bottom = -29.0
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 4)
