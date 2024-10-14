@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://c47n1csg5eojf"]
+
+[ext_resource type="Texture2D" uid="uid://iwgsqmlr801c" path="res://art/order_note.png" id="1_7jor2"]
+[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://legacy/art/food_liquid_atlas.png" id="2_c6ded"]
+[ext_resource type="Script" path="res://scripts/order_note.gd" id="2_dotjm"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_movx6"]
+texture = ExtResource("1_7jor2")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wndu2"]
+atlas = ExtResource("2_c6ded")
+region = Rect2(0, 0, 32, 32)
+
+[node name="Order Note" type="Panel"]
+offset_right = 64.0
+offset_bottom = 64.0
+rotation = 0.785398
+pivot_offset = Vector2(32, 32)
+theme_override_styles/panel = SubResource("StyleBoxTexture_movx6")
+script = ExtResource("2_dotjm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(31, 39)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_wndu2")

@@ -49,6 +49,9 @@ func _physics_process(delta: float) -> void:
 		if on_ground:
 			can_be_selected = true
 	if get_parent() is Marker2D:
+		if get_parent().name == "Marker2D_":
+			rotation_degrees = 0
+			$RigidBody2D.rotation_degrees = 0	
 		$RigidBody2D.global_position = get_parent().global_position
 	else:
 		rotation_degrees = 0

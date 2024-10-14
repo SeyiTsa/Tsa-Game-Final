@@ -167,7 +167,7 @@ func _physics_process(delta: float) -> void:
 					InteractionManager.current_customer = null
 					should_navigate = false
 					InteractionManager.customer_currently_following = false
-	$Label.text = str(current_interaction)
+
 	
 	if $"Interact Area".get_overlapping_areas():
 		var area = $"Interact Area".get_overlapping_areas()[0]
@@ -187,9 +187,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		is_selected = false
 func navigate(delta):
-	if seat == null:
-		velocity.y += delta * 32000
+	if !is_sitting:
+		velocity.y += delta * 12500
 		move_and_slide()
+	else:
+		velocity.y = 0
 		
 	if should_navigate:
 		var dir = to_local(nav.get_next_path_position()).normalized()
@@ -201,6 +203,7 @@ func navigate(delta):
 			velocity = Vector2.ZERO
 			match current_interaction:
 				"Seat":
+					is_sitting = true
 					z_index = 0
 					if !get_parent() is Chair:
 						reparent(seat)
@@ -212,6 +215,9 @@ func navigate(delta):
 						sprite_2d.flip_h = false
 					current_interaction = interaction_array[2]
 					order_timer.start(order_timer.wait_time + randf_range(-3 , 3))
+				"Leave":
+					queue_free()
+			
 
 	else:
 		velocity = Vector2.ZERO
@@ -297,6 +303,6 @@ func finished_eating():
 	ordering = false
 	reparent(get_tree().root.get_node("Level1"))
 	position.y += 10
-	
+	Global.served_customers += 1
 	nav.target_position = get_tree().root.get_node("Level1").leave_point.global_position
 	should_navigate = true

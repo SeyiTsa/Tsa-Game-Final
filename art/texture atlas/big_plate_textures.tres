@@ -1,0 +1,6 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://bexdj1qkmn7rr"]
+
+[ext_resource type="Texture2D" uid="uid://55udcyaapr83" path="res://art/big_plate_atlas.png" id="1_pjvkp"]
+
+[resource]
+atlas = ExtResource("1_pjvkp")

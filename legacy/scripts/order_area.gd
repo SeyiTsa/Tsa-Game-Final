@@ -33,7 +33,16 @@ func _physics_process(delta: float) -> void:
 		can_be_selected = false
 		
 	if Input.is_action_just_pressed("ui_accept") and current_choice:
+		
 		current_orders.append(OrderManager.order_list)
+		
+		for order in current_orders:
+			for meal in order:
+				$"../UI".add_order(meal)
+			break
+		
+				
+				
 		show_random_sprite()
 		
 		

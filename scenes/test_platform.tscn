@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bju6gna3pmrf2"]
 
-[ext_resource type="Script" path="res://scenes/test_platform.gd" id="1_t5dpw"]
+[ext_resource type="Script" path="res://scripts/test_platform.gd" id="1_t5dpw"]
 
 [node name="Test Platform" type="StaticBody2D"]
 collision_layer = 13

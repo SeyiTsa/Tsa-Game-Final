@@ -11,9 +11,19 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 
 	if current_choice and Input.is_action_just_pressed("ui_accept"):
+		Global.money += money
+		Global.money_gained += money
+		$Label.text = str("+", money)
+		$Label.show()
+		$Sprite2D.hide()
+		var tween = get_tree().create_tween()
+		tween.tween_property($Label, "position:y", -30, 0.25).set_ease(Tween.EASE_OUT)
+		tween.tween_property($Label, "scale",  Vector2(0, 0), 0.25).set_ease(Tween.EASE_IN)
+		tween.tween_property($Label, "modulate", Color(255, 255, 255, 0), 0.25)
+		await tween.finished
 		queue_free()
 	
-		Global.money += money
+		
 		if InteractionManager.interaction_list.has(self):
 			InteractionManager.interaction_list.erase(self)
 			
@@ -53,7 +63,6 @@ func get_final_amount(patience_left):
 	money += patience_left
 	money = money/45
 	money = round_to_dec(money, 2)
-	print(money)
 	if money > 2:
 		$Sprite2D.frame = 0
 	elif money > 1 and money < 2:

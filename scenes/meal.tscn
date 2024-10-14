@@ -34,7 +34,7 @@ shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_81ssm"]
-radius = 30.0666
+radius = 38.0
 
 [sub_resource type="Animation" id="Animation_13fxc"]
 length = 0.001
@@ -100,6 +100,8 @@ _data = {
 
 [node name="Meal" type="CharacterBody2D"]
 position = Vector2(0, -1)
+collision_layer = 13
+collision_mask = 13
 script = ExtResource("1_k6154")
 data = ExtResource("2_52yke")
 
@@ -109,6 +111,7 @@ collision_mask = 8
 mass = 1e+12
 physics_material_override = SubResource("PhysicsMaterial_w8y6s")
 gravity_scale = 1.5
+lock_rotation = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
 position = Vector2(0, -7.5)
@@ -154,3 +157,4 @@ offset_bottom = -29.0
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(0, 4)
+collision_mask = 13

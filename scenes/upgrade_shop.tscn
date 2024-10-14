@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://tucm2mp4h4fd"]
+
+[ext_resource type="PackedScene" uid="uid://bju6gna3pmrf2" path="res://scenes/test_platform.tscn" id="1_k6in4"]
+[ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="2_25v8x"]
+
+[node name="UpgradeShop" type="Node2D"]
+scale = Vector2(2, 2)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 576.0
+offset_bottom = 324.0
+color = Color(0, 0, 0, 1)
+
+[node name="Test Platform" parent="." instance=ExtResource("1_k6in4")]
+position = Vector2(288, 245)
+
+[node name="CollisionShape2D" parent="Test Platform" index="0"]
+scale = Vector2(177.969, 22.2656)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(110, 222.5, 110, 29, 461.5, 29, 461.5, 222.5)
+
+[node name="Player" parent="." instance=ExtResource("2_25v8x")]
+position = Vector2(166, 205)
+
+[editable path="Test Platform"]

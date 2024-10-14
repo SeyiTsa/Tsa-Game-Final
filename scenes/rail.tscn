@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckd5yy218xy66"]
 
-[ext_resource type="Script" path="res://scenes/rail.gd" id="1_8rtd2"]
+[ext_resource type="Script" path="res://scripts/rail.gd" id="1_8rtd2"]
 
 [node name="Rail" type="StaticBody2D" groups=["grind"]]
+z_index = -1
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_8rtd2")

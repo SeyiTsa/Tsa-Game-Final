@@ -1065,7 +1065,6 @@ autoplay = "default"
 frame_progress = 0.791279
 
 [node name="Label" type="Label" parent="."]
-visible = false
 offset_left = -20.0
 offset_top = -68.0
 offset_right = 20.0

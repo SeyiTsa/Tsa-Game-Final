@@ -27,13 +27,14 @@ position = Vector2(34, 0)
 scale = Vector2(-1, 1)
 
 [node name="Marker2D_" type="Marker2D" parent="Chair2"]
-position = Vector2(26, -19)
+position = Vector2(26, -23)
+scale = Vector2(-1, 1)
 
 [node name="Chair" parent="." instance=ExtResource("2_q56ts")]
 position = Vector2(-34, 0)
 
 [node name="Marker2D_" type="Marker2D" parent="Chair"]
-position = Vector2(26, -19)
+position = Vector2(26, -23)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 visible = false
