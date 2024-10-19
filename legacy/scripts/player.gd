@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D.flip_h = false
 		$AnimatedSprite2D2.flip_h = false
 	
-	$Label.text = str($"../UI".backed_up_orders)
+	$Label.text = str(speed)
 	
 	velocity.x = clamp(velocity.x, -1800, 1800)
 	
@@ -179,57 +179,10 @@ func _process(delta: float) -> void:
 		rotation = desired_rotation
 		if raycast.get_collider().is_in_group("grind") and !doing_trick:
 			if Input.is_action_pressed("grind") and direction:
-				if velocity.x != 0:
-					grinding = true
-					if (speed >= -1350 and speed < 1350):
-						if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
-							position.y += 1
-							
-						else:
-							if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
-								speed += 25
-							elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
-								speed += 25
-
-							else:
-								speed = move_toward(speed, 0, 1)
-				else:
-					grinding = false
-					position.y += 3
-			else:
-				grinding = false
-				position.y += 3
+				grind()
 	elif raycast.is_colliding() and !is_on_floor():
 		if raycast.get_collider().is_in_group("grind") and !doing_trick:
-			if Input.is_action_pressed("grind") and direction:
-				if velocity.x != 0:
-					grinding = true
-					if (speed >= -1350 and speed < 1350):
-						if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
-							position.y += 3
-							
-						else:
-							if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
-								speed += 25
-							elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
-								speed += 25
-								
-							else:
-								speed = move_toward(speed, 0, 1)
-				else:
-					grinding = false
-					position.y += 3
-			else:
-				grinding = false
-				position.y += 3
+			grind()
 	else:
 		grinding = false
 
@@ -325,3 +278,29 @@ func on_wall_bounce_timeout():
 		doing_trick = false
 	wall_bounce_timer_started = false
 	#test test test i am testing this
+func grind():
+	if Input.is_action_pressed("grind") and direction:
+		if velocity.x != 0:
+			grinding = true
+			if (speed >= -1350 and speed < 1350):
+				if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
+					speed += 14
+				elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
+					speed += 14
+				elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
+					position.y += 1
+					
+				else:
+					if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
+						speed += 25
+					elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
+						speed += 25
+
+					else:
+						speed = move_toward(speed, 0, 1)
+		else:
+			grinding = false
+			position.y += 3
+	else:
+		grinding = false
+		position.y += 3
