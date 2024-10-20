@@ -29,7 +29,7 @@ var push_offed : bool = false:
 			push_off(false)
 		push_offed = value
 var push_off_direction  = 1
-var kick_speed_duration : int = 100
+var kick_speed_duration : float = 100
 var jump_buffer_time = 0.2
 
 var grinding : bool
@@ -37,6 +37,8 @@ var current_trick
 var wall_bounce_floor_check : bool
 signal grounded_updated(is_grounded)
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D2
+
+
 func update_position():
 	$AnimatedSprite2D.global_position = global_position
 	$AnimatedSprite2D.global_rotation_degrees = global_rotation_degrees
@@ -47,6 +49,10 @@ func update_position():
 		tween.tween_property($AnimatedSprite2D, "global_position:y", global_position.y, 0.05)
 
 func _process(delta: float) -> void:
+	if Input.is_action_pressed("ui_down"):
+		Engine.time_scale = move_toward(Engine.time_scale, 0.3, 1)
+	else:
+		Engine.time_scale = move_toward(Engine.time_scale, 1, 1)
 	if !doing_trick and current_trick:
 
 		current_trick = null
@@ -67,7 +73,11 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D.flip_h = false
 		$AnimatedSprite2D2.flip_h = false
 	
+<<<<<<< HEAD
 
+=======
+	$Label.text = str(kick_speed_duration)
+>>>>>>> a478d7118cd76667f0bd1973f9d9c2d854f872da
 	
 	velocity.x = clamp(velocity.x, -1800, 1800)
 	
@@ -93,7 +103,8 @@ func _process(delta: float) -> void:
 	velocity.y += delta * _get_gravity()
 	if direction and !turning:
 		if !grinding and is_on_floor():
-			kick_speed_duration -= delta
+			@warning_ignore("narrowing_conversion")
+			kick_speed_duration -= 0.45 * Engine.time_scale
 			if kick_speed_duration <= 0:
 				if (velocity.x >= -1000 and velocity.x < 1000):
 					kick_speed_duration = 100
@@ -179,57 +190,10 @@ func _process(delta: float) -> void:
 		rotation = desired_rotation
 		if raycast.get_collider().is_in_group("grind") and !doing_trick:
 			if Input.is_action_pressed("grind") and direction:
-				if velocity.x != 0:
-					grinding = true
-					if (speed >= -1350 and speed < 1350):
-						if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
-							position.y += 1
-							
-						else:
-							if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
-								speed += 25
-							elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
-								speed += 25
-
-							else:
-								speed = move_toward(speed, 0, 1)
-				else:
-					grinding = false
-					position.y += 3
-			else:
-				grinding = false
-				position.y += 3
+				grind()
 	elif raycast.is_colliding() and !is_on_floor():
 		if raycast.get_collider().is_in_group("grind") and !doing_trick:
-			if Input.is_action_pressed("grind") and direction:
-				if velocity.x != 0:
-					grinding = true
-					if (speed >= -1350 and speed < 1350):
-						if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
-							speed += 14
-						elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
-							position.y += 3
-							
-						else:
-							if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
-								speed += 25
-							elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
-								speed += 25
-								
-							else:
-								speed = move_toward(speed, 0, 1)
-				else:
-					grinding = false
-					position.y += 3
-			else:
-				grinding = false
-				position.y += 3
+			grind()
 	else:
 		grinding = false
 
@@ -324,4 +288,31 @@ func on_wall_bounce_timeout():
 	if wall_bounce_timer_started:
 		doing_trick = false
 	wall_bounce_timer_started = false
-	
+	#test test test i am testing this
+func grind():
+	if Input.is_action_pressed("grind") and direction:
+		if velocity.x != 0:
+			grinding = true
+			if (speed >= -1350 and speed < 1350):
+				if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
+					speed += 14
+				elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
+					speed += 14
+				elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
+					position.y += 1
+					
+				else:
+					if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
+						speed += 25
+					elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
+						speed += 25
+
+					else:
+						@warning_ignore("narrowing_conversion")
+						speed = move_toward(speed, 0, 1)
+		else:
+			grinding = false
+			position.y += 3
+	else:
+		grinding = false
+		position.y += 3

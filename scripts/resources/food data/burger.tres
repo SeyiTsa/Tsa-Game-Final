@@ -1,21 +1,15 @@
-[gd_resource type="Resource" script_class="FoodData" load_steps=9 format=3 uid="uid://ck20xxmql0rp3"]
+[gd_resource type="Resource" script_class="FoodData" load_steps=6 format=3 uid="uid://ck20xxmql0rp3"]
 
-[ext_resource type="Texture2D" uid="uid://btgym7detmug5" path="res://art/big_food_atlas.png" id="1_5u6n6"]
 [ext_resource type="Script" path="res://scripts/resources/food_data.gd" id="1_ai27y"]
-[ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://legacy/art/food_liquid_atlas.png" id="1_ebh4j"]
-[ext_resource type="Texture2D" uid="uid://55udcyaapr83" path="res://art/big_plate_atlas.png" id="2_61tvg"]
 [ext_resource type="Texture2D" uid="uid://cjkj1lp31qoe2" path="res://art/texture atlas/plate_textures.tres" id="4_edfdr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ljvh5"]
-atlas = ExtResource("1_5u6n6")
 region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6iiyl"]
-atlas = ExtResource("2_61tvg")
 region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oq3sp"]
-atlas = ExtResource("1_ebh4j")
 region = Rect2(0, 0, 32, 32)
 
 [resource]
