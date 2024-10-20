@@ -7,7 +7,7 @@ var current_batches_being_made : Array[Array]
 var wait_timer_started : bool
 var backlog : Array = []
 var cook_timer_started : bool
-const meal = preload("res://scenes/meal.tscn")
+const MEAL = preload("res://scenes/meal.tscn")
 var food_data_options : Array[FoodData] = [preload("res://scripts/resources/food data/burger.tres"), preload("res://scripts/resources/food data/taco.tres"),
 preload("res://scripts/resources/food data/pizza.tres"), preload("res://scripts/resources/food data/milkshake.tres")]
 var food_options : Array[String] = []
@@ -74,7 +74,7 @@ func make_food():
 			if food_options.has(single_meal):
 				await get_tree().process_frame
 				var index = food_options.find(single_meal)
-				var meal_ins = meal.instantiate()
+				var meal_ins = MEAL.instantiate()
 				meal_ins.data = food_data_options[index]
 				if get_tree().root.get_node("Level1").counter.available_spots:
 					meal_ins.global_position = get_tree().root.get_node("Level1").counter.available_spots[0].global_position
