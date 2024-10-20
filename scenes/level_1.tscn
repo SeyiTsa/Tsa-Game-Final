@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c2fq35gvrs0rh"]
+[gd_scene load_steps=38 format=3 uid="uid://c2fq35gvrs0rh"]
 
 [ext_resource type="Script" path="res://legacy/scripts/level_references.gd" id="1_2m6e1"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="1_ewrfb"]
@@ -21,11 +21,8 @@
 [ext_resource type="Script" path="res://legacy/scripts/notepad.gd" id="15_sraf0"]
 [ext_resource type="Script" path="res://legacy/scripts/pause_menu.gd" id="16_7t4vj"]
 [ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="18_w2fbv"]
-[ext_resource type="Texture2D" uid="uid://bq5cprnin8dgd" path="res://art/food_shadow.png" id="20_xinmi"]
+[ext_resource type="PackedScene" uid="uid://b4mn4cluqm286" path="res://scenes/meal_ui.tscn" id="20_fd628"]
 [ext_resource type="Texture2D" uid="uid://crb0qsx06jfbj" path="res://art/clock.png" id="21_j3sad"]
-[ext_resource type="Texture2D" uid="uid://55udcyaapr83" path="res://art/big_plate_atlas.png" id="21_v5qxw"]
-[ext_resource type="Texture2D" uid="uid://btgym7detmug5" path="res://art/big_food_atlas.png" id="22_dj457"]
-[ext_resource type="Texture2D" uid="uid://bovtdom8quxwr" path="res://art/light.png" id="23_bfhu5"]
 
 [sub_resource type="Resource" id="Resource_lfup4"]
 script = ExtResource("2_sri2t")
@@ -151,14 +148,6 @@ _data = {
 "pop up": SubResource("Animation_c1abs")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4q66e"]
-atlas = ExtResource("21_v5qxw")
-region = Rect2(0, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwsjy"]
-atlas = ExtResource("22_dj457")
-region = Rect2(0, 0, 48, 48)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uy7el"]
 texture = ExtResource("21_j3sad")
 
@@ -182,7 +171,7 @@ scale = Vector2(15532.8, 219.422)
 polygon = PackedVector2Array(1, -1.308, 0.16977, -1.01141, 0.146303, -1.30764, 0.132977, -1.30764, 0.108416, -1.00229, -1, -1, -1, 1, 1, 1)
 
 [node name="Test Platform3" parent="Plaforms" instance=ExtResource("2_eqvj5")]
-position = Vector2(1075.5, 264)
+position = Vector2(891.5, 264)
 rotation = 3.14159
 scale = Vector2(1, -1)
 collision_layer = 9
@@ -194,7 +183,7 @@ scale = Vector2(79.875, 31.5938)
 polygon = PackedVector2Array(1.00532, 0.378227, 0.416901, 0.678924, -0.0150232, 0.837184, -0.497026, 0.995447, 1.00532, 0.995438)
 
 [node name="Test Platform4" parent="Plaforms" instance=ExtResource("2_eqvj5")]
-position = Vector2(611.5, 264)
+position = Vector2(427.5, 264)
 rotation = 3.14159
 scale = Vector2(-1, -1)
 collision_layer = 9
@@ -276,7 +265,7 @@ position = Vector2(336, 75)
 position = Vector2(368, 75)
 
 [node name="Order Area" type="CharacterBody2D" parent="."]
-position = Vector2(1219, 165.5)
+position = Vector2(437, 165.5)
 script = ExtResource("8_1bsfp")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Order Area"]
@@ -526,7 +515,6 @@ grow_horizontal = 0
 text = "End Day (DEBUG)"
 
 [node name="ColorRect" type="ColorRect" parent="UI/Control"]
-clip_contents = true
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 94.0
@@ -538,75 +526,62 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Current Orders"
 
+[node name="Label2" type="Label" parent="UI/Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -118.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Finished"
+horizontal_alignment = 2
+
 [node name="NoteMarker" type="Marker2D" parent="UI/Control/ColorRect"]
-position = Vector2(486, 18)
+position = Vector2(442, 18)
 
 [node name="NoteMarker2" type="Marker2D" parent="UI/Control/ColorRect"]
-position = Vector2(390, 18)
+position = Vector2(346, 18)
 
 [node name="NoteMarker3" type="Marker2D" parent="UI/Control/ColorRect"]
-position = Vector2(294, 18)
+position = Vector2(250, 18)
 
 [node name="NoteMarker4" type="Marker2D" parent="UI/Control/ColorRect"]
-position = Vector2(198, 18)
+position = Vector2(154, 18)
 
 [node name="EntranceMarker" type="Marker2D" parent="UI/Control/ColorRect"]
 position = Vector2(-148, 17)
 
-[node name="Sprite2D" type="Sprite2D" parent="UI/Control/ColorRect"]
-position = Vector2(650, 64)
-scale = Vector2(2, 2)
-texture = ExtResource("20_xinmi")
+[node name="MealUI" parent="UI/Control/ColorRect" instance=ExtResource("20_fd628")]
+position = Vector2(675, 59)
 
-[node name="Sprite2D2" type="Sprite2D" parent="UI/Control/ColorRect/Sprite2D"]
-position = Vector2(0, 3)
-texture = SubResource("AtlasTexture_4q66e")
+[node name="MealUI2" parent="UI/Control/ColorRect" instance=ExtResource("20_fd628")]
+position = Vector2(775, 59)
 
-[node name="Sprite2D" type="Sprite2D" parent="UI/Control/ColorRect/Sprite2D"]
-position = Vector2(0, 3)
-texture = SubResource("AtlasTexture_gwsjy")
+[node name="MealUI3" parent="UI/Control/ColorRect" instance=ExtResource("20_fd628")]
+position = Vector2(875, 59)
 
-[node name="Sprite2D3" type="Sprite2D" parent="UI/Control/ColorRect/Sprite2D"]
-modulate = Color(1, 1, 1, 0.137255)
-position = Vector2(0, -14)
-texture = ExtResource("23_bfhu5")
-
-[node name="Sprite2D2" type="Sprite2D" parent="UI/Control/ColorRect"]
-position = Vector2(794, 64)
-scale = Vector2(2, 2)
-texture = ExtResource("20_xinmi")
-
-[node name="Sprite2D3" type="Sprite2D" parent="UI/Control/ColorRect"]
-position = Vector2(938, 64)
-scale = Vector2(2, 2)
-texture = ExtResource("20_xinmi")
-
-[node name="Sprite2D4" type="Sprite2D" parent="UI/Control/ColorRect"]
-position = Vector2(1082, 64)
-scale = Vector2(2, 2)
-texture = ExtResource("20_xinmi")
+[node name="MealUI4" parent="UI/Control/ColorRect" instance=ExtResource("20_fd628")]
+position = Vector2(975, 59)
 
 [node name="Panel" type="Panel" parent="UI/Control"]
 layout_mode = 0
-offset_left = 1056.0
-offset_top = 142.0
-offset_right = 1152.0
-offset_bottom = 238.0
+offset_left = 527.0
+offset_top = -6.0
+offset_right = 623.0
+offset_bottom = 90.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_uy7el")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/margin_left = 27
-theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="Label" type="Label" parent="UI/Control/Panel/MarginContainer"]
+[node name="Label" type="Label" parent="UI/Control/Panel"]
 layout_mode = 2
+offset_left = 27.0
+offset_top = 36.0
+offset_right = 71.0
+offset_bottom = 59.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "12:00"
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 offset_left = 995.0
@@ -633,7 +608,7 @@ text = "$ Money : 10"
 position = Vector2(379, 264.5)
 
 [node name="Table3" parent="." instance=ExtResource("3_a3cbi")]
-position = Vector2(829.5, 264.5)
+position = Vector2(658.5, 264.5)
 
 [node name="Customers" type="Node2D" parent="."]
 
@@ -657,6 +632,16 @@ position = Vector2(-213.5, 245.5)
 
 [node name="Meal" parent="." instance=ExtResource("18_w2fbv")]
 position = Vector2(192.5, 160.5)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(576, 0)
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0.45098, 1, 1)
 
 [connection signal="grounded_updated" from="Player" to="Player/Camera2D" method="_on_player_grounded_updated"]
 [connection signal="order_queued" from="Order Area" to="Order Area" method="_on_order_queued"]

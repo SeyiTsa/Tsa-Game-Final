@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4mn4cluqm286"]
+
+[ext_resource type="Texture2D" uid="uid://bq5cprnin8dgd" path="res://art/food_shadow.png" id="1_xd3bo"]
+[ext_resource type="Script" path="res://scripts/meal_ui.gd" id="2_t4qpt"]
+[ext_resource type="Texture2D" uid="uid://bovtdom8quxwr" path="res://art/light.png" id="5_bbj60"]
+
+[node name="MealUI" type="Sprite2D"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_xd3bo")
+script = ExtResource("2_t4qpt")
+
+[node name="Plate" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Food" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Light" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.137255)
+position = Vector2(0, -14)
+texture = ExtResource("5_bbj60")

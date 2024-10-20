@@ -10,7 +10,9 @@ var sprites : Array[Sprite2D]
 var visible_sprites : Array[bool]
 var is_selected : bool
 var current_choice : bool
+var used_sprites : Array
 signal order_queued(sprite : Sprite2D)
+
 func _ready() -> void:
 	interact_area.area_entered.connect(on_area_entered)
 	interact_area.area_exited.connect(on_area_exited)
@@ -40,9 +42,7 @@ func _physics_process(delta: float) -> void:
 			for meal in order:
 				$"../UI".add_order(meal)
 			break
-		
-				
-				
+
 		show_random_sprite()
 		
 		
@@ -76,22 +76,28 @@ func _physics_process(delta: float) -> void:
 	else:
 		current_choice = false
 func show_random_sprite():
-	var random_sprite = sprites[randi_range(0, sprites.size() - 1)]
-	if !random_sprite.visible:
-		random_sprite.show()
-		visible_sprites.clear()
-		for x in get_children():
-			if x is Sprite2D:
-				sprites.append(x)
-				visible_sprites.append(x.visible)
-		random_sprite.data = current_orders[current_orders.size() - 1].duplicate()
-	else:
-		show_random_sprite()
-
+	#var random_sprite = sprites[randi_range(0, sprites.size() - 1)]
+	#if !random_sprite.visible:
+		#random_sprite.show()
+		#visible_sprites.clear()
+		#for x in get_children():
+			#if x is Sprite2D:
+				#sprites.append(x)
+				#visible_sprites.append(x.visible)
+		#random_sprite.data = current_orders[current_orders.size() - 1].duplicate()
+	#else:
+		#show_random_sprite()
+	for sprite in sprites:
+		if !used_sprites.has(sprite):
+			used_sprites.append(sprite)
+			sprite.show()
+			sprite.data = current_orders[current_orders.size() - 1].duplicate()
+			break
 
 func _on_order_queued(sprite: Sprite2D) -> void:
 	current_orders.erase(sprite.data)
 	sprite.hide()
+	used_sprites.erase(sprite)
 	visible_sprites.clear()
 	for x in get_children():
 		if x is Sprite2D:

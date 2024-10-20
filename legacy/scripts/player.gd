@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D.flip_h = false
 		$AnimatedSprite2D2.flip_h = false
 	
-	$Label.text = str($"../UI".backed_up_orders)
+
 	
 	velocity.x = clamp(velocity.x, -1800, 1800)
 	

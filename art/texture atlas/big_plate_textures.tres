@@ -4,3 +4,4 @@
 
 [resource]
 atlas = ExtResource("1_pjvkp")
+region = Rect2(0, 0, 48, 48)

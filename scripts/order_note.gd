@@ -1,7 +1,7 @@
 extends Panel
 
 @export var food_data : String
-
+var being_deleted : bool
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	

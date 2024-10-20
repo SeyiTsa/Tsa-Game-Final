@@ -11,7 +11,7 @@ const meal = preload("res://scenes/meal.tscn")
 var food_data_options : Array[FoodData] = [preload("res://scripts/resources/food data/burger.tres"), preload("res://scripts/resources/food data/taco.tres"),
 preload("res://scripts/resources/food data/pizza.tres"), preload("res://scripts/resources/food data/milkshake.tres")]
 var food_options : Array[String] = []
-signal order_made
+signal order_made(meal, counter_spot, total_counter_spots)
 func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 	for i in food_data_options:
@@ -48,6 +48,7 @@ func _physics_process(delta: float) -> void:
 		get_tree().create_timer(randf_range(5, 8), false).timeout.connect(make_food)
 	if backlog and get_tree().root.get_node("Level1").counter.available_spots:
 		for meal in backlog:
+			order_made.emit(null, get_tree().root.get_node("Level1").counter.available_spots[0], get_tree().root.get_node("Level1").counter.total_spots)
 			get_tree().root.get_node("Level1").counter.available_spots[0].add_child(meal)
 			backlog.erase(meal)
 		
@@ -78,15 +79,15 @@ func make_food():
 				meal_ins.data = food_data_options[index]
 				if get_tree().root.get_node("Level1").counter.available_spots:
 					meal_ins.global_position = get_tree().root.get_node("Level1").counter.available_spots[0].global_position
-					
+					order_made.emit(meal_ins, get_tree().root.get_node("Level1").counter.available_spots[0], get_tree().root.get_node("Level1").counter.total_spots)
 					get_tree().root.get_node("Level1").counter.available_spots[0].add_child(meal_ins)
-				else:
 					
+				else:
+					order_made.emit(meal_ins, null, get_tree().root.get_node("Level1").counter.total_spots)
 					backlog.append(meal_ins)
 		if current_batches_being_made.size() > 0:
-			for x in current_meal_set.size():
-				order_made.emit()
 			current_batches_being_made.remove_at(0)
+			
 		cook_timer_started = false 
 	else:
 		cook_timer_started = false

@@ -34,7 +34,7 @@ shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_81ssm"]
-radius = 38.0
+radius = 46.0
 
 [sub_resource type="Animation" id="Animation_13fxc"]
 length = 0.001
@@ -133,7 +133,7 @@ region_rect = Rect2(0, 0, 32, 32)
 scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/Interact Area"]
-position = Vector2(0, -12)
+position = Vector2(0, -14)
 shape = SubResource("CircleShape2D_81ssm")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
