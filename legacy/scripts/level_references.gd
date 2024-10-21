@@ -1,6 +1,6 @@
 extends Node
 
-@export var counter : CharacterBody2D
+@export var counter : Counter
 @export var leave_point : Marker2D
 
 @export var day_1_customers : Array[CustomerData]

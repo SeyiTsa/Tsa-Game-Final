@@ -28,4 +28,4 @@ plate_glass = SubResource("AtlasTexture_qblt6")
 food_liquid = SubResource("AtlasTexture_yv4y0")
 big_plate_glass = SubResource("AtlasTexture_77rev")
 big_food_liquid = SubResource("AtlasTexture_4twon")
-name = ""
+name = "Burger"

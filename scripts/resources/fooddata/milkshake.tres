@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FoodData" load_steps=10 format=3 uid="uid://dvkckp3tw6br1"]
+[gd_resource type="Resource" script_class="FoodData" load_steps=10 format=3 uid="uid://b0gulxrpeoydb"]
 
 [ext_resource type="Texture2D" uid="uid://btgym7detmug5" path="res://art/big_food_atlas.png" id="1_qmp0h"]
 [ext_resource type="Script" path="res://scripts/resources/food_data.gd" id="1_x6f15"]
@@ -6,26 +6,26 @@
 [ext_resource type="Texture2D" uid="uid://f8oupegao3fo" path="res://legacy/art/food_liquid_atlas.png" id="3_tcq0t"]
 [ext_resource type="Texture2D" uid="uid://m43l87hkoi25" path="res://legacy/art/plate_glass_atlas.png" id="4_f2gdk"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ymu2b"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ol3c"]
 atlas = ExtResource("1_qmp0h")
 region = Rect2(48, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_smida"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_uva6r"]
 atlas = ExtResource("2_jx2u8")
 region = Rect2(48, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oheui"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2suk"]
 atlas = ExtResource("3_tcq0t")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_exqph"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywnkp"]
 atlas = ExtResource("4_f2gdk")
 region = Rect2(96, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_x6f15")
-plate_glass = SubResource("AtlasTexture_exqph")
-food_liquid = SubResource("AtlasTexture_oheui")
-big_plate_glass = SubResource("AtlasTexture_smida")
-big_food_liquid = SubResource("AtlasTexture_ymu2b")
+plate_glass = SubResource("AtlasTexture_ywnkp")
+food_liquid = SubResource("AtlasTexture_i2suk")
+big_plate_glass = SubResource("AtlasTexture_uva6r")
+big_food_liquid = SubResource("AtlasTexture_6ol3c")
 name = "Milk shake"

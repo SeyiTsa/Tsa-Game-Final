@@ -16,7 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://legacy/art/string.png" id="10_uw6ms"]
 [ext_resource type="Script" path="res://legacy/scripts/order_area.gd" id="10_wawwa"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="11_xv75k"]
-[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="12_1tjhg"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="12_1tjhg"]
 [ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://legacy/art/order_note.png" id="14_v3d5j"]
 [ext_resource type="Script" path="res://legacy/scripts/order_note.gd" id="15_3t1oy"]
 [ext_resource type="Script" path="res://legacy/scripts/counter.gd" id="16_8aeb1"]

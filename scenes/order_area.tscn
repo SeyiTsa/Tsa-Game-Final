@@ -1,0 +1,141 @@
+[gd_scene load_steps=13 format=3 uid="uid://hmpo0k7orj7r"]
+
+[ext_resource type="Script" path="res://legacy/scripts/order_area.gd" id="1_ubhuf"]
+[ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="2_qk5w8"]
+[ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://legacy/art/string.png" id="3_m1mv7"]
+[ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://legacy/art/order_note.png" id="4_ra1h4"]
+[ext_resource type="Script" path="res://legacy/scripts/order_note.gd" id="5_1ecdt"]
+[ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="6_k8h0y"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="7_1xq4t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nbe"]
+resource_local_to_scene = true
+shader = ExtResource("2_qk5w8")
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/color_b = Color(1, 1, 1, 1)
+shader_parameter/colors_affect_alpha = false
+shader_parameter/flash_amount = 1.0
+shader_parameter/flash_speed = 1.0
+shader_parameter/transparency = 1.0
+shader_parameter/intensity = 0.0
+
+[sub_resource type="Animation" id="Animation_20c6q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_cb6sd"]
+resource_name = "selected"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hkxo1"]
+_data = {
+"RESET": SubResource("Animation_20c6q"),
+"selected": SubResource("Animation_cb6sd")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4klid"]
+size = Vector2(72, 60)
+
+[node name="Order Area" type="StaticBody2D"]
+script = ExtResource("1_ubhuf")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+z_index = 1
+texture_filter = 1
+material = SubResource("ShaderMaterial_d8nbe")
+offset_left = -35.0
+offset_top = -63.0
+offset_right = 35.0
+offset_bottom = -43.0
+texture = ExtResource("3_m1mv7")
+patch_margin_left = 3
+patch_margin_right = 3
+axis_stretch_vertical = 1
+
+[node name="Highlight" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hkxo1")
+}
+
+[node name="1" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-23, -48)
+texture = ExtResource("4_ra1h4")
+script = ExtResource("5_1ecdt")
+
+[node name="2" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-12, -48)
+texture = ExtResource("4_ra1h4")
+script = ExtResource("5_1ecdt")
+
+[node name="3" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-0.5, -48)
+texture = ExtResource("4_ra1h4")
+script = ExtResource("5_1ecdt")
+
+[node name="4" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(11, -48)
+texture = ExtResource("4_ra1h4")
+script = ExtResource("5_1ecdt")
+
+[node name="5" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(22, -48)
+texture = ExtResource("4_ra1h4")
+script = ExtResource("5_1ecdt")
+
+[node name="InteractableComponent" parent="." node_paths=PackedStringArray("interact_area") instance=ExtResource("6_k8h0y")]
+interact_area = NodePath("../InteractAreaComponent")
+
+[node name="InteractAreaComponent" parent="." instance=ExtResource("7_1xq4t")]
+position = Vector2(0, -34)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractAreaComponent"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_4klid")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(37, -30)
+scale = Vector2(2, 30)
+color = Color(0.499208, 0.312098, 0.0420033, 1)
+polygon = PackedVector2Array(1, -1, -1, -1, -1, 1, 1, 1)
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+position = Vector2(-37.5, -30)
+scale = Vector2(2.5, 30)
+color = Color(0.499208, 0.312098, 0.0420033, 1)
+polygon = PackedVector2Array(1, -1, -1, -1, -1, 1, 1, 1)
+
+[connection signal="order_queued" from="." to="." method="_on_order_queued"]

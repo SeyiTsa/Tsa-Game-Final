@@ -1,5 +1,5 @@
-extends CharacterBody2D
-
+extends StaticBody2D
+class_name Counter
 
 var available_spots : Array[Marker2D]
 var total_spots: Array[Marker2D]

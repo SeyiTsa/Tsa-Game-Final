@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4dbpk1ujffv3"]
+
+[ext_resource type="Script" path="res://legacy/scripts/interactable.gd" id="1_q38ux"]
+
+[node name="InteractableComponent" type="Node2D" node_paths=PackedStringArray("interact_area")]
+script = ExtResource("1_q38ux")
+interact_area = NodePath("")
+
+[connection signal="switch_interaction" from="." to="." method="_on_switch_interaction"]

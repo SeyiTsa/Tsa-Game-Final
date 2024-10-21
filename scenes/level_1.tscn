@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c2fq35gvrs0rh"]
+[gd_scene load_steps=27 format=3 uid="uid://c2fq35gvrs0rh"]
 
 [ext_resource type="Script" path="res://legacy/scripts/level_references.gd" id="1_2m6e1"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="1_ewrfb"]
@@ -10,12 +10,7 @@
 [ext_resource type="Script" path="res://legacy/scripts/counter.gd" id="6_8lidj"]
 [ext_resource type="Script" path="res://legacy/scripts/player_cam.gd" id="6_ybfqd"]
 [ext_resource type="PackedScene" uid="uid://0x63fjbxuua6" path="res://legacy/scenes/counter_spot.tscn" id="7_441gc"]
-[ext_resource type="Script" path="res://legacy/scripts/order_area.gd" id="8_1bsfp"]
-[ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="9_tn4ig"]
-[ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://legacy/art/string.png" id="10_565b1"]
-[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="11_phqxf"]
-[ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://legacy/art/order_note.png" id="12_3mrwi"]
-[ext_resource type="Script" path="res://legacy/scripts/order_note.gd" id="13_wfuar"]
+[ext_resource type="PackedScene" uid="uid://hmpo0k7orj7r" path="res://scenes/order_area.tscn" id="10_7l4ny"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="14_bfjv6"]
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://legacy/art/notepad_ui.png" id="14_n4irw"]
 [ext_resource type="Script" path="res://legacy/scripts/notepad.gd" id="15_sraf0"]
@@ -35,58 +30,6 @@ patience_multplier = 0.15
 vertices = PackedVector2Array(2904.23, 575.578, -2519.34, 607.43, -2444.59, -583.211, 2486.81, -700.32)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-2454, -593, -2530, 617.5, 2918, 585.5, 2494, -710.5)])
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nbe"]
-resource_local_to_scene = true
-shader = ExtResource("9_tn4ig")
-shader_parameter/color_a = Color(1, 1, 1, 1)
-shader_parameter/color_b = Color(1, 1, 1, 1)
-shader_parameter/colors_affect_alpha = false
-shader_parameter/flash_amount = 1.0
-shader_parameter/flash_speed = 1.0
-shader_parameter/transparency = 1.0
-shader_parameter/intensity = 0.0
-
-[sub_resource type="Animation" id="Animation_20c6q"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_cb6sd"]
-resource_name = "selected"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("NinePatchRect:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 1.0, 0.0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hkxo1"]
-_data = {
-"RESET": SubResource("Animation_20c6q"),
-"selected": SubResource("Animation_cb6sd")
-}
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fpy0"]
-size = Vector2(70, 45.5)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gi3pc"]
 texture = ExtResource("14_n4irw")
@@ -247,7 +190,7 @@ visible = false
 navigation_polygon = SubResource("NavigationPolygon_8viis")
 metadata/_edit_lock_ = true
 
-[node name="Counter" type="CharacterBody2D" parent="."]
+[node name="Counter" type="StaticBody2D" parent="."]
 position = Vector2(1490.5, 190)
 script = ExtResource("6_8lidj")
 
@@ -263,81 +206,8 @@ position = Vector2(336, 75)
 [node name="Counter Spot4" parent="Counter" instance=ExtResource("7_441gc")]
 position = Vector2(368, 75)
 
-[node name="Order Area" type="CharacterBody2D" parent="."]
-position = Vector2(437, 165.5)
-script = ExtResource("8_1bsfp")
-
-[node name="NinePatchRect" type="NinePatchRect" parent="Order Area"]
-z_index = 1
-texture_filter = 1
-material = SubResource("ShaderMaterial_d8nbe")
-offset_left = 445.0
-offset_top = 41.5
-offset_right = 515.0
-offset_bottom = 61.5
-texture = ExtResource("10_565b1")
-patch_margin_left = 3
-patch_margin_right = 3
-axis_stretch_vertical = 1
-
-[node name="Highlight" type="AnimationPlayer" parent="Order Area"]
-libraries = {
-"": SubResource("AnimationLibrary_hkxo1")
-}
-
-[node name="Interact Area" parent="Order Area" instance=ExtResource("11_phqxf")]
-position = Vector2(445, 35.5)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Order Area/Interact Area"]
-position = Vector2(35, 41.75)
-shape = SubResource("RectangleShape2D_6fpy0")
-
-[node name="1" type="Sprite2D" parent="Order Area"]
-visible = false
-z_index = 1
-position = Vector2(457, 57)
-texture = ExtResource("12_3mrwi")
-script = ExtResource("13_wfuar")
-
-[node name="2" type="Sprite2D" parent="Order Area"]
-visible = false
-z_index = 1
-position = Vector2(467, 57)
-texture = ExtResource("12_3mrwi")
-script = ExtResource("13_wfuar")
-
-[node name="3" type="Sprite2D" parent="Order Area"]
-visible = false
-z_index = 1
-position = Vector2(497.5, 57)
-texture = ExtResource("12_3mrwi")
-script = ExtResource("13_wfuar")
-
-[node name="4" type="Sprite2D" parent="Order Area"]
-visible = false
-z_index = 1
-position = Vector2(476.75, 57.3)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("12_3mrwi")
-script = ExtResource("13_wfuar")
-
-[node name="5" type="Sprite2D" parent="Order Area"]
-visible = false
-z_index = 1
-position = Vector2(488, 57.3)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("12_3mrwi")
-script = ExtResource("13_wfuar")
-
-[node name="Polygon2D" type="Polygon2D" parent="Order Area"]
-z_index = -1
-color = Color(0.764706, 0.298039, 0, 1)
-polygon = PackedVector2Array(445, 99, 445, 50, 440.5, 50, 440.5, 99)
-
-[node name="Polygon2D2" type="Polygon2D" parent="Order Area"]
-position = Vector2(74.5, 0)
-color = Color(0.764706, 0.298039, 0, 1)
-polygon = PackedVector2Array(445, 99, 445, 50, 440.5, 50, 440.5, 99)
+[node name="Order Area" parent="." instance=ExtResource("10_7l4ny")]
+position = Vector2(996, 264.5)
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("14_bfjv6")
@@ -630,7 +500,6 @@ position = Vector2(736, 147.5)
 position = Vector2(-213.5, 245.5)
 
 [connection signal="grounded_updated" from="Player" to="Player/Camera2D" method="_on_player_grounded_updated"]
-[connection signal="order_queued" from="Order Area" to="Order Area" method="_on_order_queued"]
 [connection signal="mouse_entered" from="UI/Control/Notepad" to="UI/Control/Notepad" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Control/Notepad" to="UI/Control/Notepad" method="_on_mouse_exited"]
 [connection signal="timeout" from="UI/Control/Notepad/Timer" to="UI/Control/Notepad" method="_on_timer_timeout"]

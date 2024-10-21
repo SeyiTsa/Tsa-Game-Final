@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://1731x5423axy"]
+[gd_scene load_steps=12 format=3 uid="uid://1731x5423axy"]
 
 [ext_resource type="Script" path="res://legacy/scripts/chair.gd" id="1_ssqv1"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="2_mxcq6"]
 [ext_resource type="Texture2D" uid="uid://bn2m61e0aacrh" path="res://legacy/art/wooden_chair.png" id="2_tch5m"]
-[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="3_gxhlh"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="3_gxhlh"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="4_8grtj"]
+[ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="6_ro1wf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yx2kc"]
 resource_local_to_scene = true
@@ -16,9 +17,6 @@ shader_parameter/flash_amount = 1.0
 shader_parameter/flash_speed = 1.0
 shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_8ho5p"]
-radius = 16.2788
 
 [sub_resource type="Animation" id="Animation_ducmk"]
 length = 0.001
@@ -58,7 +56,10 @@ _data = {
 "selected": SubResource("Animation_ya1kk")
 }
 
-[node name="Chair" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_kevd6"]
+radius = 22.0227
+
+[node name="Chair" type="StaticBody2D"]
 collision_layer = 5
 script = ExtResource("1_ssqv1")
 
@@ -71,12 +72,6 @@ offset = Vector2(0, -17)
 
 [node name="Customer Marker" type="Marker2D" parent="."]
 position = Vector2(0, -12)
-
-[node name="Interact Area" parent="." instance=ExtResource("3_gxhlh")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area"]
-position = Vector2(0, -16)
-shape = SubResource("CircleShape2D_8ho5p")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 visible = false
@@ -100,3 +95,12 @@ polygon = PackedVector2Array(-12, -33, 3, -33, 3, -14.6667, 14, -14.6667, 14, -1
 position = Vector2(0, -2.86102e-06)
 color = Color(0.677073, 0.391441, 0.0899293, 1)
 polygon = PackedVector2Array(3, -14.6667, -12, -14.6667, -12, -18.3333, 3, -18.3333)
+
+[node name="InteractableComponent" parent="." node_paths=PackedStringArray("interact_area") instance=ExtResource("6_ro1wf")]
+interact_area = NodePath("../InteractAreaComponent")
+
+[node name="InteractAreaComponent" parent="." instance=ExtResource("3_gxhlh")]
+position = Vector2(0, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractAreaComponent"]
+shape = SubResource("CircleShape2D_kevd6")

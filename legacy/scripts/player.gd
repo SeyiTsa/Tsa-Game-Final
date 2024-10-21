@@ -102,7 +102,7 @@ func _process(delta: float) -> void:
 	if direction and !turning:
 		if !grinding and is_on_floor():
 			@warning_ignore("narrowing_conversion")
-			kick_speed_duration -= 0.45 * Engine.time_scale
+			kick_speed_duration -= Engine.time_scale
 			if kick_speed_duration <= 0:
 				if (velocity.x >= -1000 and velocity.x < 1000):
 					kick_speed_duration = 100

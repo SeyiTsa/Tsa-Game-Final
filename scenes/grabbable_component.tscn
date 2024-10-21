@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bghioyrh7k6ov"]
+
+[ext_resource type="Script" path="res://legacy/scripts/grabbable.gd" id="1_pp8qu"]
+
+[node name="GrabbableComponent" type="Node2D" node_paths=PackedStringArray("interactable_component")]
+position = Vector2(0, -1)
+script = ExtResource("1_pp8qu")
+interactable_component = NodePath("")

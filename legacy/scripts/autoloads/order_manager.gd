@@ -1,6 +1,6 @@
 extends Node
 var notepad : Control
-var order_area : CharacterBody2D
+var order_area : StaticBody2D
 var order_list : Array[String]
 var current_batches_in_wait : Array[Array]
 var current_batches_being_made : Array[Array]

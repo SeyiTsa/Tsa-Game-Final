@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://legacy/scripts/fire_extinguisher.gd" id="1_oxvvk"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="2_h5meg"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="2_in1cd"]
-[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="4_p62vi"]
+[ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="4_p62vi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41e5j"]
 resource_local_to_scene = true
