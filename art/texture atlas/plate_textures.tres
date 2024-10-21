@@ -1,7 +1,7 @@
 [gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://cjkj1lp31qoe2"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xjckx"]
+[ext_resource type="Texture2D" uid="uid://m43l87hkoi25" path="res://legacy/art/plate_glass_atlas.png" id="1_cj2uw"]
 
 [resource]
-atlas = SubResource("CompressedTexture2D_xjckx")
+atlas = ExtResource("1_cj2uw")
 region = Rect2(0, 0, 32, 32)

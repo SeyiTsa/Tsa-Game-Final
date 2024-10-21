@@ -141,7 +141,7 @@ func _physics_process(delta: float) -> void:
 					var food_option = food_options[randi_range(0, food_options.size() - 1)]
 					OrderManager.add_order(food_option)
 					var index = OrderManager.food_options.find(food_option)
-					$"Ordered Food".texture = OrderManager.food_data_options[index].food_liquid
+					
 					has_order_ready = false
 					$"Order Marker".hide()
 					can_be_selected = false

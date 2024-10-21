@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c2fq35gvrs0rh"]
+[gd_scene load_steps=37 format=3 uid="uid://c2fq35gvrs0rh"]
 
 [ext_resource type="Script" path="res://legacy/scripts/level_references.gd" id="1_2m6e1"]
 [ext_resource type="PackedScene" uid="uid://cd8vbm5in07ms" path="res://scenes/player.tscn" id="1_ewrfb"]
@@ -20,7 +20,6 @@
 [ext_resource type="Texture2D" uid="uid://d4l76sk03ut4f" path="res://legacy/art/notepad_ui.png" id="14_n4irw"]
 [ext_resource type="Script" path="res://legacy/scripts/notepad.gd" id="15_sraf0"]
 [ext_resource type="Script" path="res://legacy/scripts/pause_menu.gd" id="16_7t4vj"]
-[ext_resource type="PackedScene" uid="uid://da11l3el5crsv" path="res://scenes/meal.tscn" id="18_w2fbv"]
 [ext_resource type="PackedScene" uid="uid://b4mn4cluqm286" path="res://scenes/meal_ui.tscn" id="20_fd628"]
 [ext_resource type="Texture2D" uid="uid://crb0qsx06jfbj" path="res://art/clock.png" id="21_j3sad"]
 
@@ -629,19 +628,6 @@ position = Vector2(736, 147.5)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(-213.5, 245.5)
-
-[node name="Meal" parent="." instance=ExtResource("18_w2fbv")]
-position = Vector2(192.5, 160.5)
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2(576, 0)
-
-[node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0, 0.45098, 1, 1)
 
 [connection signal="grounded_updated" from="Player" to="Player/Camera2D" method="_on_player_grounded_updated"]
 [connection signal="order_queued" from="Order Area" to="Order Area" method="_on_order_queued"]

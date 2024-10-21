@@ -8,11 +8,14 @@ var wait_timer_started : bool
 var backlog : Array = []
 var cook_timer_started : bool
 const MEAL = preload("res://scenes/meal.tscn")
-var food_data_options : Array[FoodData] = [preload("res://scripts/resources/food data/burger.tres"), preload("res://scripts/resources/food data/taco.tres"),
-preload("res://scripts/resources/food data/pizza.tres"), preload("res://scripts/resources/food data/milkshake.tres")]
+
+var food_data_options : Array = [preload("res://scripts/resources/fooddata/burger.tres"), preload("res://scripts/resources/fooddata/milkshake.tres"),
+preload("res://scripts/resources/fooddata/taco.tres"), preload("res://scripts/resources/fooddata/pizza.tres")]
 var food_options : Array[String] = []
+
 signal order_made(meal, counter_spot, total_counter_spots)
 func _ready() -> void:
+
 	process_mode = PROCESS_MODE_ALWAYS
 	for i in food_data_options:
 		food_options.append(i.name)

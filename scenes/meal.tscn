@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://da11l3el5crsv"]
+[gd_scene load_steps=13 format=3 uid="uid://da11l3el5crsv"]
 
 [ext_resource type="Script" path="res://legacy/scripts/meal.gd" id="1_k6154"]
-[ext_resource type="Resource" uid="uid://d1hoedjk50ga6" path="res://scripts/resources/food data/milkshake.tres" id="2_52yke"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interact_area.tscn" id="2_hbwfx"]
 [ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="4_08l3p"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="4_cshtj"]
@@ -103,7 +102,6 @@ position = Vector2(0, -1)
 collision_layer = 13
 collision_mask = 13
 script = ExtResource("1_k6154")
-data = ExtResource("2_52yke")
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
 collision_layer = 8

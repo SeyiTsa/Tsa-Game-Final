@@ -73,11 +73,9 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D.flip_h = false
 		$AnimatedSprite2D2.flip_h = false
 	
-<<<<<<< HEAD
 
-=======
 	$Label.text = str(kick_speed_duration)
->>>>>>> a478d7118cd76667f0bd1973f9d9c2d854f872da
+
 	
 	velocity.x = clamp(velocity.x, -1800, 1800)
 	
