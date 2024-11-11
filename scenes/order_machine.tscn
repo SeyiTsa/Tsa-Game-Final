@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://n4qmgdf1g1vu"]
+
+[ext_resource type="Script" path="res://scripts/order_machine.gd" id="1_bj65q"]
+[ext_resource type="Texture2D" uid="uid://g4agp7vk2rbl" path="res://legacy/art/order_machine_bronze.png" id="1_ic5cp"]
+
+[node name="Order Machine" type="StaticBody2D"]
+script = ExtResource("1_bj65q")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ic5cp")
+offset = Vector2(0.5, 0)
+
+[node name="Meal Marker" type="Marker2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -38.0
+offset_right = 20.0
+offset_bottom = -15.0

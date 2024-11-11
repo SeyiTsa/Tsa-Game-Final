@@ -13,14 +13,20 @@ var doing_trick : bool = false
 var wall_bounce_timer_started : bool = false
 var is_grounded : bool
 var input_frame : bool
+var current_throw : String = "Bullet"
 var input_vector : Vector2
 var fall_gravity : int = 4000
 var gravity : int = 3000
+var wall_jumping : bool = false
+var throwing : bool = false
 var holding_meal : bool
 var JUMP_VELOCITY : int = -900
 var acceleration : int = 400
 var jump_buffer : bool
 var jumping : bool
+var max_timeslow_duration : int = 80
+var current_timeslow_duration : float
+var timeslow_effect : bool
 var push_offed : bool = false:
 	set(value):
 		if value:
@@ -31,9 +37,20 @@ var push_offed : bool = false:
 var push_off_direction  = 1
 var kick_speed_duration : float = 100
 var jump_buffer_time = 0.2
-
+var wall_jump_direction : int
+@onready var wall_jump: RayCast2D = $WallJump
+var ground_pounding : bool = false
+var facing : int
 var grinding : bool
+var grayscale_amount : float = 0
 var current_trick
+var just_ground_pounded : bool:
+	set(value):
+		
+		if value == true:
+			just_ground_pounded = value
+			await get_tree().create_timer(0.2).timeout
+			just_ground_pounded = false
 var wall_bounce_floor_check : bool
 signal grounded_updated(is_grounded)
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D2
@@ -49,10 +66,37 @@ func update_position():
 		tween.tween_property($AnimatedSprite2D, "global_position:y", global_position.y, 0.05)
 
 func _process(delta: float) -> void:
-	if Input.is_action_pressed("ui_down"):
-		Engine.time_scale = move_toward(Engine.time_scale, 0.3, 1)
+	if animated_sprite_2d.flip_h == false:
+		facing = 1
 	else:
-		Engine.time_scale = move_toward(Engine.time_scale, 1, 1)
+		facing = -1
+	
+	if wall_jumping and is_on_floor():
+		wall_jumping = false
+	#wall_jump.target_position.x = 15 * facing
+	
+	if Input.is_action_just_pressed("time slow"):
+		timeslow_effect = not timeslow_effect
+	
+	
+	
+	if timeslow_effect and current_timeslow_duration > 0:
+		Engine.time_scale = move_toward(Engine.time_scale, 0.2, delta * 4)
+		grayscale_amount = move_toward(grayscale_amount, 1, delta * 4)
+		$"../CanvasLayer/ColorRect".material.set_shader_parameter("grayscale_amount", grayscale_amount)
+
+		current_timeslow_duration -= 0.2
+		
+	else:
+		grayscale_amount = move_toward(grayscale_amount, 0, delta * 4)
+		Engine.time_scale = move_toward(Engine.time_scale, 1, delta * 4)
+		$"../CanvasLayer/ColorRect".material.set_shader_parameter("grayscale_amount", grayscale_amount)
+	
+	if current_timeslow_duration <= 0:
+		timeslow_effect = false
+		current_timeslow_duration = max_timeslow_duration
+
+	
 	if !doing_trick and current_trick:
 
 		current_trick = null
@@ -74,8 +118,26 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D2.flip_h = false
 	
 
-	$Label.text = str(kick_speed_duration)
-
+	$Label.text = str(current_timeslow_duration)
+	if !Input.is_action_pressed("grind"):
+		$Line2D.hide()
+		throwing = false
+	else:
+		if holding_meal:
+			$Line2D.show()
+			throwing = true
+	if Input.is_action_just_pressed("ground_pound") and is_on_floor() == false and !ground_pounding:
+		ground_pounding = true
+	if ground_pounding:
+		velocity.x = move_toward(velocity.x, 0, delta * 2000)
+		velocity.y += 5000 * delta
+		if speed > 300:
+			speed = 800
+	if is_on_floor():
+		if ground_pounding:
+			just_ground_pounded = true
+		ground_pounding = false
+		
 	
 	velocity.x = clamp(velocity.x, -1800, 1800)
 	
@@ -85,11 +147,7 @@ func _process(delta: float) -> void:
 
 	direction = Input.get_axis("left","right")
 	
-	if holding_meal and Input.is_action_just_pressed("grind"):
 
-		marker_2d.get_child(0).get_child(0).linear_velocity = Vector2(direction * 1000, 0)
-		InteractionManager.currently_holding_item = false
-		marker_2d.get_child(0).put_down()
 		
 	if direction or doing_trick:
 		velocity.x = move_toward(velocity.x, speed * direction, delta * acceleration)
@@ -101,7 +159,6 @@ func _process(delta: float) -> void:
 	velocity.y += delta * _get_gravity()
 	if direction and !turning:
 		if !grinding and is_on_floor():
-			@warning_ignore("narrowing_conversion")
 			kick_speed_duration -= Engine.time_scale
 			if kick_speed_duration <= 0:
 				if (velocity.x >= -1000 and velocity.x < 1000):
@@ -110,7 +167,10 @@ func _process(delta: float) -> void:
 	else:
 		if !doing_trick:
 			push_offed = false
-
+			
+	if kick_speed_duration <= 0:
+		if !(velocity.x >= -1000 and velocity.x < 1000):
+			kick_speed_duration = 0
 
 	if direction != (velocity.x / abs(velocity.x)) and direction != 0 and is_on_floor() and velocity.x != 0:
 		speed = 100
@@ -137,6 +197,10 @@ func _process(delta: float) -> void:
 				rotation_degrees = lerpf(rotation_degrees, -180, delta/10)
 	if marker_2d.get_child_count() > 0:
 		holding_meal = true
+		if Input.is_action_just_released("grind"):
+			var meal = marker_2d.get_child(0)
+			meal.get_node("GrabbableComponent").put_down()
+			meal.throw(global_position, get_global_mouse_position(), current_throw)
 	else:
 		holding_meal = false
 	move_and_slide()
@@ -145,7 +209,7 @@ func _process(delta: float) -> void:
 	is_grounded = is_on_floor()
 	if was_grounded == null or is_grounded != was_grounded:
 		grounded_updated.emit(is_grounded)
-	if Input.is_action_just_pressed("grind") and ($WallRight.is_colliding() or $WallLeft.is_colliding()) and velocity.x != 0:
+	if Input.is_action_just_pressed("grind") and ($WallRight.is_colliding() or $WallLeft.is_colliding()) and velocity.x != 0 and !wall_jumping:
 		
 		if velocity.x > 0:
 			if velocity.x > 200:
@@ -242,7 +306,8 @@ func _process(delta: float) -> void:
 		push_offed = false
 	if doing_trick and current_trick == "kickflip" and is_on_floor() and velocity.y == 0:
 		doing_trick = false
-
+		
+	get_trajectory(get_global_mouse_position(), 10, delta)
 
 
 func push_off(i):
@@ -254,13 +319,19 @@ func push_off(i):
 			if not (speed >= -1000 and speed < 1000):
 				speed = clamp(speed, -1000, 1000)
 		else:
-			speed = 150
+			if wall_jumping == false:
+				speed = 250
 
 	
 func _get_gravity() -> float:
-	if velocity.y < 0:
-		return gravity
-	return fall_gravity
+	if wall_jump.is_colliding() == false:
+		if velocity.y < 0:
+			return gravity
+		return fall_gravity
+	if velocity.y > 0:
+		return 500
+	else:
+		return fall_gravity
 	
 func jump():
 	if is_on_floor():
@@ -273,20 +344,43 @@ func jump():
 			current_trick = "kickflip"
 		if grinding:
 			speed += 70
+
 		velocity.y = JUMP_VELOCITY
+		if just_ground_pounded:
+			velocity.y = JUMP_VELOCITY * 1.5
 		await get_tree().process_frame
 		jumping = true
-
-
+	
 	elif !is_on_floor():
 		jump_buffer = true
 		await get_tree().create_timer(0.1).timeout
 		jump_buffer = false
+		if wall_jump.is_colliding():
+			if !wall_jumping:
+				if animated_sprite_2d.flip_h == false:
+					wall_jump_direction = -1
+				else:
+					wall_jump_direction = 1
+				wall_jumping = true
+				velocity.x = wall_jump_direction * 700
+				speed = 800
+				velocity.y = JUMP_VELOCITY * 1.2
+				await get_tree().process_frame
+				jumping = true
+			else:
+				wall_jumping = true
+				wall_jump_direction = wall_jump_direction * -1
+				velocity.x = wall_jump_direction * 700
+				
+				speed = 800
+				velocity.y = JUMP_VELOCITY * 1.2
+				await get_tree().process_frame
+				jumping = true
 func on_wall_bounce_timeout():
 	if wall_bounce_timer_started:
 		doing_trick = false
 	wall_bounce_timer_started = false
-	#test test test i am testing this
+
 func grind():
 	if Input.is_action_pressed("grind") and direction:
 		if velocity.x != 0:
@@ -306,7 +400,6 @@ func grind():
 						speed += 25
 
 					else:
-						@warning_ignore("narrowing_conversion")
 						speed = move_toward(speed, 0, 1)
 		else:
 			grinding = false
@@ -314,3 +407,46 @@ func grind():
 	else:
 		grinding = false
 		position.y += 3
+		
+func get_trajectory(end_point: Vector2, line_speed: float, delta):
+	if current_throw == "Arc":
+		$Line2D.clear_points()
+		var base_arc_height = 100
+		var arc_height_factor: float = 0.5
+		var local_start = to_local(global_position)
+		var local_end = to_local(end_point)
+
+		# Calculate the distance between start and end points
+		var distance = local_start.distance_to(local_end)
+		
+		# Calculate the dynamic height of the arc based on distance
+		var arc_height = base_arc_height / (distance / 100 + 1)  # Adjust denominator for smoother scaling
+
+		var mid_point = (local_start + local_end) / 2
+		mid_point.y -= arc_height  # Increase arc height as distance decreases
+
+		$Line2D.clear_points()
+		var points = calculate_bezier_points(local_start, mid_point, local_end)
+		
+		for point in points:
+			$Line2D.add_point(point)
+	else:
+		var start_point = position
+		var bullet_end_point = get_local_mouse_position()
+		$Line2D.points = [Vector2.ZERO, bullet_end_point]
+	if Input.is_action_just_pressed("ground_pound"):
+		match current_throw:
+			"Bullet":
+				current_throw = "Arc"
+			"Arc":
+				current_throw = "Bullet"
+func calculate_bezier_points(p0: Vector2, p1: Vector2, p2: Vector2) -> Array:
+	var points = []
+	var num_segments = 30
+	
+	for t in range(num_segments + 1):
+		var progress = t / float(num_segments)
+		var point = (1 - progress) * (1 - progress) * p0 + 2 * (1 - progress) * progress * p1 + progress * progress * p2
+		points.append(point)
+	
+	return points

@@ -1,12 +1,87 @@
-[gd_scene load_steps=13 format=3 uid="uid://hmpo0k7orj7r"]
+[gd_scene load_steps=13 format=3 uid="uid://b2cr1mwnhqxwf"]
 
-[ext_resource type="Script" path="res://legacy/scripts/order_area.gd" id="1_ubhuf"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="2_qk5w8"]
 [ext_resource type="Texture2D" uid="uid://dgko4g7pchgtf" path="res://legacy/art/string.png" id="3_m1mv7"]
 [ext_resource type="Texture2D" uid="uid://c2mokekd1p6i5" path="res://legacy/art/order_note.png" id="4_ra1h4"]
 [ext_resource type="Script" path="res://legacy/scripts/order_note.gd" id="5_1ecdt"]
 [ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="6_k8h0y"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="7_1xq4t"]
+
+[sub_resource type="GDScript" id="GDScript_cc7iu"]
+script/source = "extends StaticBody2D
+class_name OrderArea
+
+
+@onready var interactable_component: Interactable = $InteractableComponent
+var interactions : Array = [\"Place\"]
+var current_orders : Array[Array]
+var num_of_orders : int
+
+var sprites : Array[Sprite2D]
+var visible_sprites : Array[bool]
+var is_selected : bool
+
+var used_sprites : Array
+signal order_queued(sprite : Sprite2D)
+
+func _ready() -> void:
+
+	for x in get_children():
+		if x is Sprite2D:
+			sprites.append(x)
+			visible_sprites.append(x.visible)
+	num_of_orders = sprites.size()
+func _physics_process(delta: float) -> void:
+	
+
+	if (interactable_component.player_in_area and interactable_component.can_be_selected):
+		$Highlight.play(\"selected\")
+		
+	else:
+		$Highlight.play(\"RESET\")
+	if OrderManager.order_list.size() > 0 and !num_of_orders > 5:
+		interactable_component.can_be_selected = true
+	else:
+		interactable_component.can_be_selected = false
+		
+	if Input.is_action_just_pressed(\"ui_accept\") and interactable_component.selected:
+		
+		current_orders.append(OrderManager.order_list)
+		
+		for order in current_orders:
+			for meal in order:
+				$\"../UI\".add_order(meal)
+			break
+
+		show_random_sprite()
+		
+		
+		
+		OrderManager.new_batch(OrderManager.order_list.duplicate())
+	
+	num_of_orders = visible_sprites.count(true)
+	
+
+
+func show_random_sprite():
+
+	for sprite in sprites:
+		if !used_sprites.has(sprite):
+			used_sprites.append(sprite)
+			sprite.show()
+			sprite.data = current_orders[current_orders.size() - 1].duplicate()
+			break
+
+func _on_order_queued(sprite: Sprite2D) -> void:
+	current_orders.erase(sprite.data)
+	sprite.hide()
+	used_sprites.erase(sprite)
+	visible_sprites.clear()
+	for x in get_children():
+		if x is Sprite2D:
+			sprites.append(x)
+			visible_sprites.append(x.visible)
+"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nbe"]
 resource_local_to_scene = true
@@ -61,7 +136,7 @@ _data = {
 size = Vector2(72, 60)
 
 [node name="Order Area" type="StaticBody2D"]
-script = ExtResource("1_ubhuf")
+script = SubResource("GDScript_cc7iu")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 z_index = 1

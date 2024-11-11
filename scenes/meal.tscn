@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" path="res://legacy/scripts/meal.gd" id="1_k6154"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="2_hbwfx"]
-[ext_resource type="Texture2D" uid="uid://bivnmrst6pgra" path="res://legacy/art/shadow.png" id="4_08l3p"]
+[ext_resource type="Resource" uid="uid://b0gulxrpeoydb" path="res://scripts/resources/fooddata/milkshake.tres" id="2_kvy4y"]
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="4_cshtj"]
 [ext_resource type="PackedScene" uid="uid://bghioyrh7k6ov" path="res://scenes/grabbable_component.tscn" id="5_18bj2"]
 [ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="5_sbo7o"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w8y6s"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nnemf"]
-radius = 8.01561
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_njl8u"]
+size = Vector2(14, 15)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wy3bc"]
 resource_local_to_scene = true
@@ -34,12 +34,42 @@ shader_parameter/flash_speed = 1.0
 shader_parameter/transparency = 1.0
 shader_parameter/intensity = 0.0
 
-[sub_resource type="Animation" id="Animation_13fxc"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_pgnh1"]
+radius = 21.0
+
+[sub_resource type="Animation" id="Animation_xcll1"]
+resource_name = "selected"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Plate Glass:material:shader_parameter/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Food Liquid:material:shader_parameter/intensity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vvasv"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("RigidBody2D/Food Liquid:material:shader_parameter/intensity")
+tracks/0/path = NodePath("Plate Glass:material:shader_parameter/intensity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -51,7 +81,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("RigidBody2D/Plate Glass:material:shader_parameter/intensity")
+tracks/1/path = NodePath("Food Liquid:material:shader_parameter/intensity")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -61,56 +91,25 @@ tracks/1/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_7b3yv"]
-resource_name = "selected"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("RigidBody2D/Food Liquid:material:shader_parameter/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 1.0, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("RigidBody2D/Plate Glass:material:shader_parameter/intensity")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 1.0, 0.0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2oquf"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_54oty"]
 _data = {
-"RESET": SubResource("Animation_13fxc"),
-"selected": SubResource("Animation_7b3yv")
+"RESET": SubResource("Animation_vvasv"),
+"selected": SubResource("Animation_xcll1")
 }
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_pgnh1"]
-radius = 17.0294
 
 [node name="Meal" type="RigidBody2D"]
-collision_layer = 8
-collision_mask = 8
+collision_layer = 0
+collision_mask = 16
 mass = 1e+12
 physics_material_override = SubResource("PhysicsMaterial_w8y6s")
 gravity_scale = 1.5
 lock_rotation = true
 script = ExtResource("1_k6154")
+data = ExtResource("2_kvy4y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7.5)
-shape = SubResource("CircleShape2D_nnemf")
+shape = SubResource("RectangleShape2D_njl8u")
 
 [node name="Plate Glass" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_wy3bc")
@@ -124,20 +123,6 @@ scale = Vector2(2, 2)
 offset = Vector2(0, -8)
 region_rect = Rect2(0, 0, 32, 32)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.443137)
-z_index = -1
-texture_filter = 1
-position = Vector2(0.5, -23)
-scale = Vector2(0.85, 1.2)
-texture = ExtResource("4_08l3p")
-
-[node name="Highlight" type="AnimationPlayer" parent="."]
-root_node = NodePath("")
-libraries = {
-"": SubResource("AnimationLibrary_2oquf")
-}
-
 [node name="Label" type="Label" parent="."]
 offset_left = -23.0
 offset_top = -53.0
@@ -146,8 +131,8 @@ offset_bottom = -30.0
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(0, -1)
-target_position = Vector2(0, 4)
-collision_mask = 13
+target_position = Vector2(0, 3)
+collision_mask = 8
 
 [node name="InteractableComponent" parent="." node_paths=PackedStringArray("interact_area") instance=ExtResource("5_sbo7o")]
 position = Vector2(0, -1)
@@ -156,8 +141,14 @@ interact_area = NodePath("../InteractAreaComponent")
 [node name="GrabbableComponent" parent="." node_paths=PackedStringArray("interactable_component") instance=ExtResource("5_18bj2")]
 interactable_component = NodePath("../InteractableComponent")
 
-[node name="InteractAreaComponent" parent="." instance=ExtResource("2_hbwfx")]
+[node name="InteractAreaComponent" parent="." groups=["meal"] instance=ExtResource("2_hbwfx")]
 position = Vector2(0, -8)
+collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractAreaComponent"]
 shape = SubResource("CircleShape2D_pgnh1")
+
+[node name="Highlight" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_54oty")
+}

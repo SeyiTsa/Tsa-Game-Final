@@ -1,6 +1,6 @@
-extends Node
+extends Node2D
 
-@export var counter : Counter
+
 @export var leave_point : Marker2D
 
 @export var day_1_customers : Array[CustomerData]
@@ -17,6 +17,9 @@ var current_customer_array : Array[CustomerData]
 var customer_index : int = 0
 const CUSTOMER = preload("res://scenes/customer.tscn")
 func _ready() -> void:
+	Consts.root = self
+	Consts.player = $Player
+	
 	Global.money_gained = 0.00
 	match Global.current_day:
 		1:
@@ -57,4 +60,3 @@ func spawm_customer():
 		add_child(customer_ins)
 		customer_ins.global_position = leave_point.global_position
 		customer_index += 1
-		

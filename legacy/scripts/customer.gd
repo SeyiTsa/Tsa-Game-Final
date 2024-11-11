@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Customer
 
-
+var on_counter : bool
 @onready var nav : NavigationAgent2D = $NavigationAgent2D
 
 
@@ -43,6 +43,25 @@ func _ready() -> void:
 	$ProgressBar.max_value = patience
 	
 func _physics_process(delta: float) -> void:
+	if interactable_component.current_interaction == "Serve":
+		$InteractAreaComponent.set_collision_mask_value(4, true)
+	else:
+		$InteractAreaComponent.set_collision_mask_value(4, false)
+	for area in $InteractAreaComponent.get_overlapping_areas():
+		if area.is_in_group("meal") and interactable_component.current_interaction == "Serve":
+			if area.get_parent().being_thrown:
+				area.get_parent().interactable_component.can_be_selected = false
+				
+				area.get_parent().reparent(seat.marker_2d)
+				patience += 20
+				interactable_component.can_be_selected = false
+				
+				for x in 2:
+					interactable_component.switch_interaction.emit()
+				$"Ordered Food".hide()
+				get_tree().create_timer(randf_range(20, 25)).timeout.connect(finished_eating)
+				area.get_parent().interactable_component.can_be_selected = false
+			
 	$Label.text = str(interactable_component.player_in_area)
 	
 
@@ -51,8 +70,6 @@ func _physics_process(delta: float) -> void:
 	var dir = to_local(nav.get_next_path_position()).normalized() 
 	if should_navigate or interactable_component.player_in_area:
 		previous_dir = dir
-		
-	
 
 	$ProgressBar.value = patience
 
@@ -114,19 +131,18 @@ func _physics_process(delta: float) -> void:
 							else:
 								InteractionManager.current_customer = self
 			"Take Order":
-				if OrderManager.order_list.size() != 4:
-					patience += 20
-					var food_option = food_options[randi_range(0, food_options.size() - 1)]
-					OrderManager.add_order(food_option)
-					var index = OrderManager.food_options.find(food_option)
-					$"Ordered Food".texture = OrderManager.food_data_options[index].food_liquid
-					has_order_ready = false
-					$"Order Marker".hide()
-					interactable_component.can_be_selected = false
-					is_talking = true
-					$"Talk Timer".start()
+				patience += 20
+				var food_option = food_options[randi_range(0, food_options.size() - 1)]
+				OrderManager.add_order(food_option)
+				var index = OrderManager.food_options.find(food_option)
+				$"Ordered Food".texture = OrderManager.food_data_options[index].food_liquid
+				has_order_ready = false
+				$"Order Marker".hide()
+				interactable_component.can_be_selected = false
+				is_talking = true
+				$"Talk Timer".start()
 			"Serve":
-				if interactable_component.player.holding_meal and InteractionManager.currently_holding_item:
+				if (interactable_component.player.holding_meal and InteractionManager.currently_holding_item):
 					patience += 20
 					interactable_component.can_be_selected = false
 					interactable_component.player.marker_2d.get_child(0).reparent(seat.marker_2d)
@@ -219,8 +235,8 @@ func finished_eating():
 	is_talking = false
 	has_order_ready = false
 	ordering = false
-	reparent(get_tree().root.get_node("Level1"))
+	reparent(Consts.root)
 	position.y += 10
 	Global.served_customers += 1
-	nav.target_position = get_tree().root.get_node("Level1").leave_point.global_position
+	nav.target_position = Consts.root.leave_point.global_position
 	should_navigate = true

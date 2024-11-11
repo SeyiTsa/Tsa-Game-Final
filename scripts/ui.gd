@@ -11,7 +11,6 @@ var backed_up_orders : Array
 var meal_spots : Array
 var displaced_meals : Array
 func _ready() -> void:
-	OrderManager.order_made.connect(meal_made)
 	for child in $Control/ColorRect.get_children():
 		if child is Marker2D and child.name != "EntranceMarker":
 			note_markers.append(child)

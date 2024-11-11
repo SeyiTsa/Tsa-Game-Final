@@ -16,5 +16,3 @@ func _process(delta: float) -> void:
 	if scene_load_status == ResourceLoader.THREAD_LOAD_LOADED:
 		var new_scene = ResourceLoader.load_threaded_get(sceneName)
 		get_tree().change_scene_to_packed(new_scene)
-		if sceneName == "res://scenes/level_1.tscn":
-			OrderManager.get_references()
