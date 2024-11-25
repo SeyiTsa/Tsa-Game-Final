@@ -25,7 +25,9 @@ var acceleration : int = 400
 var jump_buffer : bool
 var jumping : bool
 var max_timeslow_duration : int = 80
-var current_timeslow_duration : float
+var current_timeslow_duration : float:
+	set(value):
+		current_timeslow_duration = clamp(value, 0, max_timeslow_duration)
 var timeslow_effect : bool
 var push_offed : bool = false:
 	set(value):
@@ -90,11 +92,13 @@ func _process(delta: float) -> void:
 	else:
 		grayscale_amount = move_toward(grayscale_amount, 0, delta * 4)
 		Engine.time_scale = move_toward(Engine.time_scale, 1, delta * 4)
+		current_timeslow_duration += 0.1
 		$"../CanvasLayer/ColorRect".material.set_shader_parameter("grayscale_amount", grayscale_amount)
 	
 	if current_timeslow_duration <= 0:
 		timeslow_effect = false
-		current_timeslow_duration = max_timeslow_duration
+		
+		
 
 	
 	if !doing_trick and current_trick:
@@ -119,7 +123,7 @@ func _process(delta: float) -> void:
 	
 
 	$Label.text = str(current_timeslow_duration)
-	if !Input.is_action_pressed("grind"):
+	if !Input.is_action_pressed("throw"):
 		$Line2D.hide()
 		throwing = false
 	else:
@@ -197,7 +201,7 @@ func _process(delta: float) -> void:
 				rotation_degrees = lerpf(rotation_degrees, -180, delta/10)
 	if marker_2d.get_child_count() > 0:
 		holding_meal = true
-		if Input.is_action_just_released("grind"):
+		if Input.is_action_just_released("throw"):
 			var meal = marker_2d.get_child(0)
 			meal.get_node("GrabbableComponent").put_down()
 			meal.throw(global_position, get_global_mouse_position(), current_throw)
@@ -259,7 +263,7 @@ func _process(delta: float) -> void:
 	else:
 		grinding = false
 
-	if Input.is_action_just_pressed("up"):
+	if Input.is_action_just_pressed("jump"):
 		jump()
 	if jump_buffer and is_on_floor():
 		jump_buffer = false
@@ -434,7 +438,7 @@ func get_trajectory(end_point: Vector2, line_speed: float, delta):
 		var start_point = position
 		var bullet_end_point = get_local_mouse_position()
 		$Line2D.points = [Vector2.ZERO, bullet_end_point]
-	if Input.is_action_just_pressed("ground_pound"):
+	if Input.is_action_just_pressed("switch_throw"):
 		match current_throw:
 			"Bullet":
 				current_throw = "Arc"

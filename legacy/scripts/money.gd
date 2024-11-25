@@ -9,7 +9,7 @@ var is_selected : bool
 	
 func _physics_process(delta: float) -> void:
 
-	if interactable_component.selected and Input.is_action_just_pressed("ui_accept"):
+	if interactable_component.selected and Input.is_action_just_pressed("interact"):
 		Global.money += money
 		Global.money_gained += money
 		$Label.text = str("+", money)

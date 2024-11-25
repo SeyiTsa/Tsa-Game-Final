@@ -17,7 +17,7 @@ func _ready() -> void:
 
 	
 func _physics_process(delta: float) -> void:
-	$Label.text = str(being_thrown)
+	$Label.text = str(interactable_component.can_be_selected, interactable_component.selected)
 
 
 	if (interactable_component.player_in_area and interactable_component.can_be_selected and interactable_component.selected):
@@ -34,14 +34,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		rotation_degrees = 0
 
+
+
+
 	if get_parent() is Marker2D:
-		linear_velocity = Vector2(0, 0)
-
-	
-
-	if $RayCast2D.is_colliding() or get_parent() is Marker2D:
+		linear_velocity = Vector2.ZERO
 		being_thrown = false
+	if $RayCast2D.is_colliding() and being_thrown:
 		linear_velocity.y = 0
+		await get_tree().create_timer(0.2).timeout
+		being_thrown = false
+		
 	var collision = move_and_collide(linear_velocity * delta)
 	if not collision:
 		linear_velocity = linear_velocity.move_toward(Vector2.ZERO, delta * 500)

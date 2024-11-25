@@ -1,10 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://iww63bcg0wbq"]
+[gd_scene load_steps=26 format=3 uid="uid://iww63bcg0wbq"]
 
 [ext_resource type="Script" path="res://legacy/scripts/customer.gd" id="1_pv177"]
 [ext_resource type="Script" path="res://scripts/resources/customer_data.gd" id="2_pj0p4"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://legacy/art/done_ordering_marker.png" id="6_eyyx4"]
 [ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="7_4m0lg"]
-[ext_resource type="Texture2D" uid="uid://dfdo0hgfhgfss" path="res://legacy/art/current_indicator.png" id="8_t820p"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="8_vx0h1"]
 [ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://legacy/art/progressbartextures/health.png" id="9_2uwyd"]
 [ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://legacy/art/progressbartextures/health_out.png" id="10_krmgk"]
@@ -109,30 +108,8 @@ _data = {
 "selected": SubResource("Animation_2d7c4")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ifss0"]
-atlas = ExtResource("8_t820p")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1uf5m"]
-atlas = ExtResource("8_t820p")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_akg4f"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ifss0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1uf5m")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_dxd45"]
-radius = 25.02
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a120t"]
+size = Vector2(48, 42)
 
 [node name="Customer" type="CharacterBody2D"]
 collision_layer = 0
@@ -153,7 +130,7 @@ position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_xocqr")
 
 [node name="Order Timer" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 4.0
 one_shot = true
 
 [node name="Order Marker" type="Sprite2D" parent="."]
@@ -169,13 +146,6 @@ one_shot = true
 libraries = {
 "": SubResource("AnimationLibrary_mvtx2")
 }
-
-[node name="indicator" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
-position = Vector2(0, -33)
-sprite_frames = SubResource("SpriteFrames_akg4f")
-autoplay = "default"
-frame_progress = 0.791279
 
 [node name="Label" type="Label" parent="."]
 offset_left = -20.0
@@ -217,7 +187,8 @@ interact_area = NodePath("../InteractAreaComponent")
 position = Vector2(0, -12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractAreaComponent"]
-shape = SubResource("CircleShape2D_dxd45")
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_a120t")
 
 [connection signal="timeout" from="Order Timer" to="." method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Talk Timer" to="." method="_on_talk_timer_timeout"]

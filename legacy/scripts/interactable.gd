@@ -23,14 +23,14 @@ func on_area_entered(area: Area2D):
 	if can_be_selected:
 		if area.is_in_group("player interact"):
 			player_in_area = true
-			if !InteractionManager.interaction_list.has(self):
-				InteractionManager.interaction_list.append(self)
+			if !InteractionManager.interaction_list.has(get_parent()):
+				InteractionManager.interaction_list.append(get_parent())
 				player = area.get_parent()
 	else:
 		if area.is_in_group("player interact"):
 			player_in_area = true
-			if InteractionManager.interaction_list.has(self):
-				InteractionManager.interaction_list.erase(self)
+			if InteractionManager.interaction_list.has(get_parent()):
+				InteractionManager.interaction_list.erase(get_parent())
 				
 func _physics_process(delta: float) -> void:
 	player_in_area = interact_area.player_in_area
@@ -39,6 +39,8 @@ func _physics_process(delta: float) -> void:
 			selected = true
 		else:
 			selected = false
+	else:
+		selected = false
 	
 	if interact_area.get_overlapping_areas():
 		var area = interact_area.get_overlapping_areas()[0]
@@ -46,22 +48,22 @@ func _physics_process(delta: float) -> void:
 			if area.is_in_group("player interact"):
 				selected = true
 				player_in_area = true
-				if !InteractionManager.interaction_list.has(self):
-					InteractionManager.interaction_list.append(self)
+				if !InteractionManager.interaction_list.has(get_parent()):
+					InteractionManager.interaction_list.append(get_parent())
 					player = area.get_parent()
 		else:
 			if area.is_in_group("player interact"):
 				player_in_area = true
 				selected = false
-				if InteractionManager.interaction_list.has(self):
-					InteractionManager.interaction_list.erase(self)
+				if InteractionManager.interaction_list.has(get_parent()):
+					InteractionManager.interaction_list.erase(get_parent())
 	else:
 		selected = false
 func on_area_exited(area: Area2D):
 	if area.is_in_group("player interact"):
 		player_in_area = false
-		if InteractionManager.interaction_list.has(self):
-			InteractionManager.interaction_list.erase(self)
+		if InteractionManager.interaction_list.has(get_parent()):
+			InteractionManager.interaction_list.erase(get_parent())
 	
 
 
@@ -69,4 +71,5 @@ func on_area_exited(area: Area2D):
 
 func _on_switch_interaction() -> void:
 	var index = interaction_array.find(current_interaction) + 1
-	current_interaction = interaction_array[index]
+	if index < (interaction_array.size() - 1):
+		current_interaction = interaction_array[index]

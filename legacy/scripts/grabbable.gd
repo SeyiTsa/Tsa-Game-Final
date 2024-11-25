@@ -10,7 +10,7 @@ func pick_up():
 	if InteractionManager.interaction_list.has(get_parent()):
 		InteractionManager.interaction_list.erase(get_parent())
 func _physics_process(delta: float) -> void:
-	if interactable_component.selected and Input.is_action_just_pressed("ui_accept") and on_ground and !InteractionManager.currently_holding_item and interactable_component.can_be_selected:
+	if interactable_component.selected and Input.is_action_just_pressed("interact") and on_ground and !InteractionManager.currently_holding_item and interactable_component.can_be_selected:
 		if get_parent().on_counter:
 			get_parent().reparent(Consts.root)
 
@@ -20,7 +20,7 @@ func _physics_process(delta: float) -> void:
 		on_ground = false
 		pick_up()
 
-	elif !interactable_component.selected and Input.is_action_just_pressed("ui_accept") and !on_ground and InteractionManager.interaction_list.size() == 0 and get_parent().get_parent().name == "Marker2D":
+	elif !interactable_component.selected and Input.is_action_just_pressed("interact") and !on_ground and InteractionManager.interaction_list.size() == 0 and get_parent().get_parent().name == "Marker2D":
 		interactable_component.can_be_selected = true
 		on_ground = true
 		put_down()
@@ -29,9 +29,11 @@ func _physics_process(delta: float) -> void:
 	if InteractionManager.currently_holding_item:
 		interactable_component.can_be_selected = false
 	else:
-		if on_ground:
+		if on_ground and get_parent().get_parent().name != "Marker2D_":
 			interactable_component.can_be_selected = true
 			
+	if get_parent().get_parent().name == "Marker2D_":
+		interactable_component.can_be_selected = false
 func put_down():
 	InteractionManager.currently_holding_item = false
 	on_ground = true
