@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bau28mftlf72i"]
+
+[ext_resource type="Script" path="res://legacy/scripts/player_cam.gd" id="1_vpn86"]
+
+[node name="PlayerCam" type="Camera2D"]
+zoom = Vector2(0.9, 0.9)
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+script = ExtResource("1_vpn86")

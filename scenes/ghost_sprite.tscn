@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://ce0tab57p1vht"]
 
 [ext_resource type="Shader" path="res://legacy/scripts/shaders/highlight.gdshader" id="1_7oah5"]
-[ext_resource type="Script" path="res://scenes/ghost_sprite.gd" id="1_r1r0e"]
+[ext_resource type="Script" path="res://legacy/scripts/ghost_sprite.gd" id="1_r1r0e"]
 [ext_resource type="Texture2D" uid="uid://fqo7342q86b2" path="res://art/texture atlas/big_food_atlas.tres" id="3_47sd6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g7ea1"]

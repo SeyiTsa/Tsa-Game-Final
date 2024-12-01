@@ -15,6 +15,7 @@ func _process(delta: float) -> void:
 		meals.remove_at(0)
 		
 	$Label.text = str(round(distance))
-	distance = Consts.player.global_position.distance_to(global_position)
+	if Consts.root.current_state == Consts.root.level_states.SERVESTAGE:
+		distance = Consts.player.global_position.distance_to(global_position)
 func _exit_tree() -> void:
 	OrderManager.order_machines.erase(self)

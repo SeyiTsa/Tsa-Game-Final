@@ -19,3 +19,11 @@ func _on_exit_menu_pressed() -> void:
 
 func _on_exit_desktop_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_restart_level_pressed() -> void:
+	Global.money_gained = 0.00
+	Global.money -= Global.money_gained
+	
+	get_tree().reload_current_scene()
+	

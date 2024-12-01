@@ -7,7 +7,8 @@ var speed : int = 100:
 		speed = value
 @onready var raycast: RayCast2D = $RayCast2D
 @onready var marker_2d: Marker2D = $Marker2D
-
+var held_items : Array[FoodData]
+const MEAL = preload("res://scenes/meal.tscn")
 var turning : bool = false
 var doing_trick : bool = false
 var wall_bounce_timer_started : bool = false
@@ -46,6 +47,7 @@ var facing : int
 var grinding : bool
 var grayscale_amount : float = 0
 var current_trick
+var check_for_rail : bool = false
 var just_ground_pounded : bool:
 	set(value):
 		
@@ -54,13 +56,22 @@ var just_ground_pounded : bool:
 			await get_tree().create_timer(0.2).timeout
 			just_ground_pounded = false
 var wall_bounce_floor_check : bool
-signal grounded_updated(is_grounded)
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D2
 
 
 func update_position():
 	$AnimatedSprite2D.global_position = global_position
 	$AnimatedSprite2D.global_rotation_degrees = global_rotation_degrees
+	$CollisionShape2D.global_rotation_degrees = 0
+	$WallRight.global_rotation_degrees = 0
+	$WallRightReal.global_rotation_degrees = 0
+	$WallLeft.global_rotation_degrees = 0
+	$WallLeftReal.global_rotation_degrees = 0
+	$WallJump.global_rotation_degrees = 0
+	$RailCast.global_rotation_degrees = 0
+	
+	
 	var tween = get_tree().create_tween()
 	if jumping:
 		tween.tween_property($AnimatedSprite2D, "global_position:y", global_position.y + 5, 0.02)
@@ -68,6 +79,25 @@ func update_position():
 		tween.tween_property($AnimatedSprite2D, "global_position:y", global_position.y, 0.05)
 
 func _process(delta: float) -> void:
+	grind()
+	
+	if Input.is_action_just_pressed("grind") and velocity.x != 0:
+		print("E")
+		check_for_rail = true
+		$RailCast.set_collision_mask_value(4, true)
+		set_collision_layer_value(4, true)
+		set_collision_mask_value(4, true)
+		
+		await get_tree().create_timer(0.3).timeout
+		
+		if !grinding:
+			check_for_rail = false
+
+	if !check_for_rail:
+			$RailCast.set_collision_mask_value(4, false)
+			set_collision_layer_value(4, false)
+			set_collision_mask_value(4, false)
+		
 	if animated_sprite_2d.flip_h == false:
 		facing = 1
 	else:
@@ -122,7 +152,7 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D2.flip_h = false
 	
 
-	$Label.text = str(current_timeslow_duration)
+	$Label.text = str(held_items)
 	if !Input.is_action_pressed("throw"):
 		$Line2D.hide()
 		throwing = false
@@ -148,8 +178,8 @@ func _process(delta: float) -> void:
 	if direction:
 		
 		push_off_direction = direction
-
-	direction = Input.get_axis("left","right")
+	if !grinding:
+		direction = Input.get_axis("left","right")
 	
 
 		
@@ -176,7 +206,7 @@ func _process(delta: float) -> void:
 		if !(velocity.x >= -1000 and velocity.x < 1000):
 			kick_speed_duration = 0
 
-	if direction != (velocity.x / abs(velocity.x)) and direction != 0 and is_on_floor() and velocity.x != 0:
+	if direction != sign(velocity.x) and direction != 0 and is_on_floor() and velocity.x != 0:
 		speed = 100
 		turning = true
 		if direction == 1:
@@ -203,16 +233,15 @@ func _process(delta: float) -> void:
 		holding_meal = true
 		if Input.is_action_just_released("throw"):
 			var meal = marker_2d.get_child(0)
+			
 			meal.get_node("GrabbableComponent").put_down()
 			meal.throw(global_position, get_global_mouse_position(), current_throw)
+			
 	else:
 		holding_meal = false
 	move_and_slide()
 	
-	var was_grounded = is_grounded 
-	is_grounded = is_on_floor()
-	if was_grounded == null or is_grounded != was_grounded:
-		grounded_updated.emit(is_grounded)
+
 	if Input.is_action_just_pressed("grind") and ($WallRight.is_colliding() or $WallLeft.is_colliding()) and velocity.x != 0 and !wall_jumping:
 		
 		if velocity.x > 0:
@@ -234,11 +263,12 @@ func _process(delta: float) -> void:
 			
 			wall_bounce_timer_started = false
 			velocity.y = -700
-			velocity.x = -(abs(velocity.x)/velocity.x) * 1000
+			velocity.x = -sign(velocity.x) * 1000
 			speed += 900
 			kick_speed_duration = 100
 			push_offed = true
 			wall_bounce_floor_check = true
+
 			
 	if wall_bounce_floor_check and is_on_floor() and velocity.y == 0:
 		Global.tricks_done += 1
@@ -249,19 +279,19 @@ func _process(delta: float) -> void:
 		doing_trick = false
 	if raycast.is_colliding() and is_on_floor():
 		var surface_normal = raycast.get_collision_normal()
-		var desired_rotation = surface_normal.angle() + deg_to_rad(90)  # Rotate to align with the floor
+		var desired_rotation = surface_normal.angle() + deg_to_rad(90)  
 
 		
 
 		rotation = desired_rotation
-		if raycast.get_collider().is_in_group("grind") and !doing_trick:
-			if Input.is_action_pressed("grind") and direction:
-				grind()
-	elif raycast.is_colliding() and !is_on_floor():
-		if raycast.get_collider().is_in_group("grind") and !doing_trick:
-			grind()
-	else:
-		grinding = false
+		#if raycast.get_collider().is_in_group("grind") and !doing_trick:
+			#if Input.is_action_pressed("grind") and direction:
+				#grind()
+	#elif raycast.is_colliding() and !is_on_floor():
+		#if raycast.get_collider().is_in_group("grind") and !doing_trick:
+			#grind()
+	#else:
+		#grinding = false
 
 	if Input.is_action_just_pressed("jump"):
 		jump()
@@ -285,12 +315,6 @@ func _process(delta: float) -> void:
 		$Polygon2D2.hide()
 		$Polygon2D3.hide()
 		
-	if Input.is_action_pressed("grind") and velocity.x != 0:
-		raycast.set_collision_mask_value(3, true)
-		set_collision_mask_value(3, true)
-	else:
-		raycast.set_collision_mask_value(3, false)
-		set_collision_mask_value(3, false)
 
 
 	if velocity.x < 0:
@@ -314,6 +338,11 @@ func _process(delta: float) -> void:
 	get_trajectory(get_global_mouse_position(), 10, delta)
 
 
+	if held_items.size() > 0 and marker_2d.get_child_count() == 0:
+		var meal_ins = MEAL.instantiate()
+		meal_ins.data = held_items[0]
+		marker_2d.add_child(meal_ins)
+		
 func push_off(i):
 	
 	if (speed >= -1000 and speed < 1000):
@@ -323,7 +352,7 @@ func push_off(i):
 			if not (speed >= -1000 and speed < 1000):
 				speed = clamp(speed, -1000, 1000)
 		else:
-			if wall_jumping == false:
+			if wall_jumping == false and !grinding:
 				speed = 250
 
 	
@@ -386,31 +415,47 @@ func on_wall_bounce_timeout():
 	wall_bounce_timer_started = false
 
 func grind():
-	if Input.is_action_pressed("grind") and direction:
-		if velocity.x != 0:
+	#if Input.is_action_pressed("grind") and direction:
+		#if velocity.x != 0:
+			#grinding = true
+			#if (speed >= -1350 and speed < 1350):
+				#if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
+					#speed += 14
+				#elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
+					#speed += 14
+				#elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
+					#position.y += 1
+					#
+				#else:
+					#if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
+						#speed += 25
+					#elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
+						#speed += 25
+#
+					#else:
+						#speed = move_toward(speed, 0, 1)
+		#else:
+			#grinding = false
+			#position.y += 3
+	#else:
+		#grinding = false
+		#position.y += 3
+		#
+	if $RailCast.is_colliding() and check_for_rail:
+		if $RailCast.get_collider().is_in_group("grind") and velocity.x != 0:
+			
 			grinding = true
-			if (speed >= -1350 and speed < 1350):
-				if velocity.x > 0 and raycast.get_collider().rotation_degrees == 0:
-					speed += 14
-				elif velocity.x < 0 and raycast.get_collider().rotation_degrees == 0:
-					speed += 14
-				elif raycast.get_collider().rotation_degrees != 0 and velocity.x == 0:
-					position.y += 1
-					
-				else:
-					if velocity.x > 0 and raycast.get_collider().rotation_degrees > 0:
-						speed += 25
-					elif velocity.x < 0 and raycast.get_collider().rotation_degrees < 0:
-						speed += 25
-
-					else:
-						speed = move_toward(speed, 0, 1)
+			rotation_degrees = $RailCast.get_collider().rotation_degrees
+			speed += 4
+			velocity.x = sign(velocity.x) * speed
 		else:
+			if grinding:
+				check_for_rail = false
 			grinding = false
-			position.y += 3
 	else:
+		if grinding:
+			check_for_rail = false
 		grinding = false
-		position.y += 3
 		
 func get_trajectory(end_point: Vector2, line_speed: float, delta):
 	if current_throw == "Arc":

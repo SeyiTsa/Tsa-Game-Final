@@ -1,11 +1,13 @@
-[gd_scene load_steps=26 format=3 uid="uid://iww63bcg0wbq"]
+[gd_scene load_steps=28 format=3 uid="uid://iww63bcg0wbq"]
 
 [ext_resource type="Script" path="res://legacy/scripts/customer.gd" id="1_pv177"]
 [ext_resource type="Script" path="res://scripts/resources/customer_data.gd" id="2_pj0p4"]
 [ext_resource type="Texture2D" uid="uid://bwo1enksh1fyf" path="res://legacy/art/done_ordering_marker.png" id="6_eyyx4"]
 [ext_resource type="PackedScene" uid="uid://b4dbpk1ujffv3" path="res://scenes/interactable_component.tscn" id="7_4m0lg"]
+[ext_resource type="Script" path="res://scripts/target_reticle.gd" id="8_23px6"]
 [ext_resource type="PackedScene" uid="uid://be647421rchf7" path="res://legacy/scenes/interactareacomponent.tscn" id="8_vx0h1"]
 [ext_resource type="Texture2D" uid="uid://dd71tcflp5tn2" path="res://legacy/art/progressbartextures/health.png" id="9_2uwyd"]
+[ext_resource type="Texture2D" uid="uid://6rjvx4ixqjdd" path="res://art/target_reticle.png" id="9_d1g7t"]
 [ext_resource type="Texture2D" uid="uid://d3be6t4i2837u" path="res://legacy/art/progressbartextures/health_out.png" id="10_krmgk"]
 
 [sub_resource type="Resource" id="Resource_pwjl8"]
@@ -148,6 +150,7 @@ libraries = {
 }
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -20.0
 offset_top = -68.0
 offset_right = 20.0
@@ -189,6 +192,13 @@ position = Vector2(0, -12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractAreaComponent"]
 position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_a120t")
+
+[node name="TargetReticle" type="Node2D" parent="."]
+script = ExtResource("8_23px6")
+
+[node name="OffscreenReticle" type="Sprite2D" parent="TargetReticle"]
+visible = false
+texture = ExtResource("9_d1g7t")
 
 [connection signal="timeout" from="Order Timer" to="." method="_on_order_timer_timeout"]
 [connection signal="timeout" from="Talk Timer" to="." method="_on_talk_timer_timeout"]

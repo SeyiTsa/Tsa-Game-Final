@@ -124,6 +124,7 @@ offset = Vector2(0, -8)
 region_rect = Rect2(0, 0, 32, 32)
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -23.0
 offset_top = -53.0
 offset_right = 17.0

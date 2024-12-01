@@ -4,8 +4,8 @@
 
 [node name="Rail" type="StaticBody2D" groups=["grind"]]
 z_index = -1
-collision_layer = 4
-collision_mask = 4
+collision_layer = 8
+collision_mask = 8
 script = ExtResource("1_8rtd2")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
